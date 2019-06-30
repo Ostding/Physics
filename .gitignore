@@ -1,5 +1,5 @@
 .DS_Store
 .o
-./bin/*
-./build/*
-./proj.osx/*
+bin
+build
+proj.osx
