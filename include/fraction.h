@@ -438,7 +438,7 @@ public:
   
   float to_f() const
   {
-      double num = (double)nom / (double)den;
+    double num = (double)nom / (double)den;
     return (float)num;
   };
   
@@ -459,9 +459,9 @@ public:
   {
     if (nom == 0ULL)
     {
-        nom = 0LL;
-        den = 1LL;
-        return;
+      nom = 0LL;
+      den = 1LL;
+      return;
     }
     
     uint64_t un = (uint64_t)llabs(nom);
@@ -473,15 +473,15 @@ public:
     
     while (den > (int64_t)DEN_PERCISION)
     {
-        if(nom == 1LL || nom == -1LL)
-        {
-            nom = 0;
-            den = 1;
-            break;
-        }
-        
-        nom >>= 1;
-        den >>= 1;
+      if(nom == 1LL || nom == -1LL)
+      {
+          nom = 0;
+          den = 1;
+          break;
+      }
+      
+      nom >>= 1;
+      den >>= 1;
     }
   };
   

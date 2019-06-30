@@ -8,13 +8,13 @@ Fraction Fraction::f10 = Fraction(10,1);
 Fraction Fraction::f90 = Fraction(90,1);
 Fraction Fraction::f180 = Fraction(180, 1);
 
-Fraction Fraction::pi = Fraction(3.14159f);
-Fraction Fraction::pi_2 = Fraction(1.57080f);
-Fraction Fraction::pi_4 = Fraction(0.78540f);
-Fraction Fraction::pi2 = Fraction(6.28319f);
-Fraction Fraction::rad_unit = Fraction(0.01745f);
-Fraction Fraction::deg_unit = Fraction(57.29579f);
-Fraction Fraction::e = Fraction(2.71828f);
+Fraction Fraction::pi = Fraction(3.1416);
+Fraction Fraction::pi_2 = Fraction(1.5708);
+Fraction Fraction::pi_4 = Fraction(0.7854);
+Fraction Fraction::pi2 = Fraction(6.2833);
+Fraction Fraction::rad_unit = Fraction(0.0175);
+Fraction Fraction::deg_unit = Fraction(57.2958);
+Fraction Fraction::e = Fraction(2.7183);
 Fraction Fraction::min = Fraction();
 Fraction Fraction::max = Fraction();
 
