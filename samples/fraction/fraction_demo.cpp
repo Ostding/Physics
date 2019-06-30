@@ -15,7 +15,9 @@ void FractionDemo::onDisplay()
    
    glColor3f(0.0f, 0.0f, 0.0f);
    
-   textOut(10.0f, 34.0f, "Physic Demo:\n Test Fraction");
+   textOut(10.0f, 34.0f, "Physic Demo: Test Fraction \n \
+      Press 'g' to run demo and watch console for fraction calculation; \n \
+      Press 'q' to quite sample application;");
 }
 
 
@@ -235,10 +237,101 @@ void FractionDemo::doTestFraction()
   c = c.invserse();
   print("c = c.invserse()", c);
 
+  _ret = c.isPositive();
+  _c = _ret ? 'Y':'N';
+  printf("c.isPositive() => %c \n", _c);  
+
+  _ret = c.isNegative();
+  _c = _ret ? 'Y':'N';
+  printf("c.isNegative() => %c \n", _c); 
+
+  printf("a.round() => %d \n",  a.round());
+  printf("a.to_i() => %d \n",  a.to_i());
+  printf("a.to_l() => %ld \n",  a.to_l());
+  printf("a.to_f() => %f \n",  a.to_f());
+  printf("a.to_d() => %f \n",  a.to_d());
 
   char psz[32] = {0};
   a.cstr(psz);
   printf("a.cstr(psz) => %s\n", psz);
+
+  printf("\n>>>>>>>> math methods\n");
+
+  a = Fraction(0, 1);
+  print("a=Fraction(0,1)", a);
+
+  b = a.sin();
+  print("a.sin()", b);
+
+  b = a.cos();
+  print("a.cos()", b); 
+
+  b = a.tan();
+  print("a.tan()", b);   
+  
+  a = Fraction::pi / 4LL;
+  print("a=Fraction::pi / 4", a);
+  b = a.sin();
+  print("a.sin()", b);
+
+  b = a.cos();
+  print("a.cos()", b);
+
+  b = a.tan();
+  print("a.tan()", b); 
+
+  a = Fraction(0, 1);
+  b = a.asin();
+  print("a.asin()", b); 
+
+  b = a.acos();
+  print("a.acos()", b); 
+
+  b = a.atan();
+  print("a.atan()", b); 
+
+  a = Fraction(1);
+  print("a=Fraction(1)", a);
+
+  b = a.exp();
+  print("a.exp()", b); 
+
+  b = b.ln();
+  print("b.ln()", b); 
+
+
+  a = Fraction(100, 1);
+  print("a=Fraction(100, 1)", a);
+
+  b = a.log();
+  print("a.log()", b); 
+
+  b = a.sqrt();
+  print("a.sqrt()", b); 
+
+  a = Fraction(180);
+  print("a=Fraction(180)", a);
+
+  b = a.to_rad();
+  print("a.to_rad()", b);
+
+  a = b.to_deg();
+  print("b.to_deg()", a);
+
+  a = Fraction(2);
+  b = Fraction(4);
+  print("a = Fraction(2)", a);
+  print("b = Fraction(4)", b);
+  c = Fraction::pow(a, b);
+  print("Fraction::pow(a, b)", c);
+
+  a = Fraction(5);
+  b = Fraction(3);
+  print("a = Fraction(5)", a);
+  print("b = Fraction(3)", b);
+  c = Fraction::mod(a, b);
+  print("Fraction::mod(a, b)", c);
+
 
 }
 

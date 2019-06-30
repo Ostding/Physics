@@ -1,5 +1,5 @@
 TARGETS= fraction_demo
-INC_FLAGS= -I./include
+INC_FLAGS= -I./include -I./
 CPP_FLAGS= -O2 -Wall -std=c++11 -pthread  -Wno-deprecated-declarations 
 
 PLAT_FLAGS=-L/System/Library/Frameworks -framework OpenGL -framework GLUT -framework Foundation 
@@ -8,6 +8,10 @@ CC=gcc
 CXX=g++
 
 .SUFFIXES: .cpp .c
+
+dir:
+	mkdir -p ./build
+	mkdir -p ./bin
 
 PHYSIC_O= build/fraction.o build/acos_table.o build/atan2_table.o build/sincos_table.o
 APP_O= build/main.o build/application.o 
@@ -35,9 +39,9 @@ ${DEMO_FRACTION_O}:
 	
 DEMO_FRACTION= ${APP_O} ${PHYSIC_O} ${DEMO_FRACTION_O}
 
-clean_fraction_demo:
+clean_fraction_demo: 
 	rm -f ${DEMO_FRACTION} ./bin/fraction_demo
-fraction_demo: clean_fraction_demo ${DEMO_FRACTION}
+fraction_demo: clean_fraction_demo dir ${DEMO_FRACTION}
 	${CXX} ${PLAT_FLAGS} -o ./bin/fraction_demo ${DEMO_FRACTION}
 
 clean: clean_fraction_demo

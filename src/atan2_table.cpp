@@ -1,5 +1,5 @@
 #include "atan2_table.h"
-#include "Fraction.h"
+#include "fraction.h"
 
 int Atan2Table::BITS = 7;
 int Atan2Table::BITS2 = Atan2Table::BITS << 1;

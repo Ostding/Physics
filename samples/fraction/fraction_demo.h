@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "application.h"
 #include "fraction.h"
 
 class FractionDemo : public Application

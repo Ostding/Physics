@@ -66,6 +66,7 @@ public:
     den = (int64_t)DEN_PERCISION;
     nom = (int64_t)(d * den);
     
+    // printf("from double d:%f nom:%lld \n", d, nom);
     strip();
   };
   
@@ -540,6 +541,11 @@ public:
   {
     return to_deg(*this);
   };
+
+  Fraction abs() const
+  {
+    return abs(*this);
+  };
   
   static Fraction atan2(int y, int x)
   {
@@ -754,21 +760,21 @@ public:
   {
     double dx = x.to_d();
     double dy = y.to_d();
-    double r = fmod(dx, dy);
+    double r = std::fmod(dx, dy);
     return Fraction(r);
   };
   
   static Fraction log(const Fraction &x)
   {
     double d = x.to_d();
-    double r = log10(d);
+    double r = std::log10(d);
     return Fraction(r);
   };
   
   static Fraction ln(const Fraction &x)
   {
     double d = x.to_d();
-    double r = log(d);
+    double r = std::log(d);
     return Fraction(r);
   };
   
