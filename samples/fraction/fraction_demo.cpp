@@ -35,7 +35,7 @@ void FractionDemo::onKeyboardPress(unsigned char key)
 void FractionDemo::print(const char* pszCap, Fraction &f)
 {
   float v = f.to_f();
-  printf("%s => %.4f nom:%lld den:%lld \n", pszCap, v, f.nom, f.den);
+  printf("%s => %.5f nom:%lld den:%lld \n", pszCap, v, f.nom, f.den);
 }
 
 void FractionDemo::doTestFraction()

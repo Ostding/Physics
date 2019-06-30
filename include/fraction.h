@@ -741,13 +741,49 @@ public:
   
   static Fraction sqrt(const Fraction &x)
   {
-    if (x < f0)
-    return f0;
+
+//  Fractor x = Fractor::one;
+//  int step = 0;
+//  Fractor _t = x * x - b;
+//  while( (_t < __eps_min || _t > __eps_max) &&
+//         step < 50)
+//  {
+//    x = (b/x + x)/Fractor::two;
+//    step ++;
+//    _t = x * x - b;
+//  }
+//  return x;
+
+ 
+    if ( x <= Fraction::f0 ) {
+        return 0;
+    }
+ 
+    Fraction y = x / Fraction::f2;
+
+    Fraction eps = Fraction(0.001);
+    Fraction maxError = x * eps;
+    Fraction minError = x * -eps;
+
+    Fraction delta;
+
+    do {
+      delta = ( y * y ) - x;
+      y -= delta / ( y * Fraction::f2 );
+    } while ( delta > maxError || delta < minError );
+ 
+    return y;
+  }
+
+  // static Fraction sqrt(const Fraction &x)
+  // {
+  //   if (x < f0)
+  //   return f0;
     
-    double dx = x.to_d();
-    double r = std::sqrt(dx);
-    return Fraction(r);
-  };
+  //   double dx = x.to_d();
+  //   double r = std::sqrt(dx);
+  //   return Fraction(r);
+  // };
   
   static Fraction exp(const Fraction &x)
   {
