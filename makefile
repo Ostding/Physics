@@ -16,7 +16,7 @@ dir:
 PHYSIC_O= build/fraction.o build/acos_table.o build/atan2_table.o build/sincos_table.o
 APP_O= build/main.o build/application.o 
 
-DEMO_FRACTION_O= build/fraction_demo.o
+DEMO_FIXPOINT_O= build/fix_point_demo.o
 
 none:
 	@echo "Please do"
@@ -34,16 +34,16 @@ ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} main.cpp -o build/main.o
 
-${DEMO_FRACTION_O}:
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fraction  samples/fraction/fraction_demo.cpp -o build/fraction_demo.o
+${DEMO_FIXPOINT_O}:
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/fix_point_demo.cpp -o build/fix_point_demo.o
 	
-DEMO_FRACTION= ${APP_O} ${PHYSIC_O} ${DEMO_FRACTION_O}
+DEMO_FIXPOINT= ${APP_O} ${PHYSIC_O} ${DEMO_FIXPOINT_O}
 
-clean_fraction_demo: 
-	rm -f ${DEMO_FRACTION} ./bin/fraction_demo
-fraction_demo: clean_fraction_demo dir ${DEMO_FRACTION}
-	${CXX} ${PLAT_FLAGS} -o ./bin/fraction_demo ${DEMO_FRACTION}
+clean_fix_point_demo: 
+	rm -f ${DEMO_FIXPOINT} ./bin/fix_point_demo
+fix_point_demo: clean_fix_point_demo dir ${DEMO_FIXPOINT}
+	${CXX} ${PLAT_FLAGS} -o ./bin/fix_point_demo ${DEMO_FIXPOINT}
 
-clean: clean_fraction_demo
+clean: clean_fix_point_demo
 
 	

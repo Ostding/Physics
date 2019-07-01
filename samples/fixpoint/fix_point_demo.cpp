@@ -1,12 +1,12 @@
-#include "fraction_demo.h"
+#include "fix_point_demo.h"
 #include "fixedpt.h"
 
-FractionDemo::FractionDemo(const char *title, int width, int height)
+FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
 {
 }
 
-void FractionDemo::onDisplay()
+void FixPointDemo::onDisplay()
 {
    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -21,7 +21,7 @@ void FractionDemo::onDisplay()
 }
 
 
-void FractionDemo::onKeyboardPress(unsigned char key)
+void FixPointDemo::onKeyboardPress(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
@@ -33,14 +33,15 @@ void FractionDemo::onKeyboardPress(unsigned char key)
   Application::onKeyboardPress(key);
 }
 
-void FractionDemo::print(const char* pszCap, Fraction &f)
+void FixPointDemo::print(const char* pszCap, Fraction &f)
 {
   float v = f.to_f();
   printf("%s => %.5f nom:%lld den:%lld \n", pszCap, v, f.nom, f.den);
 }
 
-void FractionDemo::doTestFixedPt()
+void FixPointDemo::doTestFixedPt()
 {
+  printf("/////////////Test FixedPt////////////////////\n");
   fixedpt a = fixedpt_rconst(2);
   fixedpt b = fixedpt_rconst(20);
   fixedpt c = fixedpt_mul(a,b);
@@ -48,10 +49,12 @@ void FractionDemo::doTestFixedPt()
  
   c = fixedpt_div(b, a);
   printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
+  
 }
 
-void FractionDemo::doTestFraction()
+void FixPointDemo::doTestFraction()
 {
+  printf("/////////////Test Fraction////////////////////\n");
   printf(">>>>>>>> constructors\n");
   Fraction a = Fraction();
   print("Fraction()", a);
@@ -351,5 +354,5 @@ void FractionDemo::doTestFraction()
 
 Application * getApp()
 {
-    return new FractionDemo("FractionDemo", 1136, 640);
+    return new FixPointDemo("FixPointDemo", 1136, 640);
 }

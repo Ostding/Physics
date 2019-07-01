@@ -1,10 +1,10 @@
 #include "application.h"
 #include "fraction.h"
 
-class FractionDemo : public Application
+class FixPointDemo : public Application
 {
 public:
-  FractionDemo(const char *title, int width, int height);
+  FixPointDemo(const char *title, int width, int height);
 
 public:
   virtual void onDisplay();
