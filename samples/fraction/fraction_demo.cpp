@@ -1,9 +1,9 @@
 #include "fraction_demo.h"
+#include "fixedpt.h"
 
 FractionDemo::FractionDemo(const char *title, int width, int height)
 :Application(title, width, height)
 {
-
 }
 
 void FractionDemo::onDisplay()
@@ -26,6 +26,7 @@ void FractionDemo::onKeyboardPress(unsigned char key)
   switch( key ) {
   case 'g': case 'G':
     doTestFraction();
+    doTestFixedPt();
     break;
   }
 
@@ -36,6 +37,17 @@ void FractionDemo::print(const char* pszCap, Fraction &f)
 {
   float v = f.to_f();
   printf("%s => %.5f nom:%lld den:%lld \n", pszCap, v, f.nom, f.den);
+}
+
+void FractionDemo::doTestFixedPt()
+{
+  fixedpt a = fixedpt_rconst(2);
+  fixedpt b = fixedpt_rconst(20);
+  fixedpt c = fixedpt_mul(a,b);
+  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 0));
+ 
+  c = fixedpt_div(b, a);
+  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
 }
 
 void FractionDemo::doTestFraction()

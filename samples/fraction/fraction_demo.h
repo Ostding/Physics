@@ -12,5 +12,6 @@ public:
 
 private:
   void doTestFraction();
+  void doTestFixedPt();
   void print(const char* pszCap, Fraction &f);
 };
