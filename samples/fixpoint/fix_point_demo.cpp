@@ -1,5 +1,4 @@
 #include "fix_point_demo.h"
-#include "fixedpt.h"
 
 FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -39,6 +38,11 @@ void FixPointDemo::print(const char* pszCap, Fraction &f)
   printf("%s => %.5f nom:%lld den:%lld \n", pszCap, v, f.nom, f.den);
 }
 
+void FixPointDemo::print(const char* pszCap, fixedpt &f)
+{
+  printf("%s => %s \n", pszCap, fixedpt_cstr(f, 5));
+}
+
 void FixPointDemo::doTestFixedPt()
 {
   printf("/////////////Test FixedPt////////////////////\n");
@@ -49,7 +53,18 @@ void FixPointDemo::doTestFixedPt()
  
   c = fixedpt_div(b, a);
   printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
+
+  a = fixedpt_rconst(3.1415926/2);
+  fixedpt r = fixedpt_sin(a);
+  print("fixedpt sin(pi/2)", r);
+  r = fixedpt_cos(a);
+  print("fixedpt cos(pi/2)", r);
   
+  a = fixedpt_rconst(3.1415926/6);
+  r = fixedpt_sin(a);
+  print("fixedpt sin(pi/6)", r);
+  r = fixedpt_cos(a);
+  print("fixedpt cos(pi/6)", r);
 }
 
 void FixPointDemo::doTestFraction()

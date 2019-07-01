@@ -141,6 +141,7 @@ typedef __uint128_t fixedptud;
 
 #define fixedpt_abs(A) ((A) < 0 ? -(A) : (A))
 
+#define fixedpt_tofloat(T) ((float) ((T)*((double)(1)/(double)(1 << FIXEDPT_FBITS))))
 
 /* Multiplies two fixedpt numbers, returns the result. */
 static inline fixedpt
