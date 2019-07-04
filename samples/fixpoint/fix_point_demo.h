@@ -1,7 +1,8 @@
 #include "application.h"
 #include "fraction.h"
 #include "fixedpt.h"
-// #include "fixedptc.h"
+#include "fixedptc.h"
+using namespace physics;
 
 class FixPointDemo : public Application
 {
@@ -17,4 +18,5 @@ private:
   void doTestFixedPt();
   void print(const char* pszCap, Fraction &f);
   void print(const char* pszCap, fixedpt &f);
+  void print(const char* pszCap, FixedPt &f);
 };

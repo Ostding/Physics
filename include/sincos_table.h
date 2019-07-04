@@ -1,5 +1,7 @@
-#ifndef __SINCOS_TABLE_H
-#define __SINCOS_TABLE_H
+#ifndef __SINCOS_TABLE_H__
+#define __SINCOS_TABLE_H__
+namespace physics
+{
 
 class SincosTable
 {
@@ -14,4 +16,5 @@ public:
 	static int getIndex(int64_t nom, int64_t den);
 };
 
+}
 #endif

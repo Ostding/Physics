@@ -1,5 +1,5 @@
-#ifndef _FIXEDPTC_H_
-#define _FIXEDPTC_H_
+#ifndef __FIXEDPTC_H__
+#define __FIXEDPTC_H__
 
 /*
  * fixedptc.h is a 32-bit or 64-bit fixed point numeric library.
@@ -68,6 +68,8 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+namespace physics
+{
 
 #ifndef FIXEDPT_BITS
 #define FIXEDPT_BITS  64
@@ -117,8 +119,8 @@ typedef __uint128_t fixedptud;
 #define FIXEDPT_FMASK (((fixedpt)1 << FIXEDPT_FBITS) - 1)
 
 #define fixedpt_rconst(R) ((fixedpt)((R) * FIXEDPT_ONE + ((R) >= 0 ? 0.5 : -0.5)))
-#define fixedpt_fromint(I) ((I) << FIXEDPT_FBITS)
-#define fixedpt_toint(F) ((F) >> FIXEDPT_FBITS)
+#define fixedpt_fromint(I) (((fixedpt)I) << FIXEDPT_FBITS)
+#define fixedpt_toint(F) ((int)(F >> FIXEDPT_FBITS))
 #define fixedpt_add(A,B) ((A) + (B))
 #define fixedpt_sub(A,B) ((A) - (B))
 
@@ -130,6 +132,7 @@ typedef __uint128_t fixedptud;
 #endif
 
 #define fixedpt_fracpart(A) ((fixedpt)(A) & FIXEDPT_FMASK)
+#define fixedpt_intpart(A)  (A - fixedpt_fracpart(A)) 
 
 #define FIXEDPT_ONE ((fixedpt)((fixedpt)1 << FIXEDPT_FBITS))
 #define FIXEDPT_ONE_HALF (FIXEDPT_ONE >> 1)
@@ -137,11 +140,20 @@ typedef __uint128_t fixedptud;
 #define FIXEDPT_PI  fixedpt_rconst(3.14159265358979323846)
 #define FIXEDPT_TWO_PI  fixedpt_rconst(2 * 3.14159265358979323846)
 #define FIXEDPT_HALF_PI fixedpt_rconst(3.14159265358979323846 / 2)
+
+#define FIXED_QUATER_PI fixedpt_rconst(3.14159265358979323846 / 4)
+#define FIXED_THREE_QUATER_PI fixedpt_rconst(3.14159265358979323846 * 3 / 4)
+
 #define FIXEDPT_E fixedpt_rconst(2.7182818284590452354)
 
 #define fixedpt_abs(A) ((A) < 0 ? -(A) : (A))
 
 #define fixedpt_tofloat(T) ((float) ((T)*((double)(1)/(double)(1 << FIXEDPT_FBITS))))
+
+
+#define fixedpt_floor(A) (A - fixedpt_fracpart(A))
+#define fixedpt_ceil(A) (fixedpt_intpart(A) + fixedpt_fracpart(A) ? FIXEDPT_ONE : 0 )
+
 
 /* Multiplies two fixedpt numbers, returns the result. */
 static inline fixedpt
@@ -530,6 +542,83 @@ fixedpt_pow(fixedpt n, fixedpt exp)
   if (n < 0)
     return 0;
   return (fixedpt_exp(fixedpt_mul(fixedpt_ln(n), exp)));
+}
+
+
+
+
+
+
+
+static inline fixedpt
+fixedpt_atan2(fixedpt inY, fixedpt inX)
+{
+  fixedpt abs_inY, mask, angle, r, r_3;
+
+  mask = (inY >> (sizeof(fixedpt)*CHAR_BIT-1));
+  abs_inY = (inY + mask) ^ mask;
+  
+  //fixedpt ct1 = fixedpt_rconst(0.1963);
+  //fixedpt ct2 = fixedpt_rconst(0.9817);
+  if (inX >= 0)
+  {
+    r = fixedpt_div( (inX - abs_inY), (inX + abs_inY));
+    r_3 = fixedpt_mul(fixedpt_mul(r, r),r);
+    angle = fixedpt_mul(0x3FFEF391 , r_3) - fixedpt_mul(0x4FF865D8,r) + FIXED_QUATER_PI;
+  } else {
+    r = fixedpt_div( (inX + abs_inY), (abs_inY - inX));
+    r_3 = fixedpt_mul(fixedpt_mul(r, r),r);
+    angle = fixedpt_mul(0x3FFEF391 , r_3)
+      - fixedpt_mul(0x4FF865D8,r)
+      + FIXED_THREE_QUATER_PI;
+  }
+  if (inY < 0)
+  {
+    angle = -angle;
+  }
+  return angle;
+}
+
+
+static inline fixedpt
+fixedpt_atan(fixedpt x)
+{
+  return fixedpt_atan2(x, FIXEDPT_ONE);
+}
+
+static inline fixedpt
+fixedpt_asin(fixedpt x)
+{
+  if((x > FIXEDPT_ONE)
+    || (x < -FIXEDPT_ONE))
+    return 0;
+
+  fixedpt out;
+  out = (FIXEDPT_ONE - fixedpt_mul(x, x));
+  out = fixedpt_div(x, fixedpt_sqrt(out));
+  out = fixedpt_atan(out);
+  return out;
+}
+
+static inline fixedpt 
+fixedpt_acos(fixedpt x)
+{
+  return ((FIXEDPT_PI >> 1) - fixedpt_asin(x));
+}
+
+
+static const fixedpt fixedpt_rad_to_deg_mult = fixedpt_div(FIXEDPT_PI, fixedpt_rconst(180)) ;
+static inline fixedpt fixedpt_deg_to_rad(fixedpt degrees)
+{
+  return fixedpt_mul(degrees, fixedpt_rad_to_deg_mult);
+}
+
+static const fixedpt fixedpt_deg_to_rad_mult = fixedpt_div(fixedpt_rconst(180), FIXEDPT_PI) ;
+static inline fixedpt fixedpt_rad_to_deg(fixedpt radians)
+{
+  return fixedpt_mul(radians, fixedpt_deg_to_rad_mult);
+}
+
 }
 
 #endif

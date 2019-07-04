@@ -1,5 +1,8 @@
 #include "fraction.h"
 
+namespace physics
+{
+
 Fraction Fraction::f0 = Fraction(0, 1);
 Fraction Fraction::f1 = Fraction(1,1);
 Fraction Fraction::f2 = Fraction(2,1);
@@ -20,3 +23,4 @@ Fraction Fraction::max = Fraction();
 
 int64_t Fraction::mask = LLMAX;
 
+}

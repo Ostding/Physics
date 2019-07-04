@@ -1,12 +1,15 @@
-#ifndef __ACOS_TABLE_H
-#define __ACOS_TABLE_H
-	
-class AcosTable
+#ifndef __ACOS_TABLE_H__
+#define __ACOS_TABLE_H__
+
+namespace physics
 {
-public:
-	static int COUNT;
-	static int HALF_COUNT;
-	static int table[1025];
-};
+	class AcosTable
+	{
+	public:
+		static int COUNT;
+		static int HALF_COUNT;
+		static int table[1025];
+	};
+}
 
 #endif 

@@ -1,15 +1,17 @@
-#ifndef __ATAN2_TABLE_H
-#define __ATAN2_TABLE_H
+#ifndef __ATAN2_TABLE_H__
+#define __ATAN2_TABLE_H__
 
-class Atan2Table
+namespace physics
 {
-public:
-	static int BITS;
-	static int BITS2;
-	static int MASK;
-	static int COUNT;
-	static int DIM;
-	static int table[16384];
-};
-
+	class Atan2Table
+	{
+	public:
+		static int BITS;
+		static int BITS2;
+		static int MASK;
+		static int COUNT;
+		static int DIM;
+		static int table[16384];
+	};
+}
 #endif

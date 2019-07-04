@@ -1,5 +1,8 @@
 #include "acos_table.h"
 
+namespace physics
+{
+
 int AcosTable::COUNT = 1024;
 int AcosTable::HALF_COUNT = AcosTable::COUNT >> 1;
 int AcosTable::table[1025] = {
@@ -1029,3 +1032,5 @@ int AcosTable::table[1025] = {
 			625,
 			0
 };
+
+}

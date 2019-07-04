@@ -1,4 +1,5 @@
 #include "fix_point_demo.h"
+#include "timer.h"
 
 FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -43,28 +44,97 @@ void FixPointDemo::print(const char* pszCap, fixedpt &f)
   printf("%s => %s \n", pszCap, fixedpt_cstr(f, 5));
 }
 
+void FixPointDemo::print(const char* pszCap, FixedPt &f)
+{
+  printf("%s => %s \n", pszCap, f.cstr());
+}
+
 void FixPointDemo::doTestFixedPt()
 {
-  printf("/////////////Test FixedPt////////////////////\n");
-  fixedpt a = fixedpt_rconst(2);
-  fixedpt b = fixedpt_rconst(20);
-  fixedpt c = fixedpt_mul(a,b);
-  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 0));
+  // printf("/////////////Test FixedPt////////////////////\n");
+  // fixedpt a = fixedpt_rconst(2);
+  // fixedpt b = fixedpt_rconst(20);
+  // fixedpt c = fixedpt_mul(a,b);
+  // printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 0));
  
-  c = fixedpt_div(b, a);
-  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
+  // c = fixedpt_div(b, a);
+  // printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
 
-  a = fixedpt_rconst(3.1415926/2);
-  fixedpt r = fixedpt_sin(a);
-  print("fixedpt sin(pi/2)", r);
-  r = fixedpt_cos(a);
-  print("fixedpt cos(pi/2)", r);
+  // a = fixedpt_rconst(3.1415926/2);
+  // fixedpt r = fixedpt_sin(a);
+  // print("fixedpt sin(pi/2)", r);
+  // r = fixedpt_cos(a);
+  // print("fixedpt cos(pi/2)", r);
+
+  // a = fixedpt_rconst(3.1415926/6);
+  // r = fixedpt_sin(a);
+  // print("fixedpt sin(pi/6)", r);
+  // r = fixedpt_cos(a);
+  // print("fixedpt cos(pi/6)", r);
+
   
-  a = fixedpt_rconst(3.1415926/6);
-  r = fixedpt_sin(a);
-  print("fixedpt sin(pi/6)", r);
-  r = fixedpt_cos(a);
-  print("fixedpt cos(pi/6)", r);
+  // FixedPt x = FixedPt(3.1415926);
+  // print("x = FixedPt(3.1415926)", x);
+  // x = FixedPt(2);
+  // print("FixedPt(2)", x);
+  // FixedPt y = x.sqrt();
+  // print("x.sqrt()", y);
+
+
+  printf("//////////////////test speed///////////////////////////\n");
+  Fraction a = Fraction(3.14159f);
+  Fraction b = Fraction(123456);
+  Fraction c = Fraction(120.3456f);
+  Fraction d = Fraction(345.6789f);
+  Fraction tmp;
+
+  Timer::start();
+  for(int i = 0; i < 10000000; i++)
+  {
+    tmp = a + b;
+    tmp = a + c;
+    tmp = a + d;
+
+    tmp = a - b;
+    tmp = a - c;
+    tmp = a - d;
+    
+    tmp = a * b;
+    tmp = a * c;
+    tmp = a * d;
+
+    tmp = a / b;
+    tmp = a / c;
+    tmp = a / d;
+  }
+  Timer::stop("Fraction");
+
+  FixedPt x = FixedPt(3.14159f);
+  FixedPt y = FixedPt(123456);
+  FixedPt z = FixedPt(120.3456f);
+  FixedPt w = FixedPt(345.6789f);
+  FixedPt tmp1;
+
+  Timer::start();
+  for(int i = 0; i < 10000000; i++)
+  {
+    tmp1 = x + y;
+    tmp1 = x + z;
+    tmp1 = x + w;
+
+    tmp1 = x - y;
+    tmp1 = x - z;
+    tmp1 = x - w;
+    
+    tmp1 = x * y;
+    tmp1 = x * z;
+    tmp1 = x * w;
+
+    tmp1 = x / y;
+    tmp1 = x / z;
+    tmp1 = x / w;
+  }
+  Timer::stop("FixedPt");
 }
 
 void FixPointDemo::doTestFraction()

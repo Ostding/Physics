@@ -1,6 +1,9 @@
 #include <stdint.h>
 #include "sincos_table.h"
 
+namespace physics
+{
+
 int SincosTable::BITS = 12;
 int SincosTable::MASK = ~(-1 << SincosTable::BITS);
 int SincosTable::COUNT = SincosTable::MASK + 1;
@@ -8212,3 +8215,5 @@ int SincosTable::cos_table[4096] = {
 			10000,
 			10000
 };
+
+}

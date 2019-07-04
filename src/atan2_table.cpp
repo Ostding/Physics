@@ -1,6 +1,9 @@
 #include "atan2_table.h"
 #include "fraction.h"
 
+namespace physics
+{
+
 int Atan2Table::BITS = 7;
 int Atan2Table::BITS2 = Atan2Table::BITS << 1;
 int Atan2Table::MASK = ~(-1 << Atan2Table::BITS2);
@@ -16392,3 +16395,5 @@ int Atan2Table::table[16384] = {
 			7894,
 			7854
 		};
+
+	}
