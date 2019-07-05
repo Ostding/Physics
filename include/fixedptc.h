@@ -68,35 +68,35 @@ namespace physics
 	#if FIXEDPT_BITS == 64
 			FixedPt & operator/=(const int rhs)   	{ value = fixedpt_div(value, fixedpt_fromint(rhs)); return *this; }
 	#endif
-			const FixedPt operator+(const FixedPt &other) const  { FixedPt ret = *this; ret.value += other.value; return ret; }
-			const FixedPt operator+(const fixedpt other) const { FixedPt ret = *this; ret += other; return ret; }
-			const FixedPt operator+(const double other) const  { FixedPt ret = *this; ret += other; return ret; }
-			const FixedPt operator+(const float other) const   { FixedPt ret = *this; ret += other; return ret; }
-			const FixedPt operator+(const int16_t other) const { FixedPt ret = *this; ret += other; return ret; }
+			const FixedPt operator+(const FixedPt &other) const { return this->value + other.value;}
+			const FixedPt operator+(const fixedpt other) 	const { return this->value + other;}
+			const FixedPt operator+(const double other) 	const { return this->value + fixedpt_rconst(other);} 
+			const FixedPt operator+(const float other) 		const { return this->value + fixedpt_rconst(other);}
+			const FixedPt operator+(const int16_t other) 	const { return this->value + fixedpt_rconst(other);}
 
 
 
-			const FixedPt operator-(const FixedPt &other) const  { FixedPt ret = *this; ret -= other; return ret; }
-			const FixedPt operator-(const fixedpt other) const { FixedPt ret = *this; ret -= other; return ret; }
-			const FixedPt operator-(const double other) const  { FixedPt ret = *this; ret -= other; return ret; }
-			const FixedPt operator-(const float other) const   { FixedPt ret = *this; ret -= other; return ret; }
-			const FixedPt operator-(const int16_t other) const { FixedPt ret = *this; ret -= other; return ret; }
+			const FixedPt operator-(const FixedPt &other) const { return this->value - other.value;};// { FixedPt ret = *this; ret -= other; return ret; }
+			const FixedPt operator-(const fixedpt other) 	const { return this->value - other;}
+			const FixedPt operator-(const double other) 	const { return this->value - fixedpt_rconst(other);} 
+			const FixedPt operator-(const float other) 		const { return this->value - fixedpt_rconst(other);}
+			const FixedPt operator-(const int16_t other) 	const { return this->value - fixedpt_rconst(other);}
 
-			const FixedPt operator-(void) const {return FixedPt(-value);}
+			const FixedPt operator-(void) const {return -value;}
 
-			const FixedPt operator*(const FixedPt &other) const  { FixedPt ret = *this; ret *= other; return ret; }
-			const FixedPt operator*(const fixedpt other) const { FixedPt ret = *this; ret *= other; return ret; }
-			const FixedPt operator*(const double other) const  { FixedPt ret = *this; ret *= other; return ret; }
-			const FixedPt operator*(const float other) const   { FixedPt ret = *this; ret *= other; return ret; }
-			const FixedPt operator*(const int16_t other) const { FixedPt ret = *this; ret *= other; return ret; }
+			const FixedPt operator*(const FixedPt &other) const { FixedPt ret = *this; ret *= other; return ret; }
+			const FixedPt operator*(const fixedpt other) 	const { FixedPt ret = *this; ret *= other; return ret; }
+			const FixedPt operator*(const double other) 	const { FixedPt ret = *this; ret *= other; return ret; }
+			const FixedPt operator*(const float other) 		const { FixedPt ret = *this; ret *= other; return ret; }
+			const FixedPt operator*(const int16_t other) 	const { FixedPt ret = *this; ret *= other; return ret; }
 
 
 
-			const FixedPt operator/(const FixedPt &other) const  { FixedPt ret = *this; ret /= other; return ret; }
-			const FixedPt operator/(const fixedpt other) const { FixedPt ret = *this; ret /= other; return ret; }
-			const FixedPt operator/(const double other) const  { FixedPt ret = *this; ret /= other; return ret; }
-			const FixedPt operator/(const float other) const   { FixedPt ret = *this; ret /= other; return ret; }
-			const FixedPt operator/(const int16_t other) const { FixedPt ret = *this; ret /= other; return ret; }
+			const FixedPt operator/(const FixedPt &other) const { FixedPt ret = *this; ret /= other; return ret; }
+			const FixedPt operator/(const fixedpt other) 	const { FixedPt ret = *this; ret /= other; return ret; }
+			const FixedPt operator/(const double other) 	const { FixedPt ret = *this; ret /= other; return ret; }
+			const FixedPt operator/(const float other) 		const { FixedPt ret = *this; ret /= other; return ret; }
+			const FixedPt operator/(const int16_t other) 	const { FixedPt ret = *this; ret /= other; return ret; }
 
 
 			const int operator==(const FixedPt &other)  const { return (value == other.value);             }

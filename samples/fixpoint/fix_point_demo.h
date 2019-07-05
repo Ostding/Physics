@@ -16,6 +16,7 @@ public:
 private:
   void doTestFraction();
   void doTestFixedPt();
+  void doTestSpeed();
   void print(const char* pszCap, Fraction &f);
   void print(const char* pszCap, fixedpt &f);
   void print(const char* pszCap, FixedPt &f);

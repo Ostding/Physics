@@ -1,6 +1,5 @@
 #ifndef __FIXEDPTC_H__
 #define __FIXEDPTC_H__
-
 /*
  * fixedptc.h is a 32-bit or 64-bit fixed point numeric library.
  *
@@ -42,32 +41,6 @@
  * is 3.14 here. :)
  */
 
-/*-
- * Copyright (c) 2010-2012 Ivan Voras <ivoras@freebsd.org>
- * Copyright (c) 2012 Tim Hartrick <tim@edgecast.com>
- * Copyright (c) 2013 Gabor Pali <pgj@freebsd.org>
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- */
 namespace physics
 {
 
@@ -75,8 +48,8 @@ namespace physics
 #define FIXEDPT_BITS  64
 #endif
 
-//if platform do not support int128 please define this macro
-// #define FIXEDPT_NO_SSE 1
+//if your platform do not support int128 please define this macro
+#define FIXEDPT_NO_SSE 1
 
 #if FIXEDPT_BITS == 32
 typedef int32_t fixedpt;
@@ -106,7 +79,7 @@ typedef __uint128_t fixedptud;
 #endif
 
 #ifndef FIXEDPT_WBITS
-#define FIXEDPT_WBITS 32
+#define FIXEDPT_WBITS 48
 #endif
 
 #if FIXEDPT_WBITS >= FIXEDPT_BITS
@@ -156,8 +129,9 @@ typedef __uint128_t fixedptud;
 
 
 /* Multiplies two fixedpt numbers, returns the result. */
-static inline fixedpt
-fixedpt_mul(fixedpt A, fixedpt B)
+static const uint64_t roll = (1LL << 32);
+static const uint64_t pmax = (1LL << 32) - 1;
+static inline fixedpt fixedpt_mul(fixedpt A, fixedpt B)
 {
 #if FIXEDPT_BITS == 64 && defined(FIXEDPT_NO_SSE)
   /* A bit complicated but non-SSE version. */
@@ -168,7 +142,7 @@ fixedpt_mul(fixedpt A, fixedpt B)
   uint64_t e, e0, e1;
   uint64_t f, f0, f1;
   uint64_t g, g0, g1;
-  uint64_t sum, carry, roll, pmax;
+  uint64_t sum, carry;
   fixedpt result;
 
   tmp.sign = 0;
@@ -207,10 +181,7 @@ fixedpt_mul(fixedpt A, fixedpt B)
 
   sum = d1 + e0 + f0;
   carry = 0;
-  roll = 1 << 30;
-  roll <<= 2;
 
-  pmax = roll - 1;
   for (; pmax < sum; sum -= roll, carry++);
 
   tmp.lo = d0 + (sum << 32);
@@ -229,8 +200,8 @@ fixedpt_mul(fixedpt A, fixedpt B)
 
 
 /* Divides two fixedpt numbers, returns the result. */
-static inline fixedpt
-fixedpt_div(fixedpt A, fixedpt B)
+const uint64_t hib = 0x8000000000000000ULL;
+static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
 {
 #if FIXEDPT_BITS == 64 && defined(FIXEDPT_NO_SSE)
   /* A bit complicated but non-SSE version. */
@@ -238,8 +209,7 @@ fixedpt_div(fixedpt A, fixedpt B)
   fixedpt result, rem;
   uint64_t s;
   int i;
-  const uint64_t hib = 0x8000000000000000ULL;
-
+  
   tmp.sign = 0;
 
   if (0 > A) {
@@ -364,7 +334,8 @@ fixedpt_sqrt(fixedpt A)
 {
   int invert = 0;
   int iter = FIXEDPT_FBITS;
-  int l, i;
+  int i;
+  fixedpt l;
 
   if (A < 0)
     return (-1);
@@ -375,7 +346,7 @@ fixedpt_sqrt(fixedpt A)
     A = fixedpt_div(FIXEDPT_ONE, A);
   }
   if (A > FIXEDPT_ONE) {
-    int s = A;
+    fixedpt s = A;
 
     iter = 0;
     while (s > 0) {
@@ -388,8 +359,10 @@ fixedpt_sqrt(fixedpt A)
   l = (A >> 1) + 1;
   for (i = 0; i < iter; i++)
     l = (l + fixedpt_div(A, l)) >> 1;
+
   if (invert)
     return (fixedpt_div(FIXEDPT_ONE, l));
+
   return (l);
 }
 

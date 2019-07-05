@@ -27,6 +27,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
   case 'g': case 'G':
     doTestFraction();
     doTestFixedPt();
+    doTestSpeed();
     break;
   }
 
@@ -49,92 +50,123 @@ void FixPointDemo::print(const char* pszCap, FixedPt &f)
   printf("%s => %s \n", pszCap, f.cstr());
 }
 
-void FixPointDemo::doTestFixedPt()
+void FixPointDemo::doTestSpeed()
 {
-  // printf("/////////////Test FixedPt////////////////////\n");
-  // fixedpt a = fixedpt_rconst(2);
-  // fixedpt b = fixedpt_rconst(20);
-  // fixedpt c = fixedpt_mul(a,b);
-  // printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 0));
- 
-  // c = fixedpt_div(b, a);
-  // printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 0));
-
-  // a = fixedpt_rconst(3.1415926/2);
-  // fixedpt r = fixedpt_sin(a);
-  // print("fixedpt sin(pi/2)", r);
-  // r = fixedpt_cos(a);
-  // print("fixedpt cos(pi/2)", r);
-
-  // a = fixedpt_rconst(3.1415926/6);
-  // r = fixedpt_sin(a);
-  // print("fixedpt sin(pi/6)", r);
-  // r = fixedpt_cos(a);
-  // print("fixedpt cos(pi/6)", r);
-
-  
-  // FixedPt x = FixedPt(3.1415926);
-  // print("x = FixedPt(3.1415926)", x);
-  // x = FixedPt(2);
-  // print("FixedPt(2)", x);
-  // FixedPt y = x.sqrt();
-  // print("x.sqrt()", y);
-
-
   printf("//////////////////test speed///////////////////////////\n");
-  Fraction a = Fraction(3.14159f);
-  Fraction b = Fraction(123456);
-  Fraction c = Fraction(120.3456f);
-  Fraction d = Fraction(345.6789f);
-  Fraction tmp;
-
+  int count = 10000000;
+  //base value type's calculation
+  double i = 123456;
+  double j = 3.141592;
+  double tmp2 = 0.0;
   Timer::start();
-  for(int i = 0; i < 10000000; i++)
-  {
+  for(int _i = 0; _i < count; _i++)
+      tmp2 = i + j;
+  Timer::stop("Base Value type +");
+  printf("tmp:%.8f \n", tmp2);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+      tmp2 = i - j;
+  Timer::stop("Base Value type -");
+  printf("tmp:%.8f \n", tmp2);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+      tmp2 = i * j;
+  Timer::stop("Base Value type *");
+  printf("tmp:%.8f \n", tmp2);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+      tmp2 = i / j;
+  Timer::stop("Base Value type /");
+  printf("tmp:%.8f \n", tmp2);
+  printf("\n\n");
+
+  //test normal calculation of fraction
+  Fraction a = Fraction(123456);
+  Fraction b = Fraction(3.14159f);
+  Fraction tmp;
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp = a + b;
-    tmp = a + c;
-    tmp = a + d;
-
+  Timer::stop("Fraction +");
+  print("tmp", tmp);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp = a - b;
-    tmp = a - c;
-    tmp = a - d;
-    
+  Timer::stop("Fraction -");
+  print("tmp", tmp);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp = a * b;
-    tmp = a * c;
-    tmp = a * d;
-
+  Timer::stop("Fraction *");
+  print("tmp", tmp);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp = a / b;
-    tmp = a / c;
-    tmp = a / d;
-  }
-  Timer::stop("Fraction");
+  Timer::stop("Fraction /");
+  print("tmp", tmp);
+  printf("\n\n");
 
-  FixedPt x = FixedPt(3.14159f);
-  FixedPt y = FixedPt(123456);
-  FixedPt z = FixedPt(120.3456f);
-  FixedPt w = FixedPt(345.6789f);
+  // test normal calculation of FixedPt
+  FixedPt x = FixedPt(123456);
+  FixedPt y = FixedPt(3.14159f);
   FixedPt tmp1;
 
   Timer::start();
-  for(int i = 0; i < 10000000; i++)
-  {
+  for(int i = 0; i < count; i++)
     tmp1 = x + y;
-    tmp1 = x + z;
-    tmp1 = x + w;
-
+  Timer::stop("FixedPt +");
+  print("tmp1", tmp1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp1 = x - y;
-    tmp1 = x - z;
-    tmp1 = x - w;
-    
+  Timer::stop("FixedPt -");
+  print("tmp1", tmp1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp1 = x * y;
-    tmp1 = x * z;
-    tmp1 = x * w;
-
+  Timer::stop("FixedPt *");
+  print("tmp1", tmp1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
     tmp1 = x / y;
-    tmp1 = x / z;
-    tmp1 = x / w;
-  }
-  Timer::stop("FixedPt");
+  Timer::stop("FixedPt /");
+  print("tmp1", tmp1);
+
+}
+
+void FixPointDemo::doTestFixedPt()
+{
+  printf("/////////////Test FixedPt////////////////////\n");
+  fixedpt a = fixedpt_rconst(2.123);
+  fixedpt b = fixedpt_rconst(20);
+  fixedpt c = fixedpt_mul(a,b);
+  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 5));
+ 
+  c = fixedpt_div(b, a);
+  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 5));
+
+  a = fixedpt_rconst(3.1415926/2);
+  fixedpt r = fixedpt_sin(a);
+  print("fixedpt sin(pi/2)", r);
+  r = fixedpt_cos(a);
+  print("fixedpt cos(pi/2)", r);
+
+  a = fixedpt_rconst(3.1415926/6);
+  r = fixedpt_sin(a);
+  print("fixedpt sin(pi/6)", r);
+  r = fixedpt_cos(a);
+  print("fixedpt cos(pi/6)", r);
+
+  
+  FixedPt x = FixedPt(3.1415926);
+  print("x = FixedPt(3.1415926)", x);
+  x = FixedPt(2);
+  print("FixedPt(2)", x);
+  FixedPt y = x.sqrt();
+  print("x.sqrt()", y);
+
+
+  
 }
 
 void FixPointDemo::doTestFraction()
