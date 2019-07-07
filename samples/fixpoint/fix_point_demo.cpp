@@ -28,6 +28,8 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
     doTestFraction();
     doTestFixedPt();
     doTestSpeed();
+    double x = test_inverse(5, 5);
+    printf(">>>>>1/x:%.5f\n", x);
     break;
   }
 

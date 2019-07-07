@@ -199,6 +199,21 @@ static inline fixedpt fixedpt_mul(fixedpt A, fixedpt B)
 }
 
 
+static double test_inverse(double a, int count)
+{
+  if(a == 0)
+    return 0;
+
+  double x = 0.4;
+  int i = 0;
+  while(i < count)
+  {
+    x = (2 - a * x)*x;
+    i ++;
+  }
+  return (double)x;
+}
+
 /* Divides two fixedpt numbers, returns the result. */
 const uint64_t hib = 0x8000000000000000ULL;
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
