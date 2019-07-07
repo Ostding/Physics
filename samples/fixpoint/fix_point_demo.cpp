@@ -28,8 +28,8 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
     doTestFraction();
     doTestFixedPt();
     doTestSpeed();
-    double x = test_inverse(5, 5);
-    printf(">>>>>1/x:%.5f\n", x);
+    // double x = test_inverse(5, 5);
+    // printf(">>>>>1/x:%.5f\n", x);
     break;
   }
 
@@ -146,6 +146,9 @@ void FixPointDemo::doTestFixedPt()
  
   c = fixedpt_div(b, a);
   printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 5));
+  // c = fixedpt_div_test(b, a);
+  // printf("fixedpt b/a test => %s \n", fixedpt_cstr(c, 5));
+  
 
   a = fixedpt_rconst(3.1415926/2);
   fixedpt r = fixedpt_sin(a);

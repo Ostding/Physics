@@ -214,7 +214,6 @@ static double test_inverse(double a, int count)
   return (double)x;
 }
 
-/* Divides two fixedpt numbers, returns the result. */
 const uint64_t hib = 0x8000000000000000ULL;
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
 {
@@ -232,7 +231,7 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
     A = -A;
   }
 
-  tmp.hi = A >> (FIXEDPT_BITS - FIXEDPT_FBITS);
+  tmp.hi = A >> FIXEDPT_WBITS;//(FIXEDPT_BITS - FIXEDPT_FBITS);
   tmp.lo = A << FIXEDPT_FBITS;
 
   if (0 > B) {
@@ -240,19 +239,49 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
     B = -B;
   }
 
+  // uint64_t y = tmp.hi;
+  // int x = 0;
+  // while(true)
+  // {
+    // printf(">>>hi:%llu lo:%llu\n", tmp.hi, tmp.lo);
+  //   printf(">>>yhib:%llu y:%llu\n", y&hib, y);
+  //   if (y & hib)
+  //     break;
+  //   else
+  //     y <<= 1;
+
+  //   x ++;
+  // }
+  // printf(">>>x:%d\n", x);
+
   rem = 0;
-  for (i = 0; i < 128; i++) {
+
+  tmp.hi <<= FIXEDPT_WBITS;
+  tmp.hi += (tmp.lo >> FIXEDPT_FBITS);
+  tmp.lo <<= FIXEDPT_WBITS;
+
+  for (i = FIXEDPT_WBITS; i < 128; i++) {
+
+  // for (i = 0; i < 128; i++) {
     rem <<= 1;
+    // if(i == FIXEDPT_WBITS)
+    //   printf(">>ttt i:%d hi:%llu lo:%llu rem:%llu\n", i, tmp.hi, tmp.lo, rem);
 
     if (tmp.hi & hib)
+    {
+      // printf(">>hhh i:%d hi:%llu lo:%llu rem:%llu\n", i, tmp.hi, tmp.lo, rem);
       rem |= 1;
+    }
 
     s = tmp.lo & hib;
     tmp.hi <<= 1;
     tmp.lo <<= 1;
 
     if (s)
+    {
+      // printf(">>lll i:%d hi:%llu lo:%llu\n", i, tmp.hi, tmp.lo);
       tmp.hi |= 1;
+    }
 
     if (rem >= B) {
       rem -= B;
@@ -260,6 +289,7 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
     }
   }
 
+  // result = tmp.lo << FIXEDPT_FBITS;
   result = tmp.lo;
   result = tmp.sign ? -result : result;
 
@@ -268,6 +298,61 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
   return (((fixedptd)A << FIXEDPT_FBITS) / (fixedptd)B);
 #endif
 }
+
+/* Divides two fixedpt numbers, returns the result. */
+// const uint64_t hib = 0x8000000000000000ULL;
+// static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
+// {
+// #if FIXEDPT_BITS == 64 && defined(FIXEDPT_NO_SSE)
+//   /* A bit complicated but non-SSE version. */
+//   int128 tmp;
+//   fixedpt result, rem;
+//   uint64_t s;
+//   int i;
+  
+//   tmp.sign = 0;
+
+//   if (0 > A) {
+//     tmp.sign = !tmp.sign;
+//     A = -A;
+//   }
+
+//   tmp.hi = A >> (FIXEDPT_BITS - FIXEDPT_FBITS);
+//   tmp.lo = A << FIXEDPT_FBITS;
+
+//   if (0 > B) {
+//     tmp.sign = !tmp.sign;
+//     B = -B;
+//   }
+
+//   rem = 0;
+//   for (i = 0; i < 128; i++) {
+//     rem <<= 1;
+
+//     if (tmp.hi & hib)
+//       rem |= 1;
+
+//     s = tmp.lo & hib;
+//     tmp.hi <<= 1;
+//     tmp.lo <<= 1;
+
+//     if (s)
+//       tmp.hi |= 1;
+
+//     if (rem >= B) {
+//       rem -= B;
+//       tmp.lo |= 1;
+//     }
+//   }
+
+//   result = tmp.lo;
+//   result = tmp.sign ? -result : result;
+
+//   return result;
+// #else
+//   return (((fixedptd)A << FIXEDPT_FBITS) / (fixedptd)B);
+// #endif
+// }
 
 /*
  * Note: adding and substracting fixedpt numbers can be done by using
