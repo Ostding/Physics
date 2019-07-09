@@ -156,7 +156,7 @@ namespace physics
 			FixedPt acos() { return FixedPt(fixedpt_acos(value)); }
 			FixedPt atan() { return FixedPt(fixedpt_atan(value)); }
 			FixedPt atan2(const FixedPt &inY) { return FixedPt(fixedpt_atan2(value, inY.value)); }
-			FixedPt sqrt() const { return FixedPt(fixedpt_sqrt(value)); }
+			FixedPt sqrt() const { return fixedpt_sqrt(value); }
 
 			FixedPt exp()		const	{ return FixedPt(fixedpt_exp(value));}
 			FixedPt abs() 	const	{ return FixedPt(fixedpt_abs(value));}
@@ -170,7 +170,7 @@ namespace physics
 			FixedPt to_rad() const	{return FixedPt(fixedpt_deg_to_rad(value));}
 			FixedPt to_deg() const	{return FixedPt(fixedpt_rad_to_deg(value));}
 
-			char * cstr(int maxDec = 5) {return fixedpt_cstr(value, maxDec);}
+			char * cstr(int maxDec = 6) {return fixedpt_cstr(value, maxDec);}
 	};
 
 }

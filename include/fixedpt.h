@@ -90,6 +90,7 @@ typedef __uint128_t fixedptud;
 
 #define FIXEDPT_FBITS (FIXEDPT_BITS - FIXEDPT_WBITS)
 #define FIXEDPT_FMASK (((fixedpt)1 << FIXEDPT_FBITS) - 1)
+#define FIXEDPT_WMASK (~FIXEDPT_FMASK)
 
 #define fixedpt_rconst(R) ((fixedpt)((R) * FIXEDPT_ONE + ((R) >= 0 ? 0.5 : -0.5)))
 #define fixedpt_fromint(I) (((fixedpt)I) << FIXEDPT_FBITS)
@@ -280,7 +281,8 @@ const uint64_t MASKS[64] = {0x8000000000000000ULL,
                             0xFFFFFFFFFFFFFFFFULL};
 
 const uint64_t MASK_FULL = 0xFFFFFFFFFFFFFFFFULL;
-static ushort get_left_first(const fixedpt x)
+//get first position that bit was 1
+static inline ushort get_left_first(const fixedpt x)
 {
   if((MASK_FULL & x) == 0)
     return 0;
@@ -294,14 +296,14 @@ static ushort get_left_first(const fixedpt x)
     if ((tmp & x) == 0) //check right
       ret += d;
   }
-  return ret + 1;
+  return ret;
 }
 
 const uint64_t hib = 0x8000000000000000ULL;
 static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
 {
 #if FIXEDPT_BITS == 64 && defined(FIXEDPT_NO_SSE)
-  /* A bit complicated but non-SSE version. */
+  // A bit complicated but non-SSE version. 
   int128 tmp;
   fixedpt result, rem;
   uint64_t s;
@@ -314,7 +316,7 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
     A = -A;
   }
 
-  tmp.hi = A >> FIXEDPT_WBITS;//(FIXEDPT_BITS - FIXEDPT_FBITS);
+  tmp.hi = A >> FIXEDPT_WBITS;
   tmp.lo = A << FIXEDPT_FBITS;
 
   if (0 > B) {
@@ -322,74 +324,49 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
     B = -B;
   }
 
-  // uint64_t y = tmp.hi;
-  // int x = 0;
-  // while(true)
-  // {
-    // printf(">>>hi:%llu lo:%llu\n", tmp.hi, tmp.lo);
-  //   printf(">>>yhib:%llu y:%llu\n", y&hib, y);
-  //   if (y & hib)
-  //     break;
-  //   else
-  //     y <<= 1;
-
-  //   x ++;
-  // }
-  // printf(">>>x:%d\n", x);
 
   rem = 0;
+
   ushort start = FIXEDPT_WBITS;
   ushort offset = get_left_first(tmp.hi);
   if(offset == 0)
   {
     tmp.hi = tmp.lo;
-    offset = get_left_first(tmp.lo);
+    tmp.lo = 0;
+    offset = get_left_first(tmp.hi);
 
     tmp.hi <<= offset;
-    start += 64 + offset;
+    start = 64 + offset;
   }
   else
   {
     tmp.hi <<= offset;
     tmp.hi += (tmp.lo >> (FIXEDPT_BITS - offset));
     tmp.lo <<= offset; 
-    start += offset;
+    start = offset;
   }
-  // tmp.hi <<= FIXEDPT_WBITS;
-  // tmp.hi += (tmp.lo >> FIXEDPT_FBITS);
-  // tmp.lo <<= FIXEDPT_WBITS;
 
-  for (i = start; i < 128; i++) {
-  // for (i = FIXEDPT_WBITS; i < 128; i++) {
-
-  // for (i = 0; i < 128; i++) {
+  for (i = start; i < 128; i++) 
+  {
     rem <<= 1;
-    // if(i == FIXEDPT_WBITS)
-    //   printf(">>ttt i:%d hi:%llu lo:%llu rem:%llu\n", i, tmp.hi, tmp.lo, rem);
-
+    
     if (tmp.hi & hib)
-    {
-      // printf(">>hhh i:%d hi:%llu lo:%llu rem:%llu\n", i, tmp.hi, tmp.lo, rem);
       rem |= 1;
-    }
 
     s = tmp.lo & hib;
     tmp.hi <<= 1;
     tmp.lo <<= 1;
 
     if (s)
-    {
-      // printf(">>lll i:%d hi:%llu lo:%llu\n", i, tmp.hi, tmp.lo);
       tmp.hi |= 1;
-    }
 
-    if (rem >= B) {
+    if (rem >= B) 
+    {
       rem -= B;
       tmp.lo |= 1;
     }
   }
 
-  // result = tmp.lo << FIXEDPT_FBITS;
   result = tmp.lo;
   result = tmp.sign ? -result : result;
 
@@ -429,15 +406,19 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
 //   for (i = 0; i < 128; i++) {
 //     rem <<= 1;
 
-//     if (tmp.hi & hib)
+//     if (tmp.hi & hib){
+//       printf(">>hhh i:%d hi:%llu lo:%llu rem:%llu\n", i, tmp.hi, tmp.lo, rem);
 //       rem |= 1;
+//     }
 
 //     s = tmp.lo & hib;
 //     tmp.hi <<= 1;
 //     tmp.lo <<= 1;
 
-//     if (s)
+//     if (s){
+//       printf(">>lll i:%d hi:%llu lo:%llu\n", i, tmp.hi, tmp.lo);
 //       tmp.hi |= 1;
+//     }
 
 //     if (rem >= B) {
 //       rem -= B;
@@ -528,40 +509,25 @@ fixedpt_cstr(const fixedpt A, const int max_dec)
 }
 
 
+const fixedpt eps = fixedpt_rconst(0.01f);
 /* Returns the square root of the given number, or -1 in case of error */
-static inline fixedpt
-fixedpt_sqrt(fixedpt A)
+static inline fixedpt fixedpt_sqrt(fixedpt A)
 {
-  int invert = 0;
-  int iter = FIXEDPT_FBITS;
-  int i;
   fixedpt l;
 
   if (A < 0)
     return (-1);
   if (A == 0 || A == FIXEDPT_ONE)
     return (A);
-  if (A < FIXEDPT_ONE && A > 6) {
-    invert = 1;
-    A = fixedpt_div(FIXEDPT_ONE, A);
-  }
-  if (A > FIXEDPT_ONE) {
-    fixedpt s = A;
 
-    iter = 0;
-    while (s > 0) {
-      s >>= 2;
-      iter++;
-    }
-  }
+  l = A >> 1;
+  fixedpt ol = 0xFFFFFFFFLL;
 
-  /* Newton's iterations */
-  l = (A >> 1) + 1;
-  for (i = 0; i < iter; i++)
+  while(abs(ol - l) > eps)
+  {
+    ol = l;
     l = (l + fixedpt_div(A, l)) >> 1;
-
-  if (invert)
-    return (fixedpt_div(FIXEDPT_ONE, l));
+  }
 
   return (l);
 }

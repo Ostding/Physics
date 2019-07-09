@@ -741,8 +741,8 @@ namespace physics
       return sqrt(*this);
     };
     
-    static Fraction sqrt(const Fraction &x)
-    {
+    // static Fraction sqrt(const Fraction &x)
+    // {
 
   //  Fractor x = Fractor::one;
   //  int step = 0;
@@ -757,35 +757,35 @@ namespace physics
   //  return x;
 
    
-      if ( x <= Fraction::f0 ) {
-          return 0;
-      }
+    //   if ( x <= Fraction::f0 ) {
+    //       return 0;
+    //   }
    
-      Fraction y = x / Fraction::f2;
+    //   Fraction y = x / Fraction::f2;
 
-      Fraction eps = Fraction(0.001);
-      Fraction maxError = x * eps;
-      Fraction minError = x * -eps;
+    //   Fraction eps = Fraction(0.001);
+    //   Fraction maxError = x * eps;
+    //   Fraction minError = x * -eps;
 
-      Fraction delta;
+    //   Fraction delta;
 
-      do {
-        delta = ( y * y ) - x;
-        y -= delta / ( y * Fraction::f2 );
-      } while ( delta > maxError || delta < minError );
+    //   do {
+    //     delta = ( y * y ) - x;
+    //     y -= delta / ( y * Fraction::f2 );
+    //   } while ( delta > maxError || delta < minError );
    
-      return y;
-    }
+    //   return y;
+    // }
 
-    // static Fraction sqrt(const Fraction &x)
-    // {
-    //   if (x < f0)
-    //   return f0;
+    static Fraction sqrt(const Fraction &x)
+    {
+      if (x < f0)
+      return f0;
       
-    //   double dx = x.to_d();
-    //   double r = std::sqrt(dx);
-    //   return Fraction(r);
-    // };
+      double dx = x.to_d();
+      double r = std::sqrt(dx);
+      return Fraction(r);
+    };
     
     static Fraction exp(const Fraction &x)
     {

@@ -81,24 +81,29 @@ void FixPointDemo::doTestSpeed()
   double tmp2 = 0.0;
   Timer::start();
   for(int _i = 0; _i < count; _i++)
-      tmp2 = i + j;
+    tmp2 = i + j;
   Timer::stop("Base Value type +");
-  printf("tmp:%.8f \n", tmp2);
+  printf("tmp2:%.8f \n", tmp2);
   Timer::start();
   for(int _i = 0; _i < count; _i++)
-      tmp2 = i - j;
+    tmp2 = i - j;
   Timer::stop("Base Value type -");
-  printf("tmp:%.8f \n", tmp2);
+  printf("tmp2:%.8f \n", tmp2);
   Timer::start();
   for(int _i = 0; _i < count; _i++)
-      tmp2 = i * j;
+    tmp2 = i * j;
   Timer::stop("Base Value type *");
-  printf("tmp:%.8f \n", tmp2);
+  printf("tmp2:%.8f \n", tmp2);
   Timer::start();
   for(int _i = 0; _i < count; _i++)
-      tmp2 = i / j;
+    tmp2 = i / j;
   Timer::stop("Base Value type /");
-  printf("tmp:%.8f \n", tmp2);
+  printf("tmp2:%.8f \n", tmp2);
+   Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    tmp2 = sqrt(i);
+  Timer::stop("Base Value type /");
+  printf("tmp2:%.8f \n", tmp2);
   printf("\n\n");
 
   //test normal calculation of fraction
@@ -124,6 +129,11 @@ void FixPointDemo::doTestSpeed()
   for(int i = 0; i < count; i++)
     tmp = a / b;
   Timer::stop("Fraction /");
+  print("tmp", tmp);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    tmp = a.sqrt();
+  Timer::stop("Fraction sqrt");
   print("tmp", tmp);
   printf("\n\n");
 
@@ -152,6 +162,11 @@ void FixPointDemo::doTestSpeed()
     tmp1 = x / y;
   Timer::stop("FixedPt /");
   print("tmp1", tmp1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    tmp1 = x.sqrt();
+  Timer::stop("FixedPt sqrt");
+  print("tmp1", tmp1);
 
 }
 
@@ -161,13 +176,13 @@ void FixPointDemo::doTestFixedPt()
   fixedpt a = fixedpt_rconst(2.123);
   fixedpt b = fixedpt_rconst(20);
   fixedpt c = fixedpt_mul(a,b);
-  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, 5));
+  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, -1));
  
   c = fixedpt_div(b, a);
-  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, 5));
+  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, -1));
   // c = fixedpt_div_test(b, a);
   // printf("fixedpt b/a test => %s \n", fixedpt_cstr(c, 5));
-  
+
 
   a = fixedpt_rconst(3.1415926/2);
   fixedpt r = fixedpt_sin(a);
@@ -185,12 +200,14 @@ void FixPointDemo::doTestFixedPt()
   FixedPt x = FixedPt(3.1415926);
   print("x = FixedPt(3.1415926)", x);
   x = FixedPt(2);
-  print("FixedPt(2)", x);
+  print("x = FixedPt(2)", x);
   FixedPt y = x.sqrt();
   print("x.sqrt()", y);
+  x = FixedPt(0.040f);
+  print("x = FixedPt(0.04)", x);
+  y = x.sqrt();
+  print("x.sqrt()", y);
 
-
-  
 }
 
 void FixPointDemo::doTestFraction()
