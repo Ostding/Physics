@@ -27,28 +27,28 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
   case 'g': case 'G':
     doTestFraction();
     doTestFixedPt();
-    // doTestSpeed();
+    doTestSpeed();
     // double x = test_inverse(5, 5);
     // printf(">>>>>1/x:%.5f\n", x);
 
-    ushort x = get_left_first(0x000FFFFFFFFFFFFFULL);
-    printf(">>>>get_left_first 0x000FFFFFFFFFFFFFULL:%du\n", x);
-    x = get_left_first(0x000000FFFFFFFFFFULL);
-    printf(">>>>get_left_first 0x000000FFFFFFFFFFULL:%du\n", x);
-    x = get_left_first(0xFFFFFFFFFFFFFFFFULL);
-    printf(">>>>get_left_first 0xFFFFFFFFFFFFFFFFULL:%du\n", x);
-    x = get_left_first(0x8FFFFFFFFFFFFFFFULL);
-    printf(">>>>get_left_first 0x8FFFFFFFFFFFFFFFULL:%du\n", x);
-    x = get_left_first(0x00000FFFF0FFF0FFULL);
-    printf(">>>>get_left_first 0x00000FFFF0FFF0FFULL:%du\n", x);
-    x = get_left_first(1ULL);
-    printf(">>>>get_left_first 1ULL:%du\n", x);
-    x = get_left_first(2ULL);
-    printf(">>>>get_left_first 2ULL:%du\n", x);
-    x = get_left_first(4ULL);
-    printf(">>>>get_left_first 4ULL:%du\n", x);
-    x = get_left_first(0ULL);
-    printf(">>>>get_left_first 0ULL:%du\n", x);
+    // ushort x = get_left_first(0x000FFFFFFFFFFFFFULL);
+    // printf(">>>>get_left_first 0x000FFFFFFFFFFFFFULL:%du\n", x);
+    // x = get_left_first(0x000000FFFFFFFFFFULL);
+    // printf(">>>>get_left_first 0x000000FFFFFFFFFFULL:%du\n", x);
+    // x = get_left_first(0xFFFFFFFFFFFFFFFFULL);
+    // printf(">>>>get_left_first 0xFFFFFFFFFFFFFFFFULL:%du\n", x);
+    // x = get_left_first(0x8FFFFFFFFFFFFFFFULL);
+    // printf(">>>>get_left_first 0x8FFFFFFFFFFFFFFFULL:%du\n", x);
+    // x = get_left_first(0x00000FFFF0FFF0FFULL);
+    // printf(">>>>get_left_first 0x00000FFFF0FFF0FFULL:%du\n", x);
+    // x = get_left_first(1ULL);
+    // printf(">>>>get_left_first 1ULL:%du\n", x);
+    // x = get_left_first(2ULL);
+    // printf(">>>>get_left_first 2ULL:%du\n", x);
+    // x = get_left_first(4ULL);
+    // printf(">>>>get_left_first 4ULL:%du\n", x);
+    // x = get_left_first(0ULL);
+    // printf(">>>>get_left_first 0ULL:%du\n", x);
     break;
   }
 

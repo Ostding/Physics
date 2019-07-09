@@ -338,12 +338,29 @@ static inline fixedpt fixedpt_div(fixedpt A, fixedpt B)
   // printf(">>>x:%d\n", x);
 
   rem = 0;
+  ushort start = FIXEDPT_WBITS;
+  ushort offset = get_left_first(tmp.hi);
+  if(offset == 0)
+  {
+    tmp.hi = tmp.lo;
+    offset = get_left_first(tmp.lo);
 
-  tmp.hi <<= FIXEDPT_WBITS;
-  tmp.hi += (tmp.lo >> FIXEDPT_FBITS);
-  tmp.lo <<= FIXEDPT_WBITS;
+    tmp.hi <<= offset;
+    start += 64 + offset;
+  }
+  else
+  {
+    tmp.hi <<= offset;
+    tmp.hi += (tmp.lo >> (FIXEDPT_BITS - offset));
+    tmp.lo <<= offset; 
+    start += offset;
+  }
+  // tmp.hi <<= FIXEDPT_WBITS;
+  // tmp.hi += (tmp.lo >> FIXEDPT_FBITS);
+  // tmp.lo <<= FIXEDPT_WBITS;
 
-  for (i = FIXEDPT_WBITS; i < 128; i++) {
+  for (i = start; i < 128; i++) {
+  // for (i = FIXEDPT_WBITS; i < 128; i++) {
 
   // for (i = 0; i < 128; i++) {
     rem <<= 1;
