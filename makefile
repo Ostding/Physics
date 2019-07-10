@@ -1,6 +1,6 @@
 TARGETS= fraction_demo
 INC_FLAGS= -I./include -I./
-CPP_FLAGS= -g -Wall -std=c++11 -pthread -Wno-shift-count-overflow  -Wno-deprecated-declarations 
+CPP_FLAGS= -g -Wall -std=c++11 -pthread -Wno-shift-count-overflow  -Wno-deprecated-declarations -Wno-return-stack-address
 
 PLAT_FLAGS=-L/System/Library/Frameworks -framework OpenGL -framework GLUT -framework Foundation 
 
@@ -13,7 +13,9 @@ dir:
 	mkdir -p ./build
 	mkdir -p ./bin
 
-PHYSIC_O= build/timer.o build/fraction.o build/acos_table.o build/atan2_table.o build/sincos_table.o
+PHYSIC_O= build/timer.o build/fraction.o build/acos_table.o build/atan2_table.o build/sincos_table.o\
+					build/fixedfloat.o
+
 APP_O= build/main.o build/application.o 
 
 DEMO_FIXPOINT_O= build/fix_point_demo.o
@@ -29,7 +31,8 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fraction.cpp -o build/fraction.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/acos_table.cpp -o build/acos_table.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/atan2_table.cpp -o build/atan2_table.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/sincos_table.cpp -o build/sincos_table.o	
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/sincos_table.cpp -o build/sincos_table.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixedfloat.cpp -o build/fixedfloat.o	
 
 ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o
