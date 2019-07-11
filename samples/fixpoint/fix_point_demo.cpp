@@ -25,30 +25,12 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
-    doTestFraction();
-    doTestFixedPt();
-    doTestSpeed();
-    // double x = test_inverse(5, 5);
-    // printf(">>>>>1/x:%.5f\n", x);
+    // doTestFraction();
+    // doTestFixedPt();
 
-    // ushort x = get_left_first(0x000FFFFFFFFFFFFFULL);
-    // printf(">>>>get_left_first 0x000FFFFFFFFFFFFFULL:%du\n", x);
-    // x = get_left_first(0x000000FFFFFFFFFFULL);
-    // printf(">>>>get_left_first 0x000000FFFFFFFFFFULL:%du\n", x);
-    // x = get_left_first(0xFFFFFFFFFFFFFFFFULL);
-    // printf(">>>>get_left_first 0xFFFFFFFFFFFFFFFFULL:%du\n", x);
-    // x = get_left_first(0x8FFFFFFFFFFFFFFFULL);
-    // printf(">>>>get_left_first 0x8FFFFFFFFFFFFFFFULL:%du\n", x);
-    // x = get_left_first(0x00000FFFF0FFF0FFULL);
-    // printf(">>>>get_left_first 0x00000FFFF0FFF0FFULL:%du\n", x);
-    // x = get_left_first(1ULL);
-    // printf(">>>>get_left_first 1ULL:%du\n", x);
-    // x = get_left_first(2ULL);
-    // printf(">>>>get_left_first 2ULL:%du\n", x);
-    // x = get_left_first(4ULL);
-    // printf(">>>>get_left_first 4ULL:%du\n", x);
-    // x = get_left_first(0ULL);
-    // printf(">>>>get_left_first 0ULL:%du\n", x);
+    doTestFixedFloat();
+    // doTestSpeed();
+
     break;
   }
 
@@ -69,6 +51,11 @@ void FixPointDemo::print(const char* pszCap, fixedpt &f)
 void FixPointDemo::print(const char* pszCap, FixedPt &f)
 {
   printf("%s => %s \n", pszCap, f.cstr());
+}
+
+void FixPointDemo::print(const char *pszCap, const FixedFloat &f)
+{
+  printf("%s => %s \n", pszCap, f.to_s());
 }
 
 void FixPointDemo::doTestSpeed()
@@ -107,106 +94,172 @@ void FixPointDemo::doTestSpeed()
   printf("\n\n");
 
   //test normal calculation of fraction
-  Fraction a = Fraction(123456);
-  Fraction b = Fraction(3.14159f);
-  Fraction tmp;
+  // Fraction a = Fraction(123456);
+  // Fraction b = Fraction(3.14159f);
+  // Fraction tmp;
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp = a + b;
+  // Timer::stop("Fraction +");
+  // print("tmp", tmp);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp = a - b;
+  // Timer::stop("Fraction -");
+  // print("tmp", tmp);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp = a * b;
+  // Timer::stop("Fraction *");
+  // print("tmp", tmp);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp = a / b;
+  // Timer::stop("Fraction /");
+  // print("tmp", tmp);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp = a.sqrt();
+  // Timer::stop("Fraction sqrt");
+  // print("tmp", tmp);
+  // printf("\n\n");
+
+  //test normal calculation of FixedFloat
+  FixedFloat m = FixedFloat(123456);
+  FixedFloat n = FixedFloat(3.14159f);
+  FixedFloat tmp3;
   Timer::start();
   for(int i = 0; i < count; i++)
-    tmp = a + b;
-  Timer::stop("Fraction +");
-  print("tmp", tmp);
+    tmp3 = m + n;
+  Timer::stop("FixedFloat +");
+  print("tmp3", tmp3);
   Timer::start();
   for(int i = 0; i < count; i++)
-    tmp = a - b;
-  Timer::stop("Fraction -");
-  print("tmp", tmp);
+    tmp3 = m - n;
+  Timer::stop("FixedFloat -");
+  print("tmp3", tmp3);
   Timer::start();
   for(int i = 0; i < count; i++)
-    tmp = a * b;
-  Timer::stop("Fraction *");
-  print("tmp", tmp);
+    tmp3 = m * n;
+  Timer::stop("FixedFloat *");
+  print("tmp3", tmp3);
   Timer::start();
   for(int i = 0; i < count; i++)
-    tmp = a / b;
-  Timer::stop("Fraction /");
-  print("tmp", tmp);
+    tmp3 = m / n;
+  Timer::stop("FixedFloat /");
+  print("tmp3", tmp3);
   Timer::start();
   for(int i = 0; i < count; i++)
-    tmp = a.sqrt();
-  Timer::stop("Fraction sqrt");
-  print("tmp", tmp);
+    tmp3 = FixedFloat::sqrt(m);
+  Timer::stop("FixedFloat sqrt");
+  print("tmp3", tmp3);
   printf("\n\n");
 
   // test normal calculation of FixedPt
-  FixedPt x = FixedPt(123456);
-  FixedPt y = FixedPt(3.14159f);
-  FixedPt tmp1;
+  // FixedPt x = FixedPt(123456);
+  // FixedPt y = FixedPt(3.14159f);
+  // FixedPt tmp1;
 
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    tmp1 = x + y;
-  Timer::stop("FixedPt +");
-  print("tmp1", tmp1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    tmp1 = x - y;
-  Timer::stop("FixedPt -");
-  print("tmp1", tmp1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    tmp1 = x * y;
-  Timer::stop("FixedPt *");
-  print("tmp1", tmp1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    tmp1 = x / y;
-  Timer::stop("FixedPt /");
-  print("tmp1", tmp1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    tmp1 = x.sqrt();
-  Timer::stop("FixedPt sqrt");
-  print("tmp1", tmp1);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp1 = x + y;
+  // Timer::stop("FixedPt +");
+  // print("tmp1", tmp1);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp1 = x - y;
+  // Timer::stop("FixedPt -");
+  // print("tmp1", tmp1);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp1 = x * y;
+  // Timer::stop("FixedPt *");
+  // print("tmp1", tmp1);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp1 = x / y;
+  // Timer::stop("FixedPt /");
+  // print("tmp1", tmp1);
+  // Timer::start();
+  // for(int i = 0; i < count; i++)
+  //   tmp1 = x.sqrt();
+  // Timer::stop("FixedPt sqrt");
+  // print("tmp1", tmp1);
 
 }
 
-void FixPointDemo::doTestFixedPt()
-{
-  printf("/////////////Test FixedPt////////////////////\n");
-  fixedpt a = fixedpt_rconst(2.123);
-  fixedpt b = fixedpt_rconst(20);
-  fixedpt c = fixedpt_mul(a,b);
-  printf("fixedpt a*b => %s \n", fixedpt_cstr(c, -1));
+// void FixPointDemo::doTestFixedPt()
+// {
+//   printf("/////////////Test FixedPt////////////////////\n");
+//   fixedpt a = fixedpt_rconst(2.123);
+//   fixedpt b = fixedpt_rconst(20);
+//   fixedpt c = fixedpt_mul(a,b);
+//   printf("fixedpt a*b => %s \n", fixedpt_cstr(c, -1));
  
-  c = fixedpt_div(b, a);
-  printf("fixedpt b/a => %s \n", fixedpt_cstr(c, -1));
-  // c = fixedpt_div_test(b, a);
-  // printf("fixedpt b/a test => %s \n", fixedpt_cstr(c, 5));
+//   c = fixedpt_div(b, a);
+//   printf("fixedpt b/a => %s \n", fixedpt_cstr(c, -1));
+//   // c = fixedpt_div_test(b, a);
+//   // printf("fixedpt b/a test => %s \n", fixedpt_cstr(c, 5));
 
 
-  a = fixedpt_rconst(3.1415926/2);
-  fixedpt r = fixedpt_sin(a);
-  print("fixedpt sin(pi/2)", r);
-  r = fixedpt_cos(a);
-  print("fixedpt cos(pi/2)", r);
+//   a = fixedpt_rconst(3.1415926/2);
+//   fixedpt r = fixedpt_sin(a);
+//   print("fixedpt sin(pi/2)", r);
+//   r = fixedpt_cos(a);
+//   print("fixedpt cos(pi/2)", r);
 
-  a = fixedpt_rconst(3.1415926/6);
-  r = fixedpt_sin(a);
-  print("fixedpt sin(pi/6)", r);
-  r = fixedpt_cos(a);
-  print("fixedpt cos(pi/6)", r);
+//   a = fixedpt_rconst(3.1415926/6);
+//   r = fixedpt_sin(a);
+//   print("fixedpt sin(pi/6)", r);
+//   r = fixedpt_cos(a);
+//   print("fixedpt cos(pi/6)", r);
 
   
-  FixedPt x = FixedPt(3.1415926);
-  print("x = FixedPt(3.1415926)", x);
-  x = FixedPt(2);
-  print("x = FixedPt(2)", x);
-  FixedPt y = x.sqrt();
-  print("x.sqrt()", y);
-  x = FixedPt(0.040f);
-  print("x = FixedPt(0.04)", x);
-  y = x.sqrt();
-  print("x.sqrt()", y);
+//   FixedPt x = FixedPt(3.1415926);
+//   print("x = FixedPt(3.1415926)", x);
+//   x = FixedPt(2);
+//   print("x = FixedPt(2)", x);
+//   FixedPt y = x.sqrt();
+//   print("x.sqrt()", y);
+//   x = FixedPt(0.040f);
+//   print("x = FixedPt(0.04)", x);
+//   y = x.sqrt();
+//   print("x.sqrt()", y);
+
+// }
+
+void FixPointDemo::doTestFixedFloat()
+{
+  printf("/////////////Test FixedFloat////////////////////\n");
+  printf("////test constructors\n");
+
+  FixedFloat a = FixedFloat();
+  print("FixedFloat a = FixedFloat()", a);
+  FixedFloat b = FixedFloat(1);
+  print("FixedFloat b = FixedFloat()", b);
+  FixedFloat c = FixedFloat(12345678);
+  print("FixedFloat c = FixedFloat(12345678)", c);
+  FixedFloat d = FixedFloat(12345678LL);
+  print("FixedFloat d = FixedFloat(12345678LL)", d);
+  FixedFloat e = FixedFloat(3.141592);
+  print("FixedFloat e = FixedFloat(3.141592)", e);
+  FixedFloat f = FixedFloat(3.141592f);
+  print("FixedFloat f = FixedFloat(3.141592f)", f);
+
+  print("FixedFloat::zero", FixedFloat::zero);
+  print("FixedFloat::one", FixedFloat::one);
+  print("FixedFloat::half", FixedFloat::half);
+  print("FixedFloat::two", FixedFloat::two);
+  print("FixedFloat::ten", FixedFloat::ten);
+  print("FixedFloat::f100", FixedFloat::f100);
+  print("FixedFloat::f90", FixedFloat::f90);
+  print("FixedFloat::pi", FixedFloat::pi);
+  print("FixedFloat::half_pi", FixedFloat::half_pi);
+  print("FixedFloat::quat_pi", FixedFloat::quat_pi);
+  print("FixedFloat::two_pi", FixedFloat::two_pi);
+  print("FixedFloat::rad_unit", FixedFloat::rad_unit);
+  print("FixedFloat::deg_unit", FixedFloat::deg_unit);
+  print("FixedFloat::e", FixedFloat::e);
 
 }
 

@@ -11,17 +11,18 @@ namespace physics
 	typedef uint64_t 	uint64;
 
 	#define enlarge 100000
-	#define ffcast(v)		((int64)(v * enlarge)) 
-	#define tofloat(v)	(((float)v / (float)enlarge))
+	#define ficast(v) 	((int64)v * enlarge) 
+	#define ffcast(v)		((int64)((double)v * enlarge))
+	#define fdcast(v)	((double)v / enlarge)
 
   class FixedFloat
   {
 	public:
 		FixedFloat(){ value = 0; }
 		FixedFloat(const FixedFloat &other) { value = other.value; }
-		FixedFloat(const int other) 		{ value = (int64)other; }
-		FixedFloat(const long other)		{ value = ffcast(other);}
-		FixedFloat(const int64 other) 	{ value = ffcast(other); }
+		FixedFloat(const int other) 		{ value = ficast(other); }
+		FixedFloat(const long other)		{ value = ficast(other);}
+		FixedFloat(const int64 other) 	{ value = other; }
 		FixedFloat(const float other) 	{ value = ffcast(other); }
 		FixedFloat(const double other) 	{ value = ffcast(other); }
 
@@ -45,12 +46,12 @@ namespace physics
 		static const FixedFloat e;
 
 	public:
-		int 	to_i() const { return (int)tofloat(value); }
-		float to_f() const { return tofloat(value); }
+		int 	 to_i() const { return (int)fdcast(value); }
+		double to_d() const { return fdcast(value);}
 		const char * to_s() const
 		{
 			char ret[32] = {0};
-			float v = tofloat(value);
+			double v = fdcast(value);
 			sprintf(ret, "%.5f", v);
 			return ret;
 		}
@@ -73,15 +74,15 @@ namespace physics
 		
 		int64 operator * (const FixedFloat & other) const
 		{
-			float a = to_f();
-			float b = other.to_f();
+			double a = to_d();
+			double b = other.to_d();
 			return ffcast(a * b);
 		}
 
 		int64 operator / (const FixedFloat & other) const
 		{
-			float a = to_f();
-			float b = other.to_f();
+			double a = to_d();
+			double b = other.to_d();
 			return ffcast(a / b);
 		}
 
@@ -90,16 +91,16 @@ namespace physics
 		
 		FixedFloat & operator *= (const FixedFloat & other) 
 		{ 
-			float a = to_f();
-			float b = other.to_f();
+			double a = to_d();
+			double b = other.to_d();
 			value = ffcast(a * b);
 			return *this;
 		}
 
 		FixedFloat & operator /= (const FixedFloat & other) 
 		{ 
-			float a = to_f();
-			float b = other.to_f();
+			double a = to_d();
+			double b = other.to_d();
 			value = ffcast(a / b);
 			return *this;
 		}
@@ -114,98 +115,82 @@ namespace physics
 
 		static int64 sin(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::sin(f);
+			double f = v.to_d();
+			double r = std::sin(f);
 			return ffcast(r);
 		}
 
 		static int64 cos(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::cos(f);
+			double f = v.to_d();
+			double r = std::cos(f);
 			return ffcast(r);
 		}
 
 		static int64 tan(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::tan(f);
+			double f = v.to_d();
+			double r = std::tan(f);
 			return ffcast(r);
 		}
 
 		static int64 asin(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::asin(f);
+			double f = v.to_d();
+			double r = std::asin(f);
 			return ffcast(r);
 		}
 		static int64 atan(const FixedFloat &v) { return atan2(v, one); }
 		static int64 atan2(const FixedFloat &y, const FixedFloat &x)
 		{
-			float fx = x.to_f();
-			float fy = y.to_f();
-			float r = std::atan2f(fy, fx);
+			double fx = x.to_d();
+			double fy = y.to_d();
+			double r = std::atan2f(fy, fx);
 			return ffcast(r);
 		}
 
 		static int64 abs(const FixedFloat &v) { return std::abs(v.value); }
 		static int64 pow(const FixedFloat &n, const FixedFloat &e) 
 		{ 
-			float fn = n.to_f();
-			float fe = e.to_f();
-			float r = std::pow(fn, fe);
-			return ffcast(r);
-		}
-
-		static float fast_inv_sqrt(float x)
-		{
-	    float xhalf = 0.5f * x;
-	    int i = *(int*)&x;
-	    i = 0x5f3759df - (i >> 1);
-	    x = *(float*)&i;  x = x*(1.5f - (xhalf * x * x));
-	    return x;
-		}
-
-		static int64 rsqrt(const FixedFloat &v)
-		{
-			float f =  v.to_f();
-			float r = fast_inv_sqrt(f);
+			double fn = n.to_d();
+			double fe = e.to_d();
+			double r = std::pow(fn, fe);
 			return ffcast(r);
 		}
 
 		static int64 sqrt(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = f * fast_inv_sqrt(f);
+			double f = v.to_d();
+			double r = std::sqrt(f);
 			return ffcast(r);
 		}
 
 		static int64 exp(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::exp(f);
+			double f = v.to_d();
+			double r = std::exp(f);
 			return ffcast(r);
 		}
 
 		static int64 mod(const FixedFloat &a, const FixedFloat &b)
 		{
-			float fa = a.to_f();
-			float fb = b.to_f();
-			float r = std::fmod(fa, fb);
+			double fa = a.to_d();
+			double fb = b.to_d();
+			double r = std::fmod(fa, fb);
 			return ffcast(r);
 		}
 
 		static int64 log(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::log10(f);
+			double f = v.to_d();
+			double r = std::log10(f);
 			return ffcast(r);
 		}
 
 		static int64 ln(const FixedFloat &v)
 		{
-			float f = v.to_f();
-			float r = std::log(f);
+			double f = v.to_d();
+			double r = std::log(f);
 			return ffcast(r);
 		}
 

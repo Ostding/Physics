@@ -2,6 +2,7 @@
 #include "fraction.h"
 #include "fixedpt.h"
 #include "fixedptc.h"
+#include "fixedfloat.h"
 using namespace physics;
 
 class FixPointDemo : public Application
@@ -20,4 +21,7 @@ private:
   void print(const char* pszCap, Fraction &f);
   void print(const char* pszCap, fixedpt &f);
   void print(const char* pszCap, FixedPt &f);
+
+  void doTestFixedFloat();
+  void print(const char *pszCap, const FixedFloat &f);
 };
