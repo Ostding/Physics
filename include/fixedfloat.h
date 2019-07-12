@@ -117,25 +117,31 @@ namespace physics
 		int64 abs() const { return abs(value); }
 
 		static const int64 sin_table[6283];
-		static int64 sin_t(const FixedFloat &v)
+		static int64 sin(const FixedFloat &v)
 		{
 			int64 i = std::fmod(v.value/100, 6283);
 			return sin_table[i];
 		}
 
-		static int64 sin(const FixedFloat &v)
-		{
-			double f = v.to_d();
-			double r = std::sin(f);
-			return ffcast(r);
-		}
-
+		// static int64 sin_std(const FixedFloat &v)
+		// {
+		// 	double f = v.to_d();
+		// 	double r = std::sin(f);
+		// 	return ffcast(r);
+		// }
+		static const int64 cos_table[6283];
 		static int64 cos(const FixedFloat &v)
 		{
-			double f = v.to_d();
-			double r = std::cos(f);
-			return ffcast(r);
+			int64 i = std::fmod(v.value/100, 6283);
+			return cos_table[i];
 		}
+
+		// static int64 cos_std(const FixedFloat &v)
+		// {
+		// 	double f = v.to_d();
+		// 	double r = std::cos(f);
+		// 	return ffcast(r);
+		// }
 
 		static int64 tan(const FixedFloat &v)
 		{

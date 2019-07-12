@@ -1,7 +1,4 @@
 #include "application.h"
-#include "fraction.h"
-#include "fixedpt.h"
-#include "fixedptc.h"
 #include "fixedfloat.h"
 using namespace physics;
 
@@ -15,12 +12,7 @@ public:
   void onKeyboardPress(unsigned char key);
 
 private:
-  void doTestFraction();
-  void doTestFixedPt();
   void doTestSpeed();
-  void print(const char* pszCap, Fraction &f);
-  void print(const char* pszCap, fixedpt &f);
-  void print(const char* pszCap, FixedPt &f);
 
   void doTestFixedFloat();
   void print(const char *pszCap, const FixedFloat &f);

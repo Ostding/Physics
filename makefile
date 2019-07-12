@@ -13,7 +13,7 @@ dir:
 	mkdir -p ./build
 	mkdir -p ./bin
 
-PHYSIC_O= build/timer.o build/fraction.o build/acos_table.o build/atan2_table.o build/sincos_table.o\
+PHYSIC_O= build/timer.o \
 					build/fixedfloat.o
 
 APP_O= build/main.o build/application.o 
@@ -28,10 +28,6 @@ none:
 
 ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/timer.cpp -o build/timer.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fraction.cpp -o build/fraction.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/acos_table.cpp -o build/acos_table.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/atan2_table.cpp -o build/atan2_table.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/sincos_table.cpp -o build/sincos_table.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixedfloat.cpp -o build/fixedfloat.o	
 
 ${APP_O}:
