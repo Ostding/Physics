@@ -48,9 +48,11 @@ namespace physics
 	public:
 		int 	 to_i() const { return (int)fdcast(value); }
 		double to_d() const { return fdcast(value);}
+		
 		const char * to_s() const
 		{
-			char ret[32] = {0};
+			static char ret[32];
+			memset(ret, 0, 32);
 			double v = fdcast(value);
 			sprintf(ret, "%.5f", v);
 			return ret;
@@ -62,6 +64,7 @@ namespace physics
 		FixedFloat & operator = (const int64 other) { value = other; return *this; }
 		FixedFloat & operator = (const long other) 	{ value = ffcast(other); return * this; }
 		FixedFloat & operator = (const float other) { value = ffcast(other); return * this; }
+		FixedFloat & operator = (const double other){ value = ffcast(other); return * this; }
 
 		bool operator < 	(const FixedFloat & other) const { return value <  other.value; }
 		bool operator <= 	(const FixedFloat & other) const { return value <= other.value; }
@@ -113,6 +116,13 @@ namespace physics
 		int round() const { return to_i(); }
 		int64 abs() const { return abs(value); }
 
+		static const int64 sin_table[6283];
+		static int64 sin_t(const FixedFloat &v)
+		{
+			int64 i = std::fmod(v.value/100, 6283);
+			return sin_table[i];
+		}
+
 		static int64 sin(const FixedFloat &v)
 		{
 			double f = v.to_d();
@@ -140,12 +150,20 @@ namespace physics
 			double r = std::asin(f);
 			return ffcast(r);
 		}
+
+		static int64 acos(const FixedFloat &v)
+		{
+			double f = v.to_d();
+			double r = std::acos(f);
+			return ffcast(r);	
+		}
+
 		static int64 atan(const FixedFloat &v) { return atan2(v, one); }
 		static int64 atan2(const FixedFloat &y, const FixedFloat &x)
 		{
 			double fx = x.to_d();
 			double fy = y.to_d();
-			double r = std::atan2f(fy, fx);
+			double r = std::atan2(fy, fx);
 			return ffcast(r);
 		}
 
