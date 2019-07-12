@@ -15,5 +15,5 @@ private:
   void doTestSpeed();
 
   void doTestFixedFloat();
-  void print(const char *pszCap, const FixedFloat &f);
+  
 };

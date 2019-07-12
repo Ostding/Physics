@@ -18,7 +18,8 @@ PHYSIC_O= build/timer.o \
 
 APP_O= build/main.o build/application.o 
 
-DEMO_FIXPOINT_O= build/fix_point_demo.o
+DEMO_FIXPOINT_O= build/fix_point_demo.o \
+								 build/test_fixedfloat.o
 
 none:
 	@echo "Please do"
@@ -35,6 +36,7 @@ ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} main.cpp -o build/main.o
 
 ${DEMO_FIXPOINT_O}:
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/test_fixedfloat.cpp -o build/test_fixedfloat.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/fix_point_demo.cpp -o build/fix_point_demo.o
 	
 DEMO_FIXPOINT= ${APP_O} ${PHYSIC_O} ${DEMO_FIXPOINT_O}
