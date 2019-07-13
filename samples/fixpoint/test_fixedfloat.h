@@ -12,6 +12,7 @@ class TestFixedFloat
 {
 public:
 	static void print(const char *pszCap, const FixedFloat &f);
+	static void print(const char *psz);
 	static void doTest();
 };
 

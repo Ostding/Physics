@@ -1,16 +1,44 @@
 #include "test_fixedfloat.h"
 #include "timer.h"
 
+#ifdef __ANDROID__
+#include <android/log.h>
+
+#define LOG_NDEBUG 0
+
+const char * LOG_TGA = "Physics";
+
+void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
+{
+	char psz[256] = {0};
+	sprintf(psz, "%s => %s \n", pszCap, f.to_s());
+	__android_log_print(ANDROID_LOG_DEBUG, LOG_TGA, "%s", psz);
+}
+void TestFixedFloat::print(...)
+{
+	__android_log_print(ANDROID_LOG_DEBUG , LOG_TGA, __VA_ARGS__)
+}
+
+#else
+
+void TestFixedFloat::print(const char *psz)
+{
+	printf("%s", psz);	
+}
 
 void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
 {
   printf("%s => %s \n", pszCap, f.to_s());
 }
 
+#endif
+
+
+
 void TestFixedFloat::doTest()
 {
-	printf("/////////////Test FixedFloat////////////////////\n");
-  printf("////test constructors\n");
+	print("/////////////Test FixedFloat////////////////////\n");
+  print("////test constructors\n");
   FixedFloat a = FixedFloat();
   print("FixedFloat a = FixedFloat()", a);
   FixedFloat b = FixedFloat(1);
@@ -24,7 +52,7 @@ void TestFixedFloat::doTest()
   FixedFloat f = FixedFloat(3.141592f);
   print("FixedFloat f = FixedFloat(3.141592f)", f);
 
-  printf("////test consts\n");
+  print("////test consts\n");
   print("FixedFloat::zero", FixedFloat::zero);
   print("FixedFloat::one", FixedFloat::one);
   print("FixedFloat::half", FixedFloat::half);
@@ -40,18 +68,18 @@ void TestFixedFloat::doTest()
   print("FixedFloat::deg_unit", FixedFloat::deg_unit);
   print("FixedFloat::e", FixedFloat::e);
 
-  printf("////test convertion\n");
+  print("////test convertion\n");
   FixedFloat x = FixedFloat(12);
   int n = x.to_i();
-  printf("FixedFloat(12).to_i() => %d \n", n);
+  print("FixedFloat(12).to_i() => %d \n", n);
 
   x = FixedFloat(12.12345f);
   n = x.to_i();
-  printf("FixedFloat(12.12345).to_i() => %d \n", n);
+  print("FixedFloat(12.12345).to_i() => %d \n", n);
   double dd = x.to_d();
-  printf("FixedFloat(12.12345).to_d() => %.5f \n", dd);
+  print("FixedFloat(12.12345).to_d() => %.5f \n", dd);
 
-  printf("////test operation override\n");
+  print("////test operation override\n");
   FixedFloat y = FixedFloat(12345678.12345);
   x = FixedFloat();
   print("x", x);
@@ -67,17 +95,17 @@ void TestFixedFloat::doTest()
   x = 456.789;
   print("x = 456.789", x);
   bool _b = x < y;
-  printf("x < y => %d \n", _b);
+  print("x < y => %d \n", _b);
   _b = x <= y;
-  printf("x <= y => %d \n", _b);
+  print("x <= y => %d \n", _b);
   _b = x > y;
-  printf("x > y => %d \n", _b);
+  print("x > y => %d \n", _b);
   _b = x >= y;
-  printf("x >= y => %d \n", _b);
+  print("x >= y => %d \n", _b);
   _b = x == y;
-  printf("x == y => %d \n", _b);
+  print("x == y => %d \n", _b);
   _b = FixedFloat(123.456f) == FixedFloat(12345600LL);
-  printf("FixedFloat(123.456f) == FixedFloat(1234500000LL) => %d \n", _b);
+  print("FixedFloat(123.456f) == FixedFloat(1234500000LL) => %d \n", _b);
 
   x = FixedFloat(10);
   y = FixedFloat(2.5f);
@@ -103,13 +131,13 @@ void TestFixedFloat::doTest()
   x = -x;
   print("x = -x", x);
 
-  printf("////test functions\n");
+  print("////test functions\n");
   _b = x.positive();
-  printf("x.positive() => %d \n", _b);
+  print("x.positive() => %d \n", _b);
   _b = x.negative();
-  printf("x.negative() => %d \n", _b);
+  print("x.negative() => %d \n", _b);
   n = y.round();
-  printf("y.round() => %d \n", n);
+  print("y.round() => %d \n", n);
   x = x.abs();
   print("x.abs()", x);
 
@@ -202,7 +230,7 @@ void TestFixedFloat::doTest()
   print("FixedFloat::to_deg(FixedFloat::half_pi)", x);
 
 
-  printf("//////////////////\n\n");
+  print("//////////////////\n\n");
   // for(double r = 0; r <= 6.283; r += 0.001)
   // {
   //   FixedFloat sv = FixedFloat::cos(FixedFloat(r));

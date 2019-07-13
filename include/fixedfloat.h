@@ -7,11 +7,11 @@ using namespace std;
 
 namespace physics
 {
-	typedef int64_t 	int64;
-	typedef uint64_t 	uint64;
+	typedef long long 	        int64;
+	typedef unsigned long long 	uint64;
 
 	#define enlarge 100000
-	#define ficast(v) 	((int64)v * enlarge) 
+	#define ficast(v) 	((int64)v * enlarge)
 	#define ffcast(v)		((int64)((double)v * enlarge))
 	#define fdcast(v)	((double)v / enlarge)
 
@@ -21,7 +21,6 @@ namespace physics
 		FixedFloat(){ value = 0; }
 		FixedFloat(const FixedFloat &other) { value = other.value; }
 		FixedFloat(const int other) 		{ value = ficast(other); }
-		FixedFloat(const long other)		{ value = ficast(other);}
 		FixedFloat(const int64 other) 	{ value = other; }
 		FixedFloat(const float other) 	{ value = ffcast(other); }
 		FixedFloat(const double other) 	{ value = ffcast(other); }
