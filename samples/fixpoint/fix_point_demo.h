@@ -1,5 +1,5 @@
 #include "application.h"
-#include "fixedfloat.h"
+#include "fixed_float.h"
 using namespace physics;
 
 class FixPointDemo : public Application

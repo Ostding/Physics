@@ -1,6 +1,6 @@
 #include "fix_point_demo.h"
 #include "timer.h"
-#include "test_fixedfloat.h"
+#include "test_fixed_float.h"
 
 FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -38,81 +38,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
 
 void FixPointDemo::doTestSpeed()
 {
-  printf("//////////////////test speed///////////////////////////\n");
-  int count = 10000000;
-  //base value type's calculation
-  double i = 123456;
-  double j = 3.141592;
-  double ret = 0.0;
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = i + j;
-  Timer::stop("Base Value type +");
-  printf("ret:%.8f \n", ret);
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = i - j;
-  Timer::stop("Base Value type -");
-  printf("ret:%.8f \n", ret);
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = i * j;
-  Timer::stop("Base Value type *");
-  printf("ret:%.8f \n", ret);
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = i / j;
-  Timer::stop("Base Value type /");
-  printf("ret:%.8f \n", ret);
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = sqrt(i);
-  Timer::stop("Base Value type sqrt");
-  printf("ret:%.8f \n", ret);
-  Timer::start();
-  for(int _i = 0; _i < count; _i++)
-    ret = sin(1.571f);
-  Timer::stop("Base Value type sin");
-  printf("ret:%.8f \n", ret);
-  printf("\n\n");
-
-
-  //test normal calculation of FixedFloat
-  FixedFloat m = FixedFloat(123456);
-  FixedFloat n = FixedFloat(3.14159f);
-  FixedFloat ret1;
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = m + n;
-  Timer::stop("FixedFloat +");
-  TestFixedFloat::print("ret1", ret1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = m - n;
-  Timer::stop("FixedFloat -");
-  TestFixedFloat::print("ret1", ret1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = m * n;
-  Timer::stop("FixedFloat *");
-  TestFixedFloat::print("ret1", ret1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = m / n;
-  Timer::stop("FixedFloat /");
-  TestFixedFloat::print("ret1", ret1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = FixedFloat::sqrt(m);
-  Timer::stop("FixedFloat sqrt");
-  TestFixedFloat::print("ret1", ret1);
-  Timer::start();
-  for(int i = 0; i < count; i++)
-    ret1 = FixedFloat::sin(FixedFloat::half_pi);
-  Timer::stop("FixedFloat sin");
-  TestFixedFloat::print("ret1", ret1);
-  printf("\n\n");
-
+  TestFixedFloat::doTestSpeed();
 }
 
 void FixPointDemo::doTestFixedFloat()

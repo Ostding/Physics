@@ -14,12 +14,12 @@ dir:
 	mkdir -p ./bin
 
 PHYSIC_O= build/timer.o \
-					build/fixedfloat.o
+					build/fixed_float.o
 
 APP_O= build/main.o build/application.o 
 
 DEMO_FIXPOINT_O= build/fix_point_demo.o \
-								 build/test_fixedfloat.o
+								 build/test_fixed_float.o
 
 none:
 	@echo "Please do"
@@ -29,14 +29,14 @@ none:
 
 ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/timer.cpp -o build/timer.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixedfloat.cpp -o build/fixedfloat.o	
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixed_float.cpp -o build/fixed_float.o	
 
 ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} main.cpp -o build/main.o
 
 ${DEMO_FIXPOINT_O}:
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/test_fixedfloat.cpp -o build/test_fixedfloat.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/test_fixed_float.cpp -o build/test_fixed_float.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/fix_point_demo.cpp -o build/fix_point_demo.o
 	
 DEMO_FIXPOINT= ${APP_O} ${PHYSIC_O} ${DEMO_FIXPOINT_O}

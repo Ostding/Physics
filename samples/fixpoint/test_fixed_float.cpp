@@ -1,30 +1,19 @@
-#include "test_fixedfloat.h"
+#include "test_fixed_float.h"
 #include "timer.h"
+#include <stdarg.h>
+#include "my_printf.h"
 
 #ifdef __ANDROID__
 #include <android/log.h>
-
-#define LOG_NDEBUG 0
-
-const char * LOG_TGA = "Physics";
 
 void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
 {
 	char psz[256] = {0};
 	sprintf(psz, "%s => %s \n", pszCap, f.to_s());
-	__android_log_print(ANDROID_LOG_DEBUG, LOG_TGA, "%s", psz);
-}
-void TestFixedFloat::print(...)
-{
-	__android_log_print(ANDROID_LOG_DEBUG , LOG_TGA, __VA_ARGS__)
+	__android_log_print(ANDROID_LOG_INFO, LOG_TGA, "%s", psz);
 }
 
 #else
-
-void TestFixedFloat::print(const char *psz)
-{
-	printf("%s", psz);	
-}
 
 void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
 {
@@ -37,8 +26,8 @@ void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
 
 void TestFixedFloat::doTest()
 {
-	print("/////////////Test FixedFloat////////////////////\n");
-  print("////test constructors\n");
+  myPrintf("/////////////Test FixedFloat////////////////////\n");
+  myPrintf("////test constructors\n");
   FixedFloat a = FixedFloat();
   print("FixedFloat a = FixedFloat()", a);
   FixedFloat b = FixedFloat(1);
@@ -52,7 +41,7 @@ void TestFixedFloat::doTest()
   FixedFloat f = FixedFloat(3.141592f);
   print("FixedFloat f = FixedFloat(3.141592f)", f);
 
-  print("////test consts\n");
+  myPrintf("////test consts\n");
   print("FixedFloat::zero", FixedFloat::zero);
   print("FixedFloat::one", FixedFloat::one);
   print("FixedFloat::half", FixedFloat::half);
@@ -68,18 +57,18 @@ void TestFixedFloat::doTest()
   print("FixedFloat::deg_unit", FixedFloat::deg_unit);
   print("FixedFloat::e", FixedFloat::e);
 
-  print("////test convertion\n");
+  myPrintf("////test convertion\n");
   FixedFloat x = FixedFloat(12);
   int n = x.to_i();
-  print("FixedFloat(12).to_i() => %d \n", n);
+  myPrintf("FixedFloat(12).to_i() => %d \n", n);
 
   x = FixedFloat(12.12345f);
   n = x.to_i();
-  print("FixedFloat(12.12345).to_i() => %d \n", n);
+  myPrintf("FixedFloat(12.12345).to_i() => %d \n", n);
   double dd = x.to_d();
-  print("FixedFloat(12.12345).to_d() => %.5f \n", dd);
+  myPrintf("FixedFloat(12.12345).to_d() => %.5f \n", dd);
 
-  print("////test operation override\n");
+  myPrintf("////test operation override\n");
   FixedFloat y = FixedFloat(12345678.12345);
   x = FixedFloat();
   print("x", x);
@@ -95,17 +84,17 @@ void TestFixedFloat::doTest()
   x = 456.789;
   print("x = 456.789", x);
   bool _b = x < y;
-  print("x < y => %d \n", _b);
+  myPrintf("x < y => %s \n", _b ? "true" : "false");
   _b = x <= y;
-  print("x <= y => %d \n", _b);
+  myPrintf("x <= y => %s \n", _b ? "true" : "false");
   _b = x > y;
-  print("x > y => %d \n", _b);
+  myPrintf("x > y => %s \n", _b ? "true" : "false");
   _b = x >= y;
-  print("x >= y => %d \n", _b);
+  myPrintf("x >= y => %s \n", _b ? "true" : "false");
   _b = x == y;
-  print("x == y => %d \n", _b);
+  myPrintf("x == y => %s \n", _b ? "true" : "false");
   _b = FixedFloat(123.456f) == FixedFloat(12345600LL);
-  print("FixedFloat(123.456f) == FixedFloat(1234500000LL) => %d \n", _b);
+  myPrintf("FixedFloat(123.456f) == FixedFloat(1234500000LL) => %s \n", _b ? "true" : "false");
 
   x = FixedFloat(10);
   y = FixedFloat(2.5f);
@@ -131,13 +120,13 @@ void TestFixedFloat::doTest()
   x = -x;
   print("x = -x", x);
 
-  print("////test functions\n");
+  myPrintf("////test functions\n");
   _b = x.positive();
-  print("x.positive() => %d \n", _b);
+  myPrintf("x.positive() => %s \n", _b ? "true" : "false");
   _b = x.negative();
-  print("x.negative() => %d \n", _b);
+  myPrintf("x.negative() => %s \n", _b ? "true" : "false");
   n = y.round();
-  print("y.round() => %d \n", n);
+  myPrintf("y.round() => %d \n", n);
   x = x.abs();
   print("x.abs()", x);
 
@@ -230,10 +219,88 @@ void TestFixedFloat::doTest()
   print("FixedFloat::to_deg(FixedFloat::half_pi)", x);
 
 
-  print("//////////////////\n\n");
+  myPrintf("//////////////////\n\n");
   // for(double r = 0; r <= 6.283; r += 0.001)
   // {
   //   FixedFloat sv = FixedFloat::cos(FixedFloat(r));
   //   printf("%lld,\n", sv.value);
   // }
+}
+
+void TestFixedFloat::doTestSpeed()
+{
+  myPrintf("//////////////////test speed///////////////////////////\n");
+  int count = 10000000;
+  //base value type's calculation
+  double i = 123456;
+  double j = 3.141592;
+  double ret = 0.0;
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = i + j;
+  Timer::stop("Base Value type +");
+  myPrintf("ret:%.8f \n", ret);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = i - j;
+  Timer::stop("Base Value type -");
+  myPrintf("ret:%.8f \n", ret);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = i * j;
+  Timer::stop("Base Value type *");
+  myPrintf("ret:%.8f \n", ret);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = i / j;
+  Timer::stop("Base Value type /");
+  myPrintf("ret:%.8f \n", ret);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = sqrt(i);
+  Timer::stop("Base Value type sqrt");
+  myPrintf("ret:%.8f \n", ret);
+  Timer::start();
+  for(int _i = 0; _i < count; _i++)
+    ret = sin(1.571f);
+  Timer::stop("Base Value type sin");
+  myPrintf("ret:%.8f \n", ret);
+  myPrintf("%s\n\n", "");
+
+
+  //test normal calculation of FixedFloat
+  FixedFloat m = FixedFloat(123456);
+  FixedFloat n = FixedFloat(3.14159f);
+  FixedFloat ret1;
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = m + n;
+  Timer::stop("FixedFloat +");
+  print("ret1", ret1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = m - n;
+  Timer::stop("FixedFloat -");
+  print("ret1", ret1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = m * n;
+  Timer::stop("FixedFloat *");
+  print("ret1", ret1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = m / n;
+  Timer::stop("FixedFloat /");
+  print("ret1", ret1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = FixedFloat::sqrt(m);
+  Timer::stop("FixedFloat sqrt");
+  print("ret1", ret1);
+  Timer::start();
+  for(int i = 0; i < count; i++)
+    ret1 = FixedFloat::sin(FixedFloat::half_pi);
+  Timer::stop("FixedFloat sin");
+  print("ret1", ret1);
+  myPrintf("%s\n\n", "");
 }

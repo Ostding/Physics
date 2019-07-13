@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "fixedfloat.h"
+#include "fixed_float.h"
 using namespace std;
 using namespace physics;
 
@@ -12,8 +12,8 @@ class TestFixedFloat
 {
 public:
 	static void print(const char *pszCap, const FixedFloat &f);
-	static void print(const char *psz);
 	static void doTest();
+	static void doTestSpeed();
 };
 
 #endif

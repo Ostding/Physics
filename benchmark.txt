@@ -1,0 +1,250 @@
+benchmark 
+Test with mac book pro 2.3 GHz Intel Core i5
+/////////////Test FixedFloat////////////////////
+////test constructors
+FixedFloat a = FixedFloat() => 0.00000
+FixedFloat b = FixedFloat() => 1.00000
+FixedFloat c = FixedFloat(12345678) => 12345678.00000
+FixedFloat d = FixedFloat(12345678LL) => 123.45678
+FixedFloat e = FixedFloat(3.141592) => 3.14159
+FixedFloat f = FixedFloat(3.141592f) => 3.14159
+////test consts
+FixedFloat::zero => 0.00000
+FixedFloat::one => 1.00000
+FixedFloat::half => 0.50000
+FixedFloat::two => 2.00000
+FixedFloat::ten => 10.00000
+FixedFloat::f100 => 100.00000
+FixedFloat::f90 => 90.00000
+FixedFloat::pi => 3.14159
+FixedFloat::half_pi => 1.57080
+FixedFloat::quat_pi => 0.78540
+FixedFloat::two_pi => 6.28318
+FixedFloat::rad_unit => 0.01745
+FixedFloat::deg_unit => 57.29582
+FixedFloat::e => 2.71828
+////test convertion
+FixedFloat(12).to_i() => 12
+FixedFloat(12.12345).to_i() => 12
+FixedFloat(12.12345).to_d() => 12.12345
+////test operation override
+x => 0.00000
+y => 12345678.12345
+x = y => 12345678.12345
+x = 123 => 123.00000
+x = 123456789LL => 1234.56789
+x = 123.456f => 123.45600
+x = 456.789 => 456.78900
+x < y => true
+x <= y => true
+x > y => false
+x >= y => false
+x == y => false
+FixedFloat(123.456f) == FixedFloat(1234500000LL) => true
+x => 10.00000
+y => 2.50000
+z = x + y => 12.50000
+z = x - y => 7.50000
+z = x * y => 25.00000
+z = x / y => 4.00000
+x += y => 12.50000
+x -= y => 10.00000
+x *= y => 25.00000
+x /= y => 10.00000
+x = -x => -10.00000
+////test functions
+x.positive() => false
+x.negative() => true
+y.round() => 2
+x.abs() => 10.00000
+FixedFloat::sin(FixedFloat::zero) => 0.00000
+FixedFloat::sin(FixedFloat::half_pi) => 0.99999
+FixedFloat::sin(FixedFloat::quat_pi) => 0.70682
+FixedFloat::sin(FixedFloat::pi) => 0.00060
+FixedFloat::cos(FixedFloat::zero) => 1.00000
+FixedFloat::cos(FixedFloat::half_pi) => 0.00080
+FixedFloat::cos(FixedFloat::quat_pi) => 0.70738
+FixedFloat::cos(FixedFloat::pi) => -0.99999
+FixedFloat::tan(FixedFloat::zero) => 0.00000
+FixedFloat::tan(FixedFloat::half_pi) => -272241.80840
+FixedFloat::tan(FixedFloat::quat_pi) => 1.00000
+FixedFloat::tan(FixedFloat::pi) => 0.00000
+FixedFloat::asin(FixedFloat::zero) => 0.00000
+FixedFloat::asin(FixedFloat::one) => 1.57079
+FixedFloat::asin(FixedFloat::half) => 0.52359
+FixedFloat::acos(FixedFloat::zero) => 1.57079
+FixedFloat::acos(FixedFloat::one) => 0.00000
+FixedFloat::atan(FixedFloat::zero) => 0.00000
+FixedFloat::atan(FixedFloat::one) => 0.78539
+FixedFloat::atan(FixedFloat::half) => 0.46364
+FixedFloat::atan2(FixedFloat::one, FixedFloat::zero) => 1.57079
+FixedFloat::atan2(FixedFloat::two, FixedFloat::one) => 1.10714
+FixedFloat::sqrt(FixedFloat(4)) => 2.00000
+FixedFloat::sqrt(FixedFloat(2)) => 1.41421
+FixedFloat::sqrt(FixedFloat(1)) => 1.00000
+FixedFloat::sqrt(FixedFloat(2)) => 1.41421
+FixedFloat::mod(FixedFloat(5), FixedFloat(2)) => 1.00000
+FixedFloat::mod(FixedFloat(3.5f), FixedFloat(1.5f)) => 0.50000
+FixedFloat::log(FixedFloat(1000)) => 3.00000
+FixedFloat::log(FixedFloat(100)) => 2.00000
+FixedFloat::log(FixedFloat(0.1f)) => -1.00000
+FixedFloat::ln(FixedFloat(16)) => 2.77258
+FixedFloat::ln(FixedFloat::e) => 0.99999
+FixedFloat::to_rad(FixedFloat(90)) => 1.57050
+FixedFloat::to_rad(FixedFloat(180)) => 3.14100
+FixedFloat::to_deg(FixedFloat::pi) => 179.99997
+FixedFloat::to_deg(FixedFloat::half_pi) => 90.00027
+//////////////////
+
+//////////////////test speed///////////////////////////
+Time duration Base Value type +:0.02561500s
+ret:123459.14159200
+Time duration Base Value type -:0.02644900s
+ret:123452.85840800
+Time duration Base Value type *:0.02665000s
+ret:387848.38195200
+Time duration Base Value type /:0.02439400s
+ret:39297.27348427
+Time duration Base Value type sqrt:0.01692800s
+ret:351.36306010
+Time duration Base Value type sin:0.06485700s
+ret:1.00000000
+
+
+Time duration FixedFloat +:0.04736800s
+ret1 => 123459.14159
+Time duration FixedFloat -:0.04733700s
+ret1 => 123452.85841
+Time duration FixedFloat *:0.10256500s
+ret1 => 387848.13504
+Time duration FixedFloat /:0.11282400s
+ret1 => 39297.29850
+Time duration FixedFloat sqrt:0.14720800s
+ret1 => 351.36306
+Time duration FixedFloat sin:0.06572000s
+ret1 => 0.99999
+
+
+
+Test with MEIZU note2 ARM® Cortex®-A53™ 1.3GHz x 8
+/////////////Test FixedFloat////////////////////
+////test constructors
+FixedFloat a = FixedFloat() => 0.00000 
+FixedFloat b = FixedFloat() => 1.00000 
+FixedFloat c = FixedFloat(12345678) => 12345678.00000 
+FixedFloat d = FixedFloat(12345678LL) => 123.45678 
+FixedFloat e = FixedFloat(3.141592) => 3.14159 
+FixedFloat f = FixedFloat(3.141592f) => 3.14159 
+////test consts
+FixedFloat::zero => 0.00000 
+FixedFloat::one => 1.00000 
+FixedFloat::half => 0.50000 
+FixedFloat::two => 2.00000 
+FixedFloat::ten => 10.00000 
+FixedFloat::f100 => 100.00000 
+FixedFloat::f90 => 90.00000 
+FixedFloat::pi => 3.14159 
+FixedFloat::half_pi => 1.57080 
+FixedFloat::quat_pi => 0.78540 
+FixedFloat::two_pi => 6.28318 
+FixedFloat::rad_unit => 0.01745 
+FixedFloat::deg_unit => 57.29582 
+FixedFloat::e => 2.71828 
+////test convertion
+FixedFloat(12).to_i() => 12 
+FixedFloat(12.12345).to_i() => 12 
+FixedFloat(12.12345).to_d() => 12.12345 
+////test operation override
+x => 0.00000 
+y => 12345678.12345 
+x = y => 12345678.12345 
+x = 123 => 123.00000 
+x = 123456789LL => 1234.56789 
+x = 123.456f => 123.45600 
+x = 456.789 => 456.78900 
+x < y => true 
+x <= y => true 
+x > y => false 
+x >= y => false 
+x == y => false 
+FixedFloat(123.456f) == FixedFloat(1234500000LL) => true 
+x => 10.00000 
+y => 2.50000 
+z = x + y => 12.50000 
+z = x - y => 7.50000 
+z = x * y => 25.00000 
+z = x / y => 4.00000 
+x += y => 12.50000 
+x -= y => 10.00000 
+x *= y => 25.00000 
+x /= y => 10.00000 
+x = -x => -10.00000 
+////test functions
+x.positive() => false 
+x.negative() => true 
+y.round() => 2 
+x.abs() => 10.00000 
+FixedFloat::sin(FixedFloat::zero) => 0.00000 
+FixedFloat::sin(FixedFloat::half_pi) => 0.99999 
+FixedFloat::sin(FixedFloat::quat_pi) => 0.70682 
+FixedFloat::sin(FixedFloat::pi) => 0.00060 
+FixedFloat::cos(FixedFloat::zero) => 1.00000 
+FixedFloat::cos(FixedFloat::half_pi) => 0.00080 
+FixedFloat::cos(FixedFloat::quat_pi) => 0.70738 
+FixedFloat::cos(FixedFloat::pi) => -0.99999 
+FixedFloat::tan(FixedFloat::zero) => 0.00000 
+FixedFloat::tan(FixedFloat::half_pi) => -272241.80840 
+FixedFloat::tan(FixedFloat::quat_pi) => 1.00000 
+FixedFloat::tan(FixedFloat::pi) => 0.00000 
+FixedFloat::asin(FixedFloat::zero) => 0.00000 
+FixedFloat::asin(FixedFloat::one) => 1.57079 
+FixedFloat::asin(FixedFloat::half) => 0.52359 
+FixedFloat::acos(FixedFloat::zero) => 1.57079 
+FixedFloat::acos(FixedFloat::one) => 0.00000 
+FixedFloat::atan(FixedFloat::zero) => 0.00000 
+FixedFloat::atan(FixedFloat::one) => 0.78539 
+FixedFloat::atan(FixedFloat::half) => 0.46364 
+FixedFloat::atan2(FixedFloat::one, FixedFloat::zero) => 1.57079 
+FixedFloat::atan2(FixedFloat::two, FixedFloat::one) => 1.10714 
+FixedFloat::sqrt(FixedFloat(4)) => 2.00000 
+FixedFloat::sqrt(FixedFloat(2)) => 1.41421 
+FixedFloat::sqrt(FixedFloat(1)) => 1.00000 
+FixedFloat::sqrt(FixedFloat(2)) => 1.41421 
+FixedFloat::mod(FixedFloat(5), FixedFloat(2)) => 1.00000 
+FixedFloat::mod(FixedFloat(3.5f), FixedFloat(1.5f)) => 0.50000 
+FixedFloat::log(FixedFloat(1000)) => 3.00000 
+FixedFloat::log(FixedFloat(100)) => 2.00000 
+FixedFloat::log(FixedFloat(0.1f)) => -1.00000 
+FixedFloat::ln(FixedFloat(16)) => 2.77258 
+FixedFloat::ln(FixedFloat::e) => 0.99999 
+FixedFloat::to_rad(FixedFloat(90)) => 1.57050 
+FixedFloat::to_rad(FixedFloat(180)) => 3.14100 
+FixedFloat::to_deg(FixedFloat::pi) => 179.99997 
+FixedFloat::to_deg(FixedFloat::half_pi) => 90.00027 
+//////////////////
+
+//////////////////test speed///////////////////////////
+Time duration Base Value type +:0.13269300s 
+ret:123459.14159200 
+Time duration Base Value type -:0.13225000s 
+ret:123452.85840800 
+Time duration Base Value type *:0.13227300s 
+ret:387848.38195200 
+Time duration Base Value type /:0.27226200s 
+ret:39297.27348427 
+Time duration Base Value type sqrt:0.26472700s 
+ret:351.36306010 
+Time duration Base Value type sin:0.55245800s 
+ret:1.00000000 
+Time duration FixedFloat +:0.36563700s 
+ret1 => 123459.14159 
+Time duration FixedFloat -:0.36061100s 
+ret1 => 123452.85841 
+Time duration FixedFloat *:1.04349700s 
+ret1 => 387848.13504 
+Time duration FixedFloat /:1.18162500s 
+ret1 => 39297.29850 
+Time duration FixedFloat sqrt:0.89743400s 
+ret1 => 351.36306 
+Time duration FixedFloat sin:0.78077900s 
+ret1 => 0.99999 

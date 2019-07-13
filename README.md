@@ -1,9 +1,13 @@
-# Physic
+# Physics
 Fixed float based physics
 
+Done:
+.build a fixed float library
+.exam the fixed float library's percision and synchornization between android and osx 
+devices [to check the result, plz move to benchmark.txt]
+
 Todo:
-1.build a fixed float library
-2.exam the fixed float library's percision and synchornization between android and osx devices
-3.build a jgk&epa algorithm based physic library
-4.exam the physic library's percision and synchornization between android and osx devices
+.build a jgk&epa algorithm based physic library
+.exam the physic library's percision and synchornization between android and osx devices
+
 
