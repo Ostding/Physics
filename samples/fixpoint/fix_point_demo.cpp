@@ -1,6 +1,7 @@
 #include "fix_point_demo.h"
 #include "timer.h"
 #include "test_fixed_float.h"
+#include "types.h"
 
 FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -32,6 +33,8 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
   case 'g': case 'G':
     doTestFixedFloat();
     doTestSpeed();
+
+    doTestCores();
     break;
   }
 
@@ -47,6 +50,20 @@ void FixPointDemo::doTestSpeed()
 void FixPointDemo::doTestFixedFloat()
 {
   TestFixedFloat::doTest();
+}
+
+void FixPointDemo::doTestCores()
+{
+  Vector3 a = Vector3(1,1,1);
+  a.inspect();
+  a = a.scale(2);
+  a.inspect();
+  a.scaleUpdate(2);
+  a.inspect();
+  Vector3 b = Vector3(2,2,2);
+  a += b;
+  a.inspect();
+
 }
 
 

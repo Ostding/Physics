@@ -30,9 +30,7 @@ namespace physics
 	#define ffrad_unit 	FixedFloat::rad_unit;
 	#define ffdeg_unit 	FixedFloat::deg_unit;
 	#define ffe 				FixedFloat::e;
-
-	class Vector3;
 }
 
-
+#include "vector3.h"
 #endif

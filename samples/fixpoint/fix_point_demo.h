@@ -12,8 +12,8 @@ public:
   void onKeyboardPress(unsigned char key);
 
 private:
+  void doTestFixedFloat();
   void doTestSpeed();
 
-  void doTestFixedFloat();
-  
+  void doTestCores();
 };
