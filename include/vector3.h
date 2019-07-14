@@ -34,13 +34,13 @@ namespace physics
       z = _z;
     }
 
-    const static Vector3 UP;
-    const static Vector3 RIGHT;
-    const static Vector3 X;
-    const static Vector3 Y;
-    const static Vector3 Z;
-    const static Vector3 ZERO;
-    const static Vector3 ONE;
+    const static Vector3 up;
+    const static Vector3 right;
+    const static Vector3 dx;
+    const static Vector3 dy;
+    const static Vector3 dz;
+    const static Vector3 zero;
+    const static Vector3 one;
 
     Vector3 & operator = (const Vector3 &other)
     {
@@ -121,24 +121,28 @@ namespace physics
       z *= scale;
     }
 
-    static ffloat AngleTo(const Vector3 &A, const Vector3 &B)
+    static ffloat angleTo(const Vector3 &A, const Vector3 &B)
     {
       ffloat cosv;
-      ffloat ab = dot(A, B);
+      ffloat dtAB = dot(A, B);
       ffloat a = A.mag();
       ffloat b = B.mag();
-      ffloat mab = a * b;
-      if (mab == ffzero)
+      ffloat mAB = a * b;
+      if (mAB == ffzero)
       {
         cosv = ffzero;
       }
       else
       {
-        ffloat cosv = ab/ mab;
+        cosv = dtAB/ mAB;
         if (cosv < -ffone)
+        {
           cosv = -ffone;
+        }
         else if (cosv > ffone)
+        {
           cosv = ffone;
+        }
       }
 
       return ffacos(cosv);
@@ -163,6 +167,11 @@ namespace physics
     static Vector3 tripleCross(const Vector3 &A, const Vector3 &B, const Vector3 &C)
     {
       return (B.scale(C.dot(A))) - (A.scale(C.dot(B)));
+    }
+
+    ffloat angleTo(const Vector3 &other)
+    {
+      return angleTo(*this, other);
     }
 
     //component-wise product with other vector
@@ -220,9 +229,9 @@ namespace physics
         this->scale(ffone / l);
     }
 
-    void inspect()
+    void inspect(const char *pszTag = "") const
     {
-      printf("Vector3: %.5f %.5f %.5f\r\n", x.to_d(), y.to_d(), z.to_d());
+      printf("[%s] Vector3: %.5f %.5f %.5f\r\n", pszTag, x.to_d(), y.to_d(), z.to_d());
     }
   };
 

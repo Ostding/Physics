@@ -32,7 +32,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
   switch( key ) {
   case 'g': case 'G':
     doTestFixedFloat();
-    doTestSpeed();
+    // doTestSpeed();
 
     doTestCores();
     break;
@@ -55,15 +55,28 @@ void FixPointDemo::doTestFixedFloat()
 void FixPointDemo::doTestCores()
 {
   Vector3 a = Vector3(1,1,1);
-  a.inspect();
+  a.inspect("Vector3(1,1,1)");
   a = a.scale(2);
-  a.inspect();
+  a.inspect("a.scale(2)");
   a.scaleUpdate(2);
-  a.inspect();
+  a.inspect("a.scaleUpdate(2)");
   Vector3 b = Vector3(2,2,2);
   a += b;
-  a.inspect();
+  a.inspect("a += b");
 
+  Vector3::up.inspect("Vector3::up");
+  Vector3::right.inspect("Vector3::right");
+  Vector3::dx.inspect("Vector3::dx");
+  Vector3::dy.inspect("Vector3::dy");
+  Vector3::dz.inspect("Vector3::dz");
+  Vector3::zero.inspect("Vector3::zero");
+  Vector3::one.inspect("Vector3::one");
+
+  a = Vector3(-1, 0, 0);
+  b = Vector3(-1, 1, 0);
+  FixedFloat f = Vector3::angleTo(a, b);
+  f *= FixedFloat::deg_unit;
+  TestFixedFloat::print("Vector3::angleTo(a, b)", f);
 }
 
 
