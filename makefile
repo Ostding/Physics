@@ -14,7 +14,8 @@ dir:
 	mkdir -p ./bin
 
 PHYSIC_O= build/timer.o \
-					build/fixed_float.o
+					build/fixed_float.o\
+					build/vector3.o
 
 APP_O= build/main.o build/application.o 
 
@@ -30,6 +31,7 @@ none:
 ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/timer.cpp -o build/timer.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixed_float.cpp -o build/fixed_float.o	
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/vector3.cpp -o build/vector3.o	
 
 ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o

@@ -10,6 +10,7 @@ namespace physics
 	#define ffabs	 			FixedFloat::abs
 	#define ffsin  			FixedFloat::sin
 	#define ffcos  			FixedFloat::cos
+	#define ffacos  		FixedFloat::acos
 	#define ffexp  			FixedFloat::exp
 	#define ffpow  			FixedFloat::pow
 	#define ffmod  			FixedFloat::mod	
