@@ -156,12 +156,18 @@ namespace physics
 			return ffcast(r);
 		}
 
+		static const int64 acos_table[2001];
 		static int64 acos(const FixedFloat &v)
 		{
-			double f = v.to_d();
-			double r = std::acos(f);
-			return ffcast(r);	
+			int64 i = std::fmod(v.value/100, 6283);
+			return acos_table[i];
 		}
+		// static int64 acos(const FixedFloat &v)
+		// {
+		// 	double f = v.to_d();
+		// 	double r = std::acos(f);
+		// 	return ffcast(r);	
+		// }
 
 		static int64 atan(const FixedFloat &v) { return atan2(v, one); }
 		static int64 atan2(const FixedFloat &y, const FixedFloat &x)
