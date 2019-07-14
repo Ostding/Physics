@@ -73,6 +73,44 @@ namespace physics
       z -= other.z;
     }
 
+    Vector3 & operator = (const Vector3 & other)
+    {
+      x = other.x;
+      y = other.y;
+      z = other.z;
+      return *this;
+    }
+
+    bool operator == (const Vector3& other) const
+    {
+      return  x == other.x && y == other.y && z == other.z;
+    }
+
+    bool operator != (const Vector3& other) const
+    {
+      return !(*this == other);
+    }
+
+    bool operator < (const Vector3& other) const
+    {
+        return x < other.x && y < other.y && z < other.z;
+    }
+
+    bool operator > (const Vector3& other) const
+    {
+        return x > other.x && y > other.y && z > other.z;
+    }
+
+    bool operator < =(const Vector3& other) const
+    {
+        return x <= other.x && y <= other.y && z <= other.z;
+    }
+
+    bool operator > =(const Vector3& other) const
+    {
+        return x >= other.x && y >= other.y && z >= other.z;
+    }
+
     Vector3 scale (const ffloat &scale)
     {
       return Vector3(x * scale, y * scale, z * scale);
@@ -136,9 +174,24 @@ namespace physics
       return ffsqrt(x*x + y*y + z*z);
     }
 
-    ffloat sqearMag() const
+    ffloat squareMag() const
     {
       return x*x + y*y + z*z;
+    }
+
+    void clear()
+    {
+      x = y = z = 0;
+    }
+
+    void normalize()
+    {
+
+    }
+
+    void inspect()
+    {
+      printf("Vector3: %.5f %.5f %.5f\r\n", x.to_d(), y.to_d(), z.to_d());
     }
   }
 }

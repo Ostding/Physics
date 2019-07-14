@@ -21,6 +21,10 @@ void FixPointDemo::onDisplay()
       Press 'q' to quite sample application;");
 }
 
+FixedFloat testFunc()
+{
+  return 123LL;
+}
 
 void FixPointDemo::onKeyboardPress(unsigned char key)
 {
@@ -28,7 +32,6 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
   case 'g': case 'G':
     doTestFixedFloat();
     doTestSpeed();
-
     break;
   }
 

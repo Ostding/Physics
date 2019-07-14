@@ -71,20 +71,21 @@ namespace physics
 		bool operator >= 	(const FixedFloat & other) const { return value >= other.value; }
 		bool operator == 	(const FixedFloat & other) const { return value == other.value; }
 
-		FixedFloat operator + (const FixedFloat & other) const { return FixedFloat(value + other.value); } 
-		FixedFloat operator - (const FixedFloat & other) const { return FixedFloat(value - other.value); } 
-		FixedFloat operator * (const FixedFloat & other) const
+		int64 operator + (const FixedFloat & other) const { return value + other.value; } 
+		int64 operator - (const FixedFloat & other) const { return value - other.value; } 
+		
+		int64 operator * (const FixedFloat & other) const
 		{
 			double a = to_d();
 			double b = other.to_d();
-			return FixedFloat(a * b);
+			return ffcast(a * b);
 		}
 
-		FixedFloat operator / (const FixedFloat & other) const
+		int64 operator / (const FixedFloat & other) const
 		{
 			double a = to_d();
 			double b = other.to_d();
-			return FixedFloat(a / b);
+			return ffcast(a / b);
 		}
 
 		FixedFloat & operator += (const FixedFloat & other) { value += other.value; return *this; }
@@ -106,110 +107,105 @@ namespace physics
 			return *this;
 		}
 
-		FixedFloat operator -(void) const { return FixedFloat(-value); }
+		int64 operator -(void) const { return -value; }
 
 	public:
 		bool positive() const { return value > 0; }
 		bool negative() const { return value < 0; }
 		int round() const { return to_i(); }
-		FixedFloat abs() const { return abs(value); }
+		int64 abs() const { return abs(value); }
 
 		static const int64 sin_table[6283];
-		static FixedFloat sin(const FixedFloat &v)
+		static int64 sin(const FixedFloat &v)
 		{
 			int64 i = std::fmod(v.value/100, 6283);
-			return FixedFloat(sin_table[i]);
+			return sin_table[i];
 		}
 
 		static const int64 cos_table[6283];
-		static FixedFloat cos(const FixedFloat &v)
+		static int64 cos(const FixedFloat &v)
 		{
 			int64 i = std::fmod(v.value/100, 6283);
-			return FixedFloat(cos_table[i]);
+			return cos_table[i];
 		}
 
-		static FixedFloat tan(const FixedFloat &v)
+		static int64 tan(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::tan(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat asin(const FixedFloat &v)
+		static int64 asin(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::asin(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
 		static const int64 acos_table[2001];
-		static FixedFloat acos(const FixedFloat &v)
+		static int64 acos(const FixedFloat &v)
 		{
 			int64 i = std::fmod(v.value/100, 6283);
-			return FixedFloat(acos_table[i]);
+			return acos_table[i];
 		}
 
-		static FixedFloat atan(const FixedFloat &v) { return atan2(v, 100000LL); }
-
-		static FixedFloat atan2(const FixedFloat &y, const FixedFloat &x)
+		static int64 atan(const FixedFloat &v) { return atan2(v, one); }
+		static int64 atan2(const FixedFloat &y, const FixedFloat &x)
 		{
 			double fx = x.to_d();
 			double fy = y.to_d();
 			double r = std::atan2(fy, fx);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat abs(const FixedFloat &v) 
-		{ 
-			return FixedFloat(std::abs(v.value)); 
-		}
-
-		static FixedFloat pow(const FixedFloat &n, const FixedFloat &e) 
+		static int64 abs(const FixedFloat &v) { return std::abs(v.value); }
+		static int64 pow(const FixedFloat &n, const FixedFloat &e) 
 		{ 
 			double fn = n.to_d();
 			double fe = e.to_d();
 			double r = std::pow(fn, fe);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat sqrt(const FixedFloat &v)
+		static int64 sqrt(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::sqrt(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat exp(const FixedFloat &v)
+		static int64 exp(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::exp(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat mod(const FixedFloat &a, const FixedFloat &b)
+		static int64 mod(const FixedFloat &a, const FixedFloat &b)
 		{
 			double fa = a.to_d();
 			double fb = b.to_d();
 			double r = std::fmod(fa, fb);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat log(const FixedFloat &v)
+		static int64 log(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::log10(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat ln(const FixedFloat &v)
+		static int64 ln(const FixedFloat &v)
 		{
 			double f = v.to_d();
 			double r = std::log(f);
-			return FixedFloat(r);
+			return ffcast(r);
 		}
 
-		static FixedFloat to_rad(const FixedFloat &v) { return v * rad_unit; }
-		static FixedFloat to_deg(const FixedFloat &v) { return v * deg_unit; }
+		static int64 to_rad(const FixedFloat &v) { return v * rad_unit; }
+		static int64 to_deg(const FixedFloat &v) { return v * deg_unit; }
 
 
   public:
