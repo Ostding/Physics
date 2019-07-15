@@ -63,6 +63,7 @@ void FixPointDemo::doTestQuaternion()
 
    angles = Vector3(ffzero, ffloat(90), ffzero);
    Quaternion q = Quaternion::fromEulerAngles(angles);
+   q.inspect("Quaternion::fromEulerAngles(Vector3(0, 90, 0))");
    Vector3 v = Vector3(ffzero, ffzero, ffloat(-10));
    v = q * v;
    v.inspect("q * v");

@@ -125,14 +125,6 @@ namespace physics
 
       Vector3 toEulerAngles()
       {
-        // ffloat halfRad = ffacos(r);
-        // ffloat sv = ffsin(halfRad);
-        // ffloat iv = ffone / sv;
-        // ffloat xRad = ffacos(i * iv);
-        // ffloat yRad = ffacos(j * iv);
-        // ffloat zRad = ffacos(j * iv);
-        // return Vector3(fftodeg(xRad), fftodeg(yRad), fftodeg(zRad));
-
         ffloat sinr_cosp = fftwo * (r * i + j * k);
         ffloat cosr_cosp = ffone - fftwo * (i * i + j * j);
         ffloat x = ffatan2(sinr_cosp, cosr_cosp);
