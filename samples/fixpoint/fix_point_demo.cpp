@@ -60,6 +60,12 @@ void FixPointDemo::doTestQuaternion()
    a.inspect("Quaternion::fromEulerAngles(Vector3(ffloat(30), ffloat(60), ffloat(45))");
    Vector3 ret = a.toEulerAngles();
    ret.inspect("a.toEulerAngles()");
+
+   angles = Vector3(ffzero, ffloat(90), ffzero);
+   Quaternion q = Quaternion::fromEulerAngles(angles);
+   Vector3 v = Vector3(ffzero, ffzero, ffloat(-10));
+   v = q * v;
+   v.inspect("q * v");
 }
 
 void FixPointDemo::doTestVector3()

@@ -204,17 +204,6 @@ namespace physics
         return Quaternion(r, i, j, k);
       }
 
-      static Quaternion fromVector3(const Vector3 &v)
-      {
-        return Quaternion(ffzero, v.x, v.y, v.z);
-      }
-
-      Vector3 toVector3()
-      {
-        ffloat rad = fftwo * ffacos(r);
-        return Vector3(ffcos(rad), ffzero, ffsin(rad));
-      }
-
       Vector3 operator*(const Vector3 &v)
       {
         Quaternion qv;
