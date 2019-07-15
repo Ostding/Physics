@@ -74,9 +74,12 @@ void FixPointDemo::doTestCores()
 
   a = Vector3(-1, 0, 0);
   b = Vector3(-1, 1, 0);
-  FixedFloat f = Vector3::angleTo(a, b);
-  f *= FixedFloat::deg_unit;
-  TestFixedFloat::print("Vector3::angleTo(a, b)", f);
+  ffloat f = Vector3::angleTo(a, b);
+  f *= ffdeg_unit;
+  printff("Vector3::angleTo(a, b)", f);
+
+  ffloat r = a.dot(b);
+  printff("a.dot(b)", r);
 }
 
 

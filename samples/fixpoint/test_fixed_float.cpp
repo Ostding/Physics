@@ -1,27 +1,5 @@
 #include "test_fixed_float.h"
-#include "timer.h"
 #include <stdarg.h>
-#include "my_printf.h"
-
-#ifdef __ANDROID__
-#include <android/log.h>
-
-void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
-{
-	char psz[256] = {0};
-	sprintf(psz, "%s => %s \n", pszCap, f.to_s());
-	__android_log_print(ANDROID_LOG_INFO, LOG_TGA, "%s", psz);
-}
-
-#else
-
-void TestFixedFloat::print(const char *pszCap, const FixedFloat &f)
-{
-  printf("%s => %s \n", pszCap, f.to_s());
-}
-
-#endif
-
 
 
 void TestFixedFloat::doTest()
@@ -29,33 +7,33 @@ void TestFixedFloat::doTest()
   myPrintf("/////////////Test FixedFloat////////////////////\n");
   myPrintf("////test constructors\n");
   FixedFloat a = FixedFloat();
-  print("FixedFloat a = FixedFloat()", a);
+  printff("FixedFloat a = FixedFloat()", a);
   FixedFloat b = FixedFloat(1);
-  print("FixedFloat b = FixedFloat()", b);
+  printff("FixedFloat b = FixedFloat()", b);
   FixedFloat c = FixedFloat(12345678);
-  print("FixedFloat c = FixedFloat(12345678)", c);
+  printff("FixedFloat c = FixedFloat(12345678)", c);
   FixedFloat d = FixedFloat(12345678LL);
-  print("FixedFloat d = FixedFloat(12345678LL)", d);
+  printff("FixedFloat d = FixedFloat(12345678LL)", d);
   FixedFloat e = FixedFloat(3.141592);
-  print("FixedFloat e = FixedFloat(3.141592)", e);
+  printff("FixedFloat e = FixedFloat(3.141592)", e);
   FixedFloat f = FixedFloat(3.141592f);
-  print("FixedFloat f = FixedFloat(3.141592f)", f);
+  printff("FixedFloat f = FixedFloat(3.141592f)", f);
 
   myPrintf("////test consts\n");
-  print("FixedFloat::zero", FixedFloat::zero);
-  print("FixedFloat::one", FixedFloat::one);
-  print("FixedFloat::half", FixedFloat::half);
-  print("FixedFloat::two", FixedFloat::two);
-  print("FixedFloat::ten", FixedFloat::ten);
-  print("FixedFloat::f100", FixedFloat::f100);
-  print("FixedFloat::f90", FixedFloat::f90);
-  print("FixedFloat::pi", FixedFloat::pi);
-  print("FixedFloat::half_pi", FixedFloat::half_pi);
-  print("FixedFloat::quat_pi", FixedFloat::quat_pi);
-  print("FixedFloat::two_pi", FixedFloat::two_pi);
-  print("FixedFloat::rad_unit", FixedFloat::rad_unit);
-  print("FixedFloat::deg_unit", FixedFloat::deg_unit);
-  print("FixedFloat::e", FixedFloat::e);
+  printff("FixedFloat::zero", FixedFloat::zero);
+  printff("FixedFloat::one", FixedFloat::one);
+  printff("FixedFloat::half", FixedFloat::half);
+  printff("FixedFloat::two", FixedFloat::two);
+  printff("FixedFloat::ten", FixedFloat::ten);
+  printff("FixedFloat::f100", FixedFloat::f100);
+  printff("FixedFloat::f90", FixedFloat::f90);
+  printff("FixedFloat::pi", FixedFloat::pi);
+  printff("FixedFloat::half_pi", FixedFloat::half_pi);
+  printff("FixedFloat::quat_pi", FixedFloat::quat_pi);
+  printff("FixedFloat::two_pi", FixedFloat::two_pi);
+  printff("FixedFloat::rad_unit", FixedFloat::rad_unit);
+  printff("FixedFloat::deg_unit", FixedFloat::deg_unit);
+  printff("FixedFloat::e", FixedFloat::e);
 
   myPrintf("////test convertion\n");
   FixedFloat x = FixedFloat(12);
@@ -71,18 +49,18 @@ void TestFixedFloat::doTest()
   myPrintf("////test operation override\n");
   FixedFloat y = FixedFloat(12345678.12345);
   x = FixedFloat();
-  print("x", x);
-  print("y", y);
+  printff("x", x);
+  printff("y", y);
   x = y;
-  print("x = y", x);
+  printff("x = y", x);
   x = 123;
-  print("x = 123", x);
+  printff("x = 123", x);
   x = 123456789LL;
-  print("x = 123456789LL", x);
+  printff("x = 123456789LL", x);
   x = 123.456f;
-  print("x = 123.456f", x);
+  printff("x = 123.456f", x);
   x = 456.789;
-  print("x = 456.789", x);
+  printff("x = 456.789", x);
   bool _b = x < y;
   myPrintf("x < y => %s \n", _b ? "true" : "false");
   _b = x <= y;
@@ -98,27 +76,27 @@ void TestFixedFloat::doTest()
 
   x = FixedFloat(10);
   y = FixedFloat(2.5f);
-  print("x", x);
-  print("y", y);
+  printff("x", x);
+  printff("y", y);
   FixedFloat z = x + y;
-  print("z = x + y", z);
+  printff("z = x + y", z);
   z = x - y;
-  print("z = x - y", z);
+  printff("z = x - y", z);
   z = x * y;
-  print("z = x * y", z);
+  printff("z = x * y", z);
   z = x / y;
-  print("z = x / y", z);
+  printff("z = x / y", z);
 
   x += y;
-  print("x += y", x);
+  printff("x += y", x);
   x -= y;
-  print("x -= y", x);
+  printff("x -= y", x);
   x *= y;
-  print("x *= y", x);
+  printff("x *= y", x);
   x /= y;
-  print("x /= y", x);
+  printff("x /= y", x);
   x = -x;
-  print("x = -x", x);
+  printff("x = -x", x);
 
   myPrintf("////test functions\n");
   _b = x.positive();
@@ -128,95 +106,95 @@ void TestFixedFloat::doTest()
   n = y.round();
   myPrintf("y.round() => %d \n", n);
   x = x.abs();
-  print("x.abs()", x);
+  printff("x.abs()", x);
 
   x = FixedFloat::sin(FixedFloat::zero);
-  print("FixedFloat::sin(FixedFloat::zero)", x);
+  printff("FixedFloat::sin(FixedFloat::zero)", x);
   x = FixedFloat::sin(FixedFloat::half_pi);
-  print("FixedFloat::sin(FixedFloat::half_pi)", x);
+  printff("FixedFloat::sin(FixedFloat::half_pi)", x);
   x = FixedFloat::sin(FixedFloat::quat_pi);
-  print("FixedFloat::sin(FixedFloat::quat_pi)", x);
+  printff("FixedFloat::sin(FixedFloat::quat_pi)", x);
   x = FixedFloat::sin(FixedFloat::pi);
-  print("FixedFloat::sin(FixedFloat::pi)", x);
+  printff("FixedFloat::sin(FixedFloat::pi)", x);
 
   x = FixedFloat::cos(FixedFloat::zero);
-  print("FixedFloat::cos(FixedFloat::zero)", x);
+  printff("FixedFloat::cos(FixedFloat::zero)", x);
   x = FixedFloat::cos(FixedFloat::half_pi);
-  print("FixedFloat::cos(FixedFloat::half_pi)", x);
+  printff("FixedFloat::cos(FixedFloat::half_pi)", x);
   x = FixedFloat::cos(FixedFloat::quat_pi);
-  print("FixedFloat::cos(FixedFloat::quat_pi)", x);
+  printff("FixedFloat::cos(FixedFloat::quat_pi)", x);
   x = FixedFloat::cos(FixedFloat::pi);
-  print("FixedFloat::cos(FixedFloat::pi)", x);
+  printff("FixedFloat::cos(FixedFloat::pi)", x);
 
   x = FixedFloat::tan(FixedFloat::zero);
-  print("FixedFloat::tan(FixedFloat::zero)", x);
+  printff("FixedFloat::tan(FixedFloat::zero)", x);
   x = FixedFloat::tan(FixedFloat::half_pi);
-  print("FixedFloat::tan(FixedFloat::half_pi)", x);
+  printff("FixedFloat::tan(FixedFloat::half_pi)", x);
   x = FixedFloat::tan(FixedFloat::quat_pi);
-  print("FixedFloat::tan(FixedFloat::quat_pi)", x);
+  printff("FixedFloat::tan(FixedFloat::quat_pi)", x);
   x = FixedFloat::tan(FixedFloat::pi);
-  print("FixedFloat::tan(FixedFloat::pi)", x);
+  printff("FixedFloat::tan(FixedFloat::pi)", x);
 
   x = FixedFloat::asin(FixedFloat::zero);
-  print("FixedFloat::asin(FixedFloat::zero)", x);
+  printff("FixedFloat::asin(FixedFloat::zero)", x);
   x = FixedFloat::asin(FixedFloat::one);
-  print("FixedFloat::asin(FixedFloat::one)", x);
+  printff("FixedFloat::asin(FixedFloat::one)", x);
   x = FixedFloat::asin(FixedFloat::half);
-  print("FixedFloat::asin(FixedFloat::half)", x);
+  printff("FixedFloat::asin(FixedFloat::half)", x);
 
   x = FixedFloat::acos(FixedFloat::zero);
-  print("FixedFloat::acos(FixedFloat::zero)", x);
+  printff("FixedFloat::acos(FixedFloat::zero)", x);
   x = FixedFloat::acos(FixedFloat::one);
-  print("FixedFloat::acos(FixedFloat::one)", x);
+  printff("FixedFloat::acos(FixedFloat::one)", x);
 
   x = FixedFloat::atan(FixedFloat::zero);
-  print("FixedFloat::atan(FixedFloat::zero)", x);
+  printff("FixedFloat::atan(FixedFloat::zero)", x);
   x = FixedFloat::atan(FixedFloat::one);
-  print("FixedFloat::atan(FixedFloat::one)", x);
+  printff("FixedFloat::atan(FixedFloat::one)", x);
   x = FixedFloat::atan(FixedFloat::half);
-  print("FixedFloat::atan(FixedFloat::half)", x);
+  printff("FixedFloat::atan(FixedFloat::half)", x);
   
   x = FixedFloat::atan2(FixedFloat::one, FixedFloat::zero);
-  print("FixedFloat::atan2(FixedFloat::one, FixedFloat::zero)", x);
+  printff("FixedFloat::atan2(FixedFloat::one, FixedFloat::zero)", x);
   x = FixedFloat::atan2(FixedFloat::two, FixedFloat::one);
-  print("FixedFloat::atan2(FixedFloat::two, FixedFloat::one)", x);
+  printff("FixedFloat::atan2(FixedFloat::two, FixedFloat::one)", x);
 
   x = FixedFloat::sqrt(FixedFloat(4));
-  print("FixedFloat::sqrt(FixedFloat(4))", x);
+  printff("FixedFloat::sqrt(FixedFloat(4))", x);
   x = FixedFloat::sqrt(FixedFloat(2));
-  print("FixedFloat::sqrt(FixedFloat(2))", x);
+  printff("FixedFloat::sqrt(FixedFloat(2))", x);
 
   x = FixedFloat::sqrt(FixedFloat(1));
-  print("FixedFloat::sqrt(FixedFloat(1))", x);
+  printff("FixedFloat::sqrt(FixedFloat(1))", x);
   x = FixedFloat::sqrt(FixedFloat(2));
-  print("FixedFloat::sqrt(FixedFloat(2))", x);
+  printff("FixedFloat::sqrt(FixedFloat(2))", x);
 
   x = FixedFloat::mod(FixedFloat(5), FixedFloat(2));
-  print("FixedFloat::mod(FixedFloat(5), FixedFloat(2))", x);
+  printff("FixedFloat::mod(FixedFloat(5), FixedFloat(2))", x);
   x = FixedFloat::mod(FixedFloat(3.5f), FixedFloat(1.5f));
-  print("FixedFloat::mod(FixedFloat(3.5f), FixedFloat(1.5f))", x);
+  printff("FixedFloat::mod(FixedFloat(3.5f), FixedFloat(1.5f))", x);
   
   x = FixedFloat::log(FixedFloat(1000));
-  print("FixedFloat::log(FixedFloat(1000))", x);
+  printff("FixedFloat::log(FixedFloat(1000))", x);
   x = FixedFloat::log(FixedFloat(100));
-  print("FixedFloat::log(FixedFloat(100))", x);
+  printff("FixedFloat::log(FixedFloat(100))", x);
   x = FixedFloat::log(FixedFloat(0.1f));
-  print("FixedFloat::log(FixedFloat(0.1f))", x);
+  printff("FixedFloat::log(FixedFloat(0.1f))", x);
 
   x = FixedFloat::ln(FixedFloat(16));
-  print("FixedFloat::ln(FixedFloat(16))", x);  
+  printff("FixedFloat::ln(FixedFloat(16))", x);  
   x = FixedFloat::ln(FixedFloat::e);
-  print("FixedFloat::ln(FixedFloat::e)", x);  
+  printff("FixedFloat::ln(FixedFloat::e)", x);  
 
   x = FixedFloat::to_rad(FixedFloat(90));
-  print("FixedFloat::to_rad(FixedFloat(90))", x);
+  printff("FixedFloat::to_rad(FixedFloat(90))", x);
   x = FixedFloat::to_rad(FixedFloat(180));
-  print("FixedFloat::to_rad(FixedFloat(180))", x);
+  printff("FixedFloat::to_rad(FixedFloat(180))", x);
 
   x = FixedFloat::to_deg(FixedFloat::pi);
-  print("FixedFloat::to_deg(FixedFloat::pi)", x);
+  printff("FixedFloat::to_deg(FixedFloat::pi)", x);
   x = FixedFloat::to_deg(FixedFloat::half_pi);
-  print("FixedFloat::to_deg(FixedFloat::half_pi)", x);
+  printff("FixedFloat::to_deg(FixedFloat::half_pi)", x);
 
 
   myPrintf("//////////////////\n\n");
@@ -282,31 +260,31 @@ void TestFixedFloat::doTestSpeed()
   for(int i = 0; i < count; i++)
     ret1 = m + n;
   Timer::stop("FixedFloat +");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   Timer::start();
   for(int i = 0; i < count; i++)
     ret1 = m - n;
   Timer::stop("FixedFloat -");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   Timer::start();
   for(int i = 0; i < count; i++)
     ret1 = m * n;
   Timer::stop("FixedFloat *");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   Timer::start();
   for(int i = 0; i < count; i++)
     ret1 = m / n;
   Timer::stop("FixedFloat /");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   Timer::start();
   for(int i = 0; i < count; i++)
     ret1 = FixedFloat::sqrt(m);
   Timer::stop("FixedFloat sqrt");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   Timer::start();
   for(int i = 0; i < count; i++)
     ret1 = FixedFloat::sin(FixedFloat::half_pi);
   Timer::stop("FixedFloat sin");
-  print("ret1", ret1);
+  printff("ret1", ret1);
   myPrintf("%s\n\n", "");
 }
