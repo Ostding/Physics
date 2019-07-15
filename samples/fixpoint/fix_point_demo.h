@@ -15,5 +15,6 @@ private:
   void doTestFixedFloat();
   void doTestSpeed();
 
-  void doTestCores();
+  void doTestVector3();
+  void doTestQuaternion();
 };

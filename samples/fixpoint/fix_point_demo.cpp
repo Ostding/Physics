@@ -1,7 +1,6 @@
 #include "fix_point_demo.h"
-#include "timer.h"
 #include "test_fixed_float.h"
-#include "types.h"
+#include "physics.h"
 
 FixPointDemo::FixPointDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -34,7 +33,8 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
     doTestFixedFloat();
     // doTestSpeed();
 
-    doTestCores();
+    doTestVector3();
+    doTestQuaternion();
     break;
   }
 
@@ -52,17 +52,46 @@ void FixPointDemo::doTestFixedFloat()
   TestFixedFloat::doTest();
 }
 
-void FixPointDemo::doTestCores()
+void FixPointDemo::doTestQuaternion()
 {
+   myPrintf("/////////test Quaternion/////// \n");
+   Vector3 angles = Vector3(ffloat(30), ffloat(60), ffloat(45));
+   Quaternion a = Quaternion::fromEulerAngles(angles);
+   a.inspect("Quaternion::fromEulerAngles(Vector3(ffloat(30), ffloat(60), ffloat(45))");
+   Vector3 ret = a.toEulerAngles();
+   ret.inspect("a.toEulerAngles()");
+}
+
+void FixPointDemo::doTestVector3()
+{
+  myPrintf("/////////test Vector3///////");
   Vector3 a = Vector3(1,1,1);
   a.inspect("Vector3(1,1,1)");
-  a = a.scale(2);
-  a.inspect("a.scale(2)");
-  a.scaleUpdate(2);
+  a = a.scale(ffloat(2));
+  a.inspect("a.scale(ffloat(2))");
+  a.scaleUpdate(ffloat(2));
   a.inspect("a.scaleUpdate(2)");
   Vector3 b = Vector3(2,2,2);
+  b.inspect("b");
   a += b;
   a.inspect("a += b");
+  a -= b;
+  a.inspect("a -= b");
+  bool _b = a == b;
+  myPrintf("a == b => %s \n", _b ? "true" : "false");
+  _b = a > b;
+  myPrintf("a > b => %s \n", _b ? "true" : "false");
+  _b = a < b;
+  myPrintf("a < b => %s \n", _b ? "true" : "false");
+   _b = a >= b;
+  myPrintf("a >= b => %s \n", _b ? "true" : "false");
+  _b = a <= b;
+  myPrintf("a <= b => %s \n", _b ? "true" : "false");
+  a = -a;
+  a.inspect("a = -a");
+  Vector3 c = a.product(b);
+  c.inspect("a.product(b)");
+
 
   Vector3::up.inspect("Vector3::up");
   Vector3::right.inspect("Vector3::right");
@@ -80,6 +109,17 @@ void FixPointDemo::doTestCores()
 
   ffloat r = a.dot(b);
   printff("a.dot(b)", r);
+
+  c = a.cross(b);
+  c.inspect("a.cross(b)");
+
+  a.inspect("a");
+  b.inspect("b");
+  a.addScaleVector(b, ffloat(2));
+  a.inspect("a.addScaleVector(b, ffloat(2))");
+
+  a.normalize();
+  a.inspect("a.normalize()");
 }
 
 

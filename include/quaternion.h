@@ -1,6 +1,7 @@
 #ifndef __QUATERNION_H__
 #define __QUATERNION_H__
 #include "types.h"
+#include "vector3.h"
 
 namespace physics
 {
@@ -122,7 +123,7 @@ namespace physics
          (*this) *= q;
       }
 
-      Vector3 eulerAngles()
+      Vector3 toEulerAngles()
       {
         // ffloat halfRad = ffacos(r);
         // ffloat sv = ffsin(halfRad);
@@ -154,7 +155,7 @@ namespace physics
         ffloat siny_cosp = fftwo * (r * k + i * j);
         ffloat cosy_cosp = ffone - fftwo * (j * j + k * k);  
         ffloat z = ffatan2(siny_cosp, cosy_cosp);
-        return Vector3(x, y, z);
+        return Vector3(fftodeg(x), fftodeg(y), fftodeg(z));
       }
 
       void toAxisAngle(Vector3 &axis, ffloat &angle)
@@ -170,14 +171,18 @@ namespace physics
         return fftodeg(fftwo * ffacos(r));
       }
 
-      static Quaternion fromEuler(const Vector3 &v)
+      static Quaternion fromEulerAngles(const Vector3 &v)
       {
-        ffloat cy = ffcos(v.x * 0.5);
-        ffloat sy = ffsin(v.x * 0.5);
-        ffloat cp = ffcos(v.y * 0.5);
-        ffloat sp = ffsin(v.y * 0.5);
-        ffloat cr = ffcos(v.z * 0.5);
-        ffloat sr = ffsin(v.z * 0.5);
+        ffloat radX = fftorad(v.x * ffhalf);
+        ffloat radY = fftorad(v.y * ffhalf);
+        ffloat radZ = fftorad(v.z * ffhalf);
+
+        ffloat cr = ffcos(radX);
+        ffloat sr = ffsin(radX);
+        ffloat cy = ffcos(radZ);
+        ffloat sy = ffsin(radZ);
+        ffloat cp = ffcos(radY);
+        ffloat sp = ffsin(radY);
 
         ffloat r = cy * cp * cr + sy * sp * sr;
         ffloat i = cy * cp * sr - sy * sp * cr;
@@ -190,7 +195,7 @@ namespace physics
       static Quaternion fromAxisAngle(const Vector3 &axis, const ffloat angle)
       {
         ffloat rad = fftorad(angle);
-        ffloat half = angle * ffhalf;
+        ffloat half = rad * ffhalf;
         ffloat s = ffsin(half);
         ffloat r = ffcos(half);
         ffloat i = axis.x * s;

@@ -1,6 +1,6 @@
 TARGETS= fraction_demo
 INC_FLAGS= -I./include -I./
-CPP_FLAGS= -g -Wall -std=c++11 -pthread -Wno-shift-count-overflow  -Wno-deprecated-declarations -Wno-return-stack-address
+CPP_FLAGS= -g -Wall -std=c++11 -pthread -Wno-shift-count-overflow  -Wno-deprecated-declarations -Wno-unused-function
 
 PLAT_FLAGS=-L/System/Library/Frameworks -framework OpenGL -framework GLUT -framework Foundation 
 

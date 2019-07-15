@@ -4,7 +4,7 @@
 
 namespace physics
 {
-	typedef FixedFloat ffloat;
+	#define ffloat			FixedFloat 	
 	#define tostring(x) (x.to_s())
 	#define ffsqrt 			FixedFloat::sqrt
 	#define ffabs	 			FixedFloat::abs
@@ -37,7 +37,4 @@ namespace physics
 
 }
 
-#include "my_printf.h"
-#include "timer.h"
-#include "vector3.h"
 #endif

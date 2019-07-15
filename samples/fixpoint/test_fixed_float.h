@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cstdlib>
-#include "types.h"
+#include "physics.h"
 using namespace std;
 using namespace physics;
 
