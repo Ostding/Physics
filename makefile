@@ -32,6 +32,7 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/timer.cpp -o build/timer.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/fixed_float.cpp -o build/fixed_float.o	
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/vector3.cpp -o build/vector3.o	
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/quaternion.cpp -o build/quaternion.o	
 
 ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o

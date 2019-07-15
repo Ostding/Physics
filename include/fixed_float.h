@@ -70,6 +70,7 @@ namespace physics
 		bool operator > 	(const FixedFloat & other) const { return value >  other.value; }
 		bool operator >= 	(const FixedFloat & other) const { return value >= other.value; }
 		bool operator == 	(const FixedFloat & other) const { return value == other.value; }
+		bool operator != 	(const FixedFloat & other) const { return value != other.value; }
 
 		FixedFloat operator + (const FixedFloat & other) const { return FixedFloat(value + other.value); } 
 		FixedFloat operator - (const FixedFloat & other) const { return FixedFloat(value - other.value); } 
