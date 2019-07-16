@@ -50,7 +50,7 @@ namespace physics
       return *this;
     }
 
-    Vector3 operator + (const Vector3 &other)
+    Vector3 operator + (const Vector3 &other) const
     {
       return Vector3(x + other.x, y + other.y, z + other.z);
     }
@@ -62,7 +62,7 @@ namespace physics
       z += other.z;
     }
 
-    Vector3 operator - (const Vector3 &other)
+    Vector3 operator - (const Vector3 &other) const
     {
       return Vector3(x - other.x, y - other.y, z - other.z);
     }
@@ -120,6 +120,11 @@ namespace physics
     {
       ffloat rad = ffatan2(z, x);
       return fftodeg(rad);
+    }
+
+    Vector3 operator * (const ffloat &scale) const 
+    {
+      return Vector3(x * scale, y * scale, z * scale);
     }
 
     Vector3 scale (const ffloat scale) const
