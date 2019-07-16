@@ -224,7 +224,7 @@ namespace physics
         data[8] = ffone - (fftwo * q.i*q.i  + fftwo * q.j*q.j);
       }
 
-      Matrix3 Matrix3::linearInterpolate(const Matrix3& a, const Matrix3& b, ffloat prop)
+      Matrix3 linearInterpolate(const Matrix3& a, const Matrix3& b, ffloat prop)
 			{
 				Matrix3 result;
 				for (unsigned i = 0; i < 9; i++) 
@@ -234,6 +234,11 @@ namespace physics
 				return result;
 			}
 
+      void inspect(const char *pszTag = "") const
+      {
+        printf("[%s] Matrix3: \r\n %.5f %.5f %.5f \r\n %.5f %.5f %.5f \r\n %.5f %.5f %.5f \r\n", pszTag, 
+                data[0].to_d(), data[1].to_d(), data[2].to_d(), data[3].to_d(), data[4].to_d(), data[5].to_d(), data[6].to_d(), data[7].to_d(), data[8].to_d());
+      }
 	};
 
 }

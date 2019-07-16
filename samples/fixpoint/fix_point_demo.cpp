@@ -35,6 +35,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
 
     doTestVector3();
     doTestQuaternion();
+    doTestMatrix3();
     break;
   }
 
@@ -50,6 +51,22 @@ void FixPointDemo::doTestSpeed()
 void FixPointDemo::doTestFixedFloat()
 {
   TestFixedFloat::doTest();
+}
+
+void FixPointDemo::doTestMatrix3()
+{
+  myPrintf("/////////test Matrix3/////// \n");
+  Vector3 angles = Vector3(ffzero, ffloat(90), ffzero);
+  Quaternion q = Quaternion::fromEulerAngles(angles);
+  Matrix3 m = Matrix3();
+  m.setOrientation(q);
+  Vector3 v = Vector3(ffzero, ffzero, ffloat(-10));
+  v.inspect("v");
+  v = m.transform(v);
+  v.inspect("m.transform(v)");
+
+  v = m.transposeTransform(v);
+  v.inspect("m.transposeTransform(v)");
 }
 
 void FixPointDemo::doTestQuaternion()
