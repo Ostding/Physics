@@ -18,4 +18,5 @@ private:
   void doTestVector3();
   void doTestQuaternion();
   void doTestMatrix3();
+  void doTestMatrix4();
 };

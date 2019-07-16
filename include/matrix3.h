@@ -2,6 +2,7 @@
 #define __MATRIX3_H__
 #include "types.h"
 #include "vector3.h"
+#include "quaternion.h"
 
 namespace physics
 {
@@ -21,7 +22,7 @@ namespace physics
 
 			Matrix3(const Matrix3 &other)
 			{
-				memcpy(&data, &other.data, 9*sizeof(ffloat));
+				memcpy(&data, &other.data, 9 * sizeof(ffloat));
 			}
 
 			Matrix3(ffloat c0, ffloat c1, ffloat c2, 
@@ -40,7 +41,7 @@ namespace physics
 
 			Matrix3 & operator = (const Matrix3 &other)
 			{
-				memcpy(&data, &other.data, 9*sizeof(ffloat));
+				memcpy(&data, &other.data, 9 * sizeof(ffloat));
 				return *this;
 			}
 

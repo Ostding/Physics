@@ -36,6 +36,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
     doTestVector3();
     doTestQuaternion();
     doTestMatrix3();
+    doTestMatrix4();
     break;
   }
 
@@ -53,6 +54,25 @@ void FixPointDemo::doTestFixedFloat()
   TestFixedFloat::doTest();
 }
 
+void FixPointDemo::doTestMatrix4()
+{
+  myPrintf("/////////test Matrix4/////// \n");
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(0, 0, 0));
+  Vector3 p = Vector3(ffloat(1.5), ffloat(2.5), ffloat(3));
+  Matrix4 m = Matrix4();
+  m.setOrientationAndPos(q, p);
+
+  Vector3 v = Vector3(1,1,1);
+  v = m.transform(v);
+  v.inspect("m.transform(v)[just position translate]");
+
+  q = Quaternion::fromEulerAngles(Vector3(0, 90, 0));
+  m.setOrientationAndPos(q, p);
+  v = Vector3(1,1,1);
+  v = m.transform(v);
+  v.inspect("m.transform(v)[trun 90 around y axis]");
+}
+
 void FixPointDemo::doTestMatrix3()
 {
   myPrintf("/////////test Matrix3/////// \n");
@@ -67,6 +87,16 @@ void FixPointDemo::doTestMatrix3()
 
   v = m.transposeTransform(v);
   v.inspect("m.transposeTransform(v)");
+
+  Vector3 angles1 = Vector3(ffloat(45), ffzero, ffloat(30));
+  Quaternion q1 = Quaternion::fromEulerAngles(angles1);
+  Matrix3 m1 = Matrix3();
+  m1.setOrientation(q1);
+  m1.inspect("m1");
+  m.inspect("m");
+  m = m1;
+  m.inspect("m = m1");
+
 }
 
 void FixPointDemo::doTestQuaternion()

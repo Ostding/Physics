@@ -109,6 +109,19 @@ namespace physics
       return Vector3(-x, -y, -z);
     }
 
+    void invert()
+    {
+      x = -x;
+      y = -y;
+      z = -z;
+    }
+
+    ffloat toAxisYRotateAngle()
+    {
+      ffloat rad = ffatan2(z, x);
+      return fftodeg(rad);
+    }
+
     Vector3 scale (const ffloat scale) const
     {
       return Vector3(x * scale, y * scale, z * scale);
