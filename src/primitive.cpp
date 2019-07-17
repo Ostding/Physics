@@ -1,5 +1,5 @@
+#include <assert.h>
 #include "primitive.h"
-#include <assert>
 
 namespace physics
 {
@@ -30,5 +30,15 @@ namespace physics
     void Primitive::updateTransform()
     {
       transform = body->transformMatrix * offset;
+    }
+
+    Vector3 Primitive::getColumnVector(unsigned index) const
+    {
+      return transform.getColumnVector(index);
+    }
+
+    Vector3 Primitive::getTransformPos() const
+    {
+      return transform.getTransformPos();
     }
 }

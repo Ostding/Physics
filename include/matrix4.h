@@ -170,14 +170,14 @@ namespace physics
       );
     }
 
-    Vector3 getColumn(int i) const
+    Vector3 getColumnVector(int i) const
     {
       return Vector3(data[i], data[i + 4], data[i + 8]);
     }
 
     Vector3 getTransformPos() const
     {
-      return Vector3(data[3], data[7], data[1]);
+      return Vector3(data[3], data[7], data[11]);
     }
 
     void setOrientationAndPos(const Quaternion &q, const Vector3 &pos)

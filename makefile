@@ -13,12 +13,9 @@ dir:
 	mkdir -p ./build
 	mkdir -p ./bin
 
-PHYSIC_O= build/timer.o \
-					build/fixed_float.o\
-					build/vector3.o \
-					build/quaternion.o \
-					build/body.o \
-					build/renderer.o
+PHYSIC_O= build/timer.o build/fixed_float.o build/vector3.o build/quaternion.o \
+					build/body.o build/primitive.o build/plane.o build/sphere.o\
+					build/renderer.o 
 
 APP_O= build/main.o build/application.o 
 
@@ -37,6 +34,9 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/vector3.cpp -o build/vector3.o	
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/quaternion.cpp -o build/quaternion.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/body.cpp -o build/body.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/primitive.cpp -o build/primitive.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/plane.cpp -o build/plane.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/sphere.cpp -o build/sphere.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/renderer.cpp -o build/renderer.o
 
 ${APP_O}:

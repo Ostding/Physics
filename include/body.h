@@ -72,6 +72,7 @@ namespace physics
 
   public:
     void clearAccumulators();
+    void calculateDerivedData();
   };
 }
 

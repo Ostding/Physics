@@ -11,5 +11,9 @@
 #include "matrix4.h"
 #include "aabb.h"
 #include "primitive.h"
+#include "plane.h"
+
+
+
 #include "renderer.h"
 #endif
