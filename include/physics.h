@@ -9,7 +9,7 @@
 #include "quaternion.h"
 #include "matrix3.h"
 #include "matrix4.h"
-#include "renderer.h"
 #include "aabb.h"
-
+#include "primitive.h"
+#include "renderer.h"
 #endif

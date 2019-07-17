@@ -34,7 +34,8 @@ namespace physics
 	#define fftodeg 		FixedFloat::to_deg
 	#define fftorad 		FixedFloat::to_rad
 	#define ffe 				FixedFloat::e
-
 }
+
+
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef __MATRIX3_H__
 #define __MATRIX3_H__
 #include "types.h"
-#include "vector3.h"
 #include "quaternion.h"
 
 namespace physics

@@ -3,7 +3,7 @@
 
 namespace physics
 {
-  static void Renderer::renderAABB(const AABB &o)
+  void Renderer::renderAABB(const AABB &o)
   {
     glBegin(GL_LINE_LOOP);
     COLOR_AABB

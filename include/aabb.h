@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "vector3.h"
+#include "renderer.h"
 
 namespace physics
 {
