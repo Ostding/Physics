@@ -1,4 +1,5 @@
 #include "primitive.h"
+#include <assert>
 
 namespace physics
 {
@@ -22,10 +23,10 @@ namespace physics
     }
 
     void Primitive::refreshAABB()
-    {
-      
+    {      
+      assert("You shoule implement refreshAABB method!!!");
     }
-    
+
     void Primitive::updateTransform()
     {
       transform = body->transformMatrix * offset;
