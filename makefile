@@ -19,9 +19,6 @@ PHYSIC_O= build/timer.o build/fixed_float.o build/vector3.o build/quaternion.o \
 
 APP_O= build/main.o build/application.o 
 
-DEMO_FIXPOINT_O= build/fix_point_demo.o \
-								 build/test_fixed_float.o
-
 none:
 	@echo "Please do"
 	@echo "   make TARGET"
@@ -43,6 +40,10 @@ ${APP_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} application.cpp -o build/application.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} main.cpp -o build/main.o
 
+########################
+DEMO_FIXPOINT_O= build/fix_point_demo.o \
+								 build/test_fixed_float.o
+
 ${DEMO_FIXPOINT_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/test_fixed_float.cpp -o build/test_fixed_float.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/fixpoint  samples/fixpoint/fix_point_demo.cpp -o build/fix_point_demo.o
@@ -53,6 +54,19 @@ clean_fix_point_demo:
 	rm -f ${DEMO_FIXPOINT} ./bin/fix_point_demo
 fix_point_demo: clean_fix_point_demo dir ${DEMO_FIXPOINT}
 	${CXX} ${PLAT_FLAGS} -o ./bin/fix_point_demo ${DEMO_FIXPOINT}
+
+#########################
+DEMO_PRIMITIVES_O= build/primitives_demo.o 
+
+${DEMO_PRIMITIVES_O}:
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} -I./samples/primitives  samples/primitives/primitives_demo.cpp -o build/primitives_demo.o
+	
+DEMO_PRIMITIVES= ${APP_O} ${PHYSIC_O} ${DEMO_PRIMITIVES_O}
+
+clean_primitives_demo:
+	rm -f ${DEMO_PRIMITIVES} ./bin/primitives_demo
+primitives_demo: clean_primitives_demo dir ${DEMO_PRIMITIVES}
+	${CXX} ${PLAT_FLAGS} -o ./bin/primitives_demo ${DEMO_PRIMITIVES}
 
 clean: clean_fix_point_demo
 

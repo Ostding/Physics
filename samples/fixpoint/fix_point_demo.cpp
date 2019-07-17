@@ -21,22 +21,17 @@ void FixPointDemo::onDisplay()
       Press 'q' to quite sample application;");
 }
 
-FixedFloat testFunc()
-{
-  return 123LL;
-}
-
 void FixPointDemo::onKeyboardPress(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
     doTestFixedFloat();
-    // doTestSpeed();
-
     doTestVector3();
     doTestQuaternion();
     doTestMatrix3();
     doTestMatrix4();
+
+    doTestSpeed();
     break;
   }
 

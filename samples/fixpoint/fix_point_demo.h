@@ -1,3 +1,6 @@
+#ifndef __FIXPOINT_DEMO_H__
+#define __FIXPOINT_DEMO_H__
+
 #include "application.h"
 #include "fixed_float.h"
 using namespace physics;
@@ -20,3 +23,5 @@ private:
   void doTestMatrix3();
   void doTestMatrix4();
 };
+
+#endif
