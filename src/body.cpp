@@ -105,7 +105,7 @@ namespace physics
 		{
 			if (!isAwake) return;
 		  if (primitive->isStatic) return;
-˜
+
       lastFrameAcceleration = constantAcc;
       // a = f * (1/m)
       lastFrameAcceleration.addScaleVector(forceAcc, inverseMass);

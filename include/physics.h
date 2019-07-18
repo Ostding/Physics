@@ -12,7 +12,7 @@
 #include "aabb.h"
 #include "primitive.h"
 #include "plane.h"
-
+#include "world.h"
 
 
 #include "renderer.h"
