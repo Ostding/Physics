@@ -117,7 +117,20 @@ namespace physics
 
   Vector3 Contact::calcLocalVelocity(unsigned index, ffloat deltaTime)
   {
+    RigidBody *b = bodies[index];
+    Vector3 velocity = b->rotation.cross(relativeContactPosition[index]);
+    velocity += b->velocity;
 
+    Vector3 v = contactToWorld.transposeTransform(velocity);
+
+    Vector3 accVelocity = b->lastFrameAcceleration * deltaTime;
+    accVelocity = contactToWorld.transposeTransform(accVelocity);
+    // We ignore any component of acceleration in the contact normal direction, 
+    // we are only interested in planar acceleration
+    accVelocity.x = ffzero; 
+
+    v += accVelocity;
+    return v;
   }
 
   void Contact::applyImpulse(const Vector3 &impulse, RigidBody *body, Vector3 *velocityChange, Vector3 *rotationChange)
