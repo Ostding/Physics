@@ -104,7 +104,15 @@ namespace physics
 
   void Contact::calcDesiredDeltaVelocity(ffloat deltaTime)
   {
-    
+    ffloat velocityFromAcc = (bodies[0]->lastFrameAcceleration * deltaTime).dot(contactNormal);
+    if(bodies[1])
+      velocityFromAcc -= (bodies[1]->lastFrameAcceleration * deltaTime).dot(contactNormal);
+
+    //If the velocity is too small, restitution is ommitted
+    if(ffabs(contactVelocity.x) < minRestituteVelocity)
+      desiredDeltaVelocity = -contactVelocity.x;
+    else
+      desiredDeltaVelocity = -contactVelocity.x - restitution * (contactVelocity.x - velocityFromAcc);
   }
 
   Vector3 Contact::calcLocalVelocity(unsigned index, ffloat deltaTime)
