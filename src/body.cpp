@@ -1,10 +1,13 @@
 #include <assert.h>
 #include "body.h"
+#include "primitive.h"
 
 namespace physics
 {
 
   ffloat RigidBody::sleepEpsilon = ffloat(30000LL); //0.3f
+  ffloat RigidBody::motionBias = ffpow(ffhalf, ffloat(2500LL));
+  ffloat RigidBody::maxMotion = fften * sleepEpsilon;
 
   static inline void updateTransformMatrix( Matrix4 &transform,
                                             const Vector3 &position,
@@ -100,8 +103,54 @@ namespace physics
 
 	 	void RigidBody::update(ffloat deltaTime)
 		{
-			
+			if (!isAwake) return;
+		  if (primitive->isStatic) return;
+˜
+      lastFrameAcceleration = constantAcc;
+      // a = f * (1/m)
+      lastFrameAcceleration.addScaleVector(forceAcc, inverseMass);
+      //About how to translate torque to acceleration refer to https://zh.wikipedia.org/wiki/%E5%8A%9B%E7%9F%A9
+      // a = t / i 
+      Vector3 angularAcceleration = iitWorld.transform(torqueAcc);
+
+      velocity.addScaleVector(lastFrameAcceleration, deltaTime);
+      rotation.addScaleVector(angularAcceleration, deltaTime);
+
+      velocity *= powLinerDamp;
+      rotation *= powAngularDamp;
+
+      position.addScaleVector(velocity, deltaTime);
+      orientation.addScaledVector(rotation, deltaTime);
+
+      velocity *= powLinerDamp;
+      rotation *= powAngularDamp;
+
+      updateDerivedData();
+      clearAccumulators();
+
+      if(canSleep)
+      {
+        ffloat curMotion = velocity.dot(velocity) + rotation.dot(rotation);
+        motion = motionBias * motion + (ffone - motionBias) * curMotion;
+
+        if(motion <= sleepEpsilon)
+          setAwake(false);
+        else if(motion > maxMotion)
+          motion = maxMotion;
+      }
 		}
+
+    void RigidBody::setLinearDamp(ffloat damp)
+    {
+      linearDamp = damp;
+      powLinerDamp = ffpow(linearDamp, ffloat(2500LL));
+    }
+
+    void RigidBody::setAngularDamp(ffloat damp)
+    {
+      angularDamp = damp;
+      powAngularDamp = ffpow(angularDamp, ffloat(2500LL));
+    }
 
     void RigidBody::setMass(const ffloat &mass)
 		{
@@ -222,7 +271,9 @@ namespace physics
 			Vector3 pt = pos;
 			pt -= position;
 
-			forceAcc += pt.cross(force);
+      forceAcc += force;
+      //t = r x f
+			torqueAcc += pt.cross(force);
 			isAwake = true;
 		}
 
@@ -244,5 +295,26 @@ namespace physics
 			constantAcc = accumulator;
 		}
 
-   
+    void RigidBody::fillTransformArray(double matrix[16]) const
+    {
+      matrix[0] = transformMatrix.data[0].to_d();
+      matrix[1] = transformMatrix.data[4].to_d();
+      matrix[2] = transformMatrix.data[8].to_d();
+      matrix[3] = 0;
+
+      matrix[4] = transformMatrix.data[1].to_d();
+      matrix[5] = transformMatrix.data[5].to_d();
+      matrix[6] = transformMatrix.data[9].to_d();
+      matrix[7] = 0;
+
+      matrix[8] = transformMatrix.data[2].to_d();
+      matrix[9] = transformMatrix.data[6].to_d();
+      matrix[10] = transformMatrix.data[10].to_d();
+      matrix[11] = 0;
+
+      matrix[12] = transformMatrix.data[3].to_d();
+      matrix[13] = transformMatrix.data[7].to_d();
+      matrix[14] = transformMatrix.data[11].to_d();
+      matrix[15] = 1;
+    }
 }

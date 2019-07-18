@@ -127,6 +127,13 @@ namespace physics
       return Vector3(x * scale, y * scale, z * scale);
     }
 
+    Vector3 operator *= (const ffloat &scale) 
+    {
+      x *= scale;
+      y *= scale; 
+      z *= scale;
+    }
+
     Vector3 scale (const ffloat scale) const
     {
       return Vector3(x * scale, y * scale, z * scale);

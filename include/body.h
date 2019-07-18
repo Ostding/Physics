@@ -68,6 +68,8 @@ namespace physics
     Primitive *primitive;
 
     static ffloat sleepEpsilon;
+    static ffloat motionBias;
+    static ffloat maxMotion;
 
   public:
     RigidBody(Primitive *primitive);
@@ -75,6 +77,8 @@ namespace physics
   public:
     void update(ffloat deltaTime);
 
+    void setLinearDamp(ffloat damp);
+    void setAngularDamp(ffloat damp);
     void setMass(const ffloat &mass);
     ffloat getMass() const;
     bool hasFiniteMass() const;
@@ -108,6 +112,7 @@ namespace physics
 
     void addTorque(const Vector3 &torque);
     void setConstAccumulator(const Vector3 &accumulator);
+    void fillTransformArray(double matrix[16]) const;
   };
 }
 
