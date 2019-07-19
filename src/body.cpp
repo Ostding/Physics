@@ -108,18 +108,18 @@ namespace physics
 
       lastFrameAcceleration = constantAcc;
       // a = f * (1/m)
-      lastFrameAcceleration.addScaleVector(forceAcc, inverseMass);
+      lastFrameAcceleration.addScaledVector(forceAcc, inverseMass);
       //About how to translate torque to acceleration refer to https://zh.wikipedia.org/wiki/%E5%8A%9B%E7%9F%A9
       // a = t / i 
       Vector3 angularAcceleration = iitWorld.transform(torqueAcc);
 
-      velocity.addScaleVector(lastFrameAcceleration, deltaTime);
-      rotation.addScaleVector(angularAcceleration, deltaTime);
+      velocity.addScaledVector(lastFrameAcceleration, deltaTime);
+      rotation.addScaledVector(angularAcceleration, deltaTime);
 
       velocity *= powLinerDamp;
       rotation *= powAngularDamp;
 
-      position.addScaleVector(velocity, deltaTime);
+      position.addScaledVector(velocity, deltaTime);
       orientation.addScaledVector(rotation, deltaTime);
 
       velocity *= powLinerDamp;
@@ -272,6 +272,7 @@ namespace physics
 			pt -= position;
 
       forceAcc += force;
+      //扭矩，是力跟力臂的叉积
       //t = r x f
 			torqueAcc += pt.cross(force);
 			isAwake = true;
@@ -282,7 +283,6 @@ namespace physics
 			Vector3 pt = getPosInWorldSpace(pos);
 			addForceAtWorldPos(force, pt);
 		}
-
 
     void RigidBody::addTorque(const Vector3 &torque)
 		{

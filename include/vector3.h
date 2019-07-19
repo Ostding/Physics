@@ -225,7 +225,7 @@ namespace physics
       *this = cross(*this, other);
     }
 
-    void addScaleVector(const Vector3 &other, ffloat scale)
+    void addScaledVector(const Vector3 &other, ffloat scale)
     {
       x += other.x * scale;
       y += other.y * scale;

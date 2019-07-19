@@ -164,8 +164,8 @@ void FixPointDemo::doTestVector3()
 
   a.inspect("a");
   b.inspect("b");
-  a.addScaleVector(b, ffloat(2));
-  a.inspect("a.addScaleVector(b, ffloat(2))");
+  a.addScaledVector(b, ffloat(2));
+  a.inspect("a.addScaledVector(b, ffloat(2))");
 
   a.normalize();
   a.inspect("a.normalize()");
