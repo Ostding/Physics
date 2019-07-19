@@ -4,6 +4,7 @@
 #include "types.h"
 #include "aabb.h"
 #include "body.h"
+#include "octree.h"
 
 namespace physics
 {
@@ -33,7 +34,11 @@ namespace physics
     Matrix4 transform;
     
     Primitive * parent;
+    OCTreeNode *node;
+
     bool isStatic;
+
+    int interCount;
 
   public:
     Primitive(PRIMITIVE_TYPE t);

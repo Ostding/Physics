@@ -1,6 +1,7 @@
 #include <assert.h>
 #include "primitive.h"
 
+
 namespace physics
 {
     Primitive::Primitive(PRIMITIVE_TYPE t)
@@ -10,7 +11,9 @@ namespace physics
     , tPrimitive (t)
     , body( 0 )
     , parent( 0 )
+    , node( 0 )
     , isStatic( false )
+    , interCount( 0 )
     {} 
 
     Primitive::~Primitive()

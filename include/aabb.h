@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "vector3.h"
-#include "renderer.h"
 
 namespace physics
 {
@@ -79,11 +78,6 @@ namespace physics
       return ((min.x >= max.x) ||
               (min.y >= max.y) ||
               (min.z >= max.z));
-    }
-
-    void render()
-    {
-      Renderer::renderAABB(*this);
     }
   };
 }
