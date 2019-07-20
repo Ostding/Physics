@@ -126,8 +126,8 @@ namespace physics
     else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE &&
         cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
     {
-       Sphere *box = dynamic_cast<Sphere *>(cpa);
-			Plane *plane = dynamic_cast<Plane *>(cpb);
+      Sphere *box = dynamic_cast<Sphere *>(cpb);
+			Plane *plane = dynamic_cast<Plane *>(cpa);
 			fillContactCeofficient(box, plane, cData);
       genSphereAndPlane(*box, *plane, cData);
     }
