@@ -9,6 +9,7 @@ namespace physics
   class CollisionData
   {
     public:
+      unsigned maxContacts;
       Contact *contactArray;
       Contact *nextContact;
 
@@ -21,14 +22,11 @@ namespace physics
       ffloat restitution;
       ffloat defRestitution;
 
-      ffloat tolerance;
-
     public:
       CollisionData(unsigned maxContacts)
-      {
-        contactArray = new Contact[maxContacts];
-		    contactCount = 0;
-		    contactsLeft = maxContacts;
+      { 
+        CollisionData::maxContacts = maxContacts;
+        reset();
       }
 
       ~CollisionData()
@@ -45,7 +43,7 @@ namespace physics
         return contactsLeft > 0;
       }
 
-      void reset(unsigned maxContacts)
+      void reset()
       {	
         contactsLeft = maxContacts;
         contactCount = 0;

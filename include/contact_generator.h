@@ -5,8 +5,11 @@
 using namespace std;
 
 #include "types.h"
-#include "primitive.h"
 #include "collision_data.h"
+#include "octree.h"
+#include "primitive.h"
+#include "sphere.h"
+#include "plane.h"
 
 namespace physics
 {
@@ -19,16 +22,15 @@ namespace physics
 
       typedef map<unsigned int, bool> MapProfile;
       MapProfile mapIgnore;
-      MapProfile mapTrigger;
 
-      //OCTree *octreeRoot;
-      //OCTreeNode::PotentialContacts curPotentialContacts;
+      OCTreeNode *octreeRoot;
+      OCTreeNode::PotentialContacts curPotentialContacts;
     public:
       ContactGenerator(const Vector3 &min, const Vector3 &max);
 	    ~ContactGenerator();
 
     public:
-      void generateContacts(CollisionData *cData, unsigned maxContacts);
+      
       void addPrimitive(Primitive *pri);
       void removePrimitive(Primitive *pri);
       void update(ffloat deltaTime);
@@ -38,15 +40,19 @@ namespace physics
       ffloat getContactRestitution(unsigned int a, unsigned int b);
 
       void addIgnoreCouple(unsigned int a, unsigned int b, bool ignore);
-      void addJustTestCouple(unsigned int a, unsigned int b, bool justTest);
       bool isContactIgnore(unsigned int a, unsigned int b);
-      bool isJustCollide(unsigned int a, unsigned int b);
 
       void render();
+
+      void generateContacts(CollisionData *cData);
 
     private:
       void generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
       void fillContactParam(Primitive *cpa, Primitive *cpb, CollisionData *cData);
+
+      unsigned genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData);
+      unsigned genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData);
+
   };
 }
 

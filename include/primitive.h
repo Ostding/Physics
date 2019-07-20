@@ -37,6 +37,7 @@ namespace physics
     OCTreeNode *node;
 
     bool isStatic;
+    bool isTrigger;
 
     int interCount;
 

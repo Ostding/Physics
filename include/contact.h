@@ -14,7 +14,7 @@ namespace physics
       ffloat friction;
       ffloat restitution;
 
-      ffloat peneration;
+      ffloat penetration;
       Vector3 contactPoint;
       Vector3 contactNormal;
       Vector3 contactVelocity;
@@ -26,6 +26,7 @@ namespace physics
 
       static ffloat minRestituteVelocity;
       static ffloat maxAngularMove;
+
     public:
       void setBodyData(RigidBody *a, RigidBody *b, ffloat friction, ffloat restitution);
       void swapBodies();

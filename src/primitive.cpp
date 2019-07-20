@@ -13,6 +13,7 @@ namespace physics
     , parent( 0 )
     , node( 0 )
     , isStatic( false )
+    , isTrigger( false )
     , interCount( 0 )
     {} 
 
