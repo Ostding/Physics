@@ -8,7 +8,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/fix_point_demo",
+            "program": "${workspaceFolder}/bin/primitives_demo",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

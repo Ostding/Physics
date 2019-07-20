@@ -60,8 +60,8 @@ namespace physics
 
   void World::addContactCeofficient(unsigned int a, unsigned int b, ffloat  friction, ffloat restitution)
   {
-    cGenerator.addContactRule(a, b, friction, restitution);
-    cGenerator.addContactRule(b, a, friction, restitution);
+    cGenerator.addContactCeofficient(a, b, friction, restitution);
+    cGenerator.addContactCeofficient(b, a, friction, restitution);
   }
 
   void World::setContactDefaultCeofficient(ffloat friction, ffloat restitution)

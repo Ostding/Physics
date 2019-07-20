@@ -95,10 +95,12 @@ namespace physics
     , powAngularDamp( ffzero )
     , inverseMass( ffzero )
     , motion( ffzero )
-		, isAwake(false)
+		, isAwake(true)
     , canSleep( true )
     , primitive( primitive )
-    {}
+    {
+      constantAcc = Vector3(ffzero, ffloat(-9.8), ffzero);
+    }
 
 	 	void RigidBody::update(ffloat deltaTime)
 		{

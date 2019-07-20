@@ -10,6 +10,7 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   unsigned maxContacts = 255;
   unsigned iterations = 4;
   world = new World(spaceMin, spaceMax, maxContacts, iterations);
+  simulate = false;
 }
 
 PrimitivesDemo::~PrimitivesDemo()
@@ -40,7 +41,18 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
-    doTest();
+    if(!simulate)
+    {
+      doTest();
+      simulate = true;
+    }
+    break;
+  case 's': case 'S':
+    simulate = false;
+    break;
+  case ' ':
+    simulate = false;
+    world->update(deltaTime);
     break;
   }
 
@@ -55,9 +67,12 @@ void PrimitivesDemo::render()
 void PrimitivesDemo::onUpdate()
 {
   double elapse = calcDuration();
-  if(elapse > 0.02f) updateTime();
-
-  world->update(deltaTime);
+  if(elapse >= 0.02f) 
+  {
+    updateTime();
+    if(simulate)
+      world->update(deltaTime);
+  }
 }
 
 void PrimitivesDemo::doTest()
@@ -68,8 +83,24 @@ void PrimitivesDemo::doTest()
   Plane *plane = new Plane(direction, center, extents);
   world->addPrimitive( plane );
 
+  
+  ffloat radius = ffloat(3.0f);
+  Sphere * sphere = new Sphere(radius);
+
+  sphere->body->setLinearDamp(ffloat(0.95f));
+	sphere->body->setAngularDamp(ffloat(0.2f));
+
+  ffloat mass = ffloat(10);
+  ffloat coeff = ffloat(0.4f) * mass * radius * radius;
+  Matrix3 tensor;
+  tensor.setDiagonal(coeff, coeff, coeff);
+  sphere->body->setInertiaTensor(tensor);
+
+  sphere->body->setMass(mass);
+  sphere->body->enableSleep(true);
+  sphere->body->setAwake();
+
   Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
-  Sphere * sphere = new Sphere(ffloat(3.0f));
   sphere->body->setPosition(pos);
   world->addPrimitive( sphere );
 }

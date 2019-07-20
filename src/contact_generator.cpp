@@ -30,7 +30,7 @@ namespace physics
   }
 
 
-  void ContactGenerator::addContactRule(unsigned int a, unsigned int b, ffloat friction, ffloat restitution)
+  void ContactGenerator::addContactCeofficient(unsigned int a, unsigned int b, ffloat friction, ffloat restitution)
   {
     unsigned int k = a | b;
 		mapFriction[k] = friction;
@@ -42,7 +42,7 @@ namespace physics
     unsigned int k = a | b;
 		MapCeofficient::iterator it = mapFriction.find(k);
 		if (it == mapFriction.end())
-			return -1;
+			return CollisionData::defFriction;
 		
 		return it->second;
   }
@@ -52,7 +52,7 @@ namespace physics
     unsigned k = a | b;
 		MapCeofficient::iterator it = mapRestitution.find(k);
 		if (it == mapRestitution.end())
-			return -1;
+			return CollisionData::defRestitution;
 
 		return it->second;
   }
@@ -102,13 +102,10 @@ namespace physics
 		}
   }
 
-  void ContactGenerator::fillContactParam(Primitive *cpa, Primitive *cpb, CollisionData *cData)
+  void ContactGenerator::fillContactCeofficient(Primitive *cpa, Primitive *cpb, CollisionData *cData)
 	{
-		ffloat friction = getContactFriction(cpa->tProfile, cpb->tProfile);
-		cData->friction = (friction == -ffone) ? cData->defFriction : friction;
-
-		ffloat restitution = getContactRestitution(cpa->tProfile, cpb->tProfile);
-		cData->restitution = (restitution == -ffone) ? cData->defRestitution : restitution;
+		cData->friction = getContactFriction(cpa->tProfile, cpb->tProfile);
+		cData->restitution = getContactRestitution(cpa->tProfile, cpb->tProfile);
 	}
 
   void ContactGenerator::generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData)
@@ -123,7 +120,7 @@ namespace physics
     {
       Sphere *box = dynamic_cast<Sphere *>(cpa);
 			Plane *plane = dynamic_cast<Plane *>(cpb);
-			fillContactParam(box, plane, cData);
+			fillContactCeofficient(box, plane, cData);
       genSphereAndPlane(*box, *plane, cData);
     }
     else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE &&
@@ -131,7 +128,7 @@ namespace physics
     {
        Sphere *box = dynamic_cast<Sphere *>(cpa);
 			Plane *plane = dynamic_cast<Plane *>(cpb);
-			fillContactParam(box, plane, cData);
+			fillContactCeofficient(box, plane, cData);
       genSphereAndPlane(*box, *plane, cData);
     }
   }

@@ -25,17 +25,17 @@ namespace physics
 
       OCTreeNode *octreeRoot;
       OCTreeNode::PotentialContacts curPotentialContacts;
+      
     public:
       ContactGenerator(const Vector3 &min, const Vector3 &max);
 	    ~ContactGenerator();
 
     public:
-      
       void addPrimitive(Primitive *pri);
       void removePrimitive(Primitive *pri);
       void update(ffloat deltaTime);
 
-      void addContactRule(unsigned int a, unsigned int b, ffloat friction, ffloat restitution);
+      void addContactCeofficient(unsigned int a, unsigned int b, ffloat friction, ffloat restitution);
       ffloat getContactFriction(unsigned int a, unsigned int b);
       ffloat getContactRestitution(unsigned int a, unsigned int b);
 
@@ -48,7 +48,7 @@ namespace physics
 
     private:
       void generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
-      void fillContactParam(Primitive *cpa, Primitive *cpb, CollisionData *cData);
+      void fillContactCeofficient(Primitive *cpa, Primitive *cpb, CollisionData *cData);
 
       unsigned genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData);
       unsigned genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData);

@@ -49,7 +49,7 @@ namespace physics
     GLfloat mat[16];
 		p->transform.fillArray(mat);
 
-		glColor3f(0.7, 0.7, 1.0);
+		glColor3f(0.1, 0.1, 0.1);
 		glPushMatrix();
     glMultMatrixf(mat);
 

@@ -17,50 +17,19 @@ namespace physics
       unsigned contactCount;
 
       ffloat friction;
-      ffloat defFriction;
-
       ffloat restitution;
-      ffloat defRestitution;
+
+      static ffloat defFriction;
+      static ffloat defRestitution;
 
     public:
-      CollisionData(unsigned maxContacts)
-      { 
-        CollisionData::maxContacts = maxContacts;
-        reset();
-      }
+      CollisionData(unsigned maxContacts);
+      ~CollisionData();
 
-      ~CollisionData()
-      {
-        if(contactArray != 0)
-        {
-          delete contactArray;
-          contactArray = 0;
-        }
-      }
-
-      bool hasMoreContacts()
-      {
-        return contactsLeft > 0;
-      }
-
-      void reset()
-      {	
-        contactsLeft = maxContacts;
-        contactCount = 0;
-        nextContact = contactArray;
-      }
-
-      void addContacts(unsigned count)
-      {
-        contactsLeft -= count;
-        contactCount += count;
-        nextContact += count;
-      }
-
-      void render()
-      {
-        //to do show contact point normal and penetration
-      }
+      bool hasMoreContacts();
+      void reset();
+      void addContacts(unsigned count);
+      void render();
   };
 }
 

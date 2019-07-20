@@ -21,6 +21,7 @@ private:
   void doTest();
 
 private:
+  bool simulate;
   World *world;
 };
 
