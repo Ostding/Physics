@@ -3,7 +3,9 @@
 #include <GLUT/glut.h>
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
 using namespace std;
+using namespace chrono;
 
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
@@ -32,11 +34,15 @@ public:
 	virtual void onExit();
 
 	void textOut(float x, float y, const char* text, void * font = 0);
+	double calcDuration();
+	void updateTime();
 
 protected:
 	int width;
 	int height;
 	const char *title;
+	
+	system_clock::time_point lastUpdateTime;
 };
 
 

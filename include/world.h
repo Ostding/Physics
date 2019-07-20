@@ -41,6 +41,9 @@ namespace physics
 
       void prepare();
       void update(ffloat deltaTime);
+
+      void render();
+      void renderPrimitives();
   }; 
 }
 

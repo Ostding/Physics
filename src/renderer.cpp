@@ -42,4 +42,40 @@ namespace physics
 
     glDisable(GL_DEPTH_TEST);
   }
+
+  void Renderer::renderPlane(Plane *p)
+  {
+    GLfloat mat[16];
+		p->transform.fillArray(mat);
+
+		glColor3f(0.7, 0.7, 1.0);
+		glPushMatrix();
+    glMultMatrixf(mat);
+
+		glScalef(p->extents.x.to_d() * 2, p->extents.y.to_d(), p->extents.z.to_d() * 2);
+		
+    glutSolidCube(1.0f);
+		glPopMatrix();
+  }
+
+  void Renderer::renderSphere(Sphere *p)
+  {
+    GLfloat mat[16];
+		p->transform.fillArray(mat);
+
+		if (p->body->isAwake) 
+      glColor3f(1.0, 0.7, 0.7);
+		else 
+      glColor3f(0.7, 0.7, 1.0);
+
+		glPushMatrix();
+		glMultMatrixf(mat);
+
+		glutSolidSphere(p->radius.to_d(), 100, 100);
+
+		glPopMatrix();
+
+    Renderer::renderAABB(p->aabb);
+  }
+
 }

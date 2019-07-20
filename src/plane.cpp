@@ -19,4 +19,10 @@ namespace physics
   {
     aabb.set2(center, extents);
   }
+
+  void Plane::render()
+  {
+    
+  }
+  
 }

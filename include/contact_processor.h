@@ -22,7 +22,7 @@ namespace physics
       ContactProcessor( unsigned iterations, 
                         ffloat velocityEpsilon = ffloat(10000LL),
                         ffloat positionEpsilon = ffloat(10000LL));
-                        
+
       ContactProcessor( unsigned velocityIterations, 
                         unsigned positionIterations, 
                         ffloat velocityEpsilon = ffloat(10000LL),
@@ -36,6 +36,7 @@ namespace physics
 
       void processContacts(CollisionData *cData, ffloat deltaTime);
 
+      void render();
     protected:
       void prepareContacts(Contact *contactArray, unsigned numContacts, ffloat deltaTime);
       void adjustVelocities(Contact *contactArray, unsigned numContacts, ffloat deltaTime);

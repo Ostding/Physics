@@ -56,6 +56,11 @@ namespace physics
         contactCount += count;
         nextContact += count;
       }
+
+      void render()
+      {
+        //to do show contact point normal and penetration
+      }
   };
 }
 

@@ -295,7 +295,7 @@ namespace physics
 			constantAcc = accumulator;
 		}
 
-    void RigidBody::fillTransformArray(double matrix[16]) const
+    void RigidBody::fillTransformArray(float matrix[16]) const
     {
       matrix[0] = transformMatrix.data[0].to_d();
       matrix[1] = transformMatrix.data[4].to_d();

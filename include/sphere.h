@@ -17,6 +17,7 @@ namespace physics
       Sphere(ffloat radius);
 
       virtual void refreshAABB();
+      virtual void render();
   };
 }
 

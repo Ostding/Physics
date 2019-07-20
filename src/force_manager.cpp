@@ -63,4 +63,9 @@ namespace physics
       }
     }
   }
+
+  void ForceManager::render()
+  {
+    //todo show force direction etc
+  }
 }

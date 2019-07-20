@@ -1,9 +1,25 @@
 #include "primitives_demo.h"
 #include "physics.h"
 
+static ffloat deltaTime = ffloat(0.02f);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
-{}
+{
+  Vector3 spaceMin = Vector3(ffloat(-200.0f), ffzero, ffloat(-200.0f));
+  Vector3 spaceMax = Vector3(ffloat(200.0f), ffloat(200.0f), ffloat(200.0f));
+  unsigned maxContacts = 255;
+  unsigned iterations = 4;
+  world = new World(spaceMin, spaceMax, maxContacts, iterations);
+}
+
+PrimitivesDemo::~PrimitivesDemo()
+{
+  if(world)
+  {
+    delete world;
+    world = 0;
+  }
+}
 
 void PrimitivesDemo::onDisplay()
 {
@@ -33,12 +49,29 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
 
 void PrimitivesDemo::render()
 {
-  //to do
+  world->render();
+}
+
+void PrimitivesDemo::onUpdate()
+{
+  double elapse = calcDuration();
+  if(elapse > 0.02f) updateTime();
+
+  world->update(deltaTime);
 }
 
 void PrimitivesDemo::doTest()
 {
-  //to do 
+  Vector3 direction = Vector3::up;
+  Vector3 center = Vector3(ffzero, ffzero, ffzero); 
+  Vector3 extents = Vector3(ffloat(100), ffloat(100), ffloat(100));
+  Plane *plane = new Plane(direction, center, extents);
+  world->addPrimitive( plane );
+
+  Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
+  Sphere * sphere = new Sphere(ffloat(3.0f));
+  sphere->body->setPosition(pos);
+  world->addPrimitive( sphere );
 }
 
 Application * getApp()

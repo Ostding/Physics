@@ -108,4 +108,22 @@ namespace physics
 		}
   }
 
+  void World::renderPrimitives()
+  {
+    MapPrimitives::iterator it = primitives.begin();
+    for(; it != primitives.end(); it ++)
+    {
+      it->second->render();
+    }
+  }
+
+  void World::render()
+  {
+    fManager.render();
+    cGenerator.render;
+    cProcessor.render();
+    cData.render();
+    renderPrimitives();
+  }
+
 }

@@ -221,5 +221,10 @@ void ContactProcessor::adjustVelocities(Contact *c, unsigned numContacts, ffloat
         }
         positionIterationsUsed++;
     }
-}
+  }
+
+  void ContactProcessor::render()
+  {
+    //todo
+  }
 }

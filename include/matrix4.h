@@ -198,7 +198,7 @@ namespace physics
       data[11] = pos.z;
     }
 
-    void fillArray(double array[16]) const
+    void fillArray(float array[16]) const
     {
       array[0] = data[0].to_d();
       array[1] = data[4].to_d();

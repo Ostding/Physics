@@ -2,11 +2,15 @@
 
 Application::Application()
 :width(0),height(0),title(0)
-{}
+{
+  lastUpdateTime = system_clock::now();
+}
 
 Application::Application(const char *title, int width, int height)
 :width(width),height(height),title(title)
-{}
+{
+  lastUpdateTime = system_clock::now();
+}
 
 Application::~Application()
 {}
@@ -37,11 +41,11 @@ void Application::initGraphics()
 
 void Application::setupView()
 {
-    glViewport(0, 0, width, height);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(60.0, (double)width/(double)height, 0.3, 1500.0);
-    glMatrixMode(GL_MODELVIEW);
+  glViewport(0, 0, width, height);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+  gluPerspective(60.0, (double)width/(double)height, 0.3, 1500.0);
+  glMatrixMode(GL_MODELVIEW);
 }
 
 void Application::onDisplay()
@@ -50,6 +54,18 @@ void Application::onDisplay()
 
 void Application::onUpdate()
 {
+}
+
+double Application::calcDuration()
+{
+  auto now = system_clock::now();
+  auto duration = duration_cast<microseconds>(now - lastUpdateTime);
+  double t = double(duration.count()) * microseconds::period::num / microseconds::period::den;
+}
+
+void Application::updateTime()
+{
+  lastUpdateTime = system_clock::now();
 }
 
 void Application::onResize(int width, int height)

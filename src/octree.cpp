@@ -350,7 +350,6 @@ namespace physics
 
 	void OCTreeNode::render()
 	{
-#ifdef DEBUG_RENDER
 		if (children.size() == 0)
 		{
 			Renderer::renderAABB(aabb);
@@ -363,7 +362,6 @@ namespace physics
 				p->render();
 			}
 		}
-#endif
 	}
 
 	OCTreeNode::VectorNodes &OCTreeNode::getChildren()

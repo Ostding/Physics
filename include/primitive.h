@@ -48,10 +48,13 @@ namespace physics
 
   public:
     virtual void refreshAABB();
+    virtual void render();
+    
     void    updateTransform();
     
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;
+
  };
 }
 

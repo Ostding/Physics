@@ -112,7 +112,7 @@ namespace physics
 
     void addTorque(const Vector3 &torque);
     void setConstAccumulator(const Vector3 &accumulator);
-    void fillTransformArray(double matrix[16]) const;
+    void fillTransformArray(float matrix[16]) const;
   };
 }
 

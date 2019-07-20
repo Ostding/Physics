@@ -34,6 +34,8 @@ namespace physics
       void remove(RigidBody* body, int id);
       void clear();
       void updateForces(ffloat duration);
+
+      void render();
   };
 }
 

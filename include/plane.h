@@ -18,6 +18,7 @@ namespace physics
     Plane(Vector3 direction, Vector3 center, Vector3 extents);
 
     virtual void refreshAABB();
+    virtual void render();
   };
 }
 

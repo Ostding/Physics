@@ -48,7 +48,7 @@ void displayFunc()
 }
 
 
-void idleFunc( void )
+void updateFunc( void )
 {
   app -> onUpdate();
 
@@ -77,7 +77,7 @@ void setupCallBacks()
   glutMouseFunc( mousePressFunc );
   glutMotionFunc(mouseMoveFunc);
   glutKeyboardFunc( keyboardFunc );
-  glutIdleFunc( idleFunc );
+  glutIdleFunc( updateFunc );
 }
 
 void initGraphics()

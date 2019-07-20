@@ -31,6 +31,11 @@ namespace physics
       assert("You shoule implement refreshAABB method!!!");
     }
 
+    void Primitive::render()
+    {
+      assert("You shoule implement render method!!!");
+    }
+
     void Primitive::updateTransform()
     {
       transform = body->transformMatrix * offset;

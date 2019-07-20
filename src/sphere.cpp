@@ -22,4 +22,9 @@ namespace physics
     Vector3 extents(radius, radius, radius);
     aabb.set2(center, extents);
   }
+
+  void Sphere::render()
+  {
+    Renderer::renderSphere(this);
+  }
 }
