@@ -14,8 +14,9 @@ dir:
 	mkdir -p ./bin
 
 PHYSIC_O= build/timer.o build/fixed_float.o build/vector3.o build/quaternion.o \
-					build/body.o build/primitive.o build/plane.o build/sphere.o\
-					build/renderer.o 
+					build/body.o build/primitive.o build/plane.o build/sphere.o build/contact.o \
+					build/contact_generator.o build/contact_processor.o build/force_manager.o \
+					build/octree.o build/world.o build/renderer.o 
 
 APP_O= build/main.o build/application.o 
 
@@ -34,10 +35,10 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/primitive.cpp -o build/primitive.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/plane.cpp -o build/plane.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/sphere.cpp -o build/sphere.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/octree.cpp -o build/octree.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact.cpp -o build/contact.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_generator.cpp -o build/contact_generator.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_processor.cpp -o build/contact_processor.o
-	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/force_generator.cpp -o build/force_generator.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/force_manager.cpp -o build/force_manager.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/world.cpp -o build/world.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/renderer.cpp -o build/renderer.o

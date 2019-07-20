@@ -61,6 +61,7 @@ double Application::calcDuration()
   auto now = system_clock::now();
   auto duration = duration_cast<microseconds>(now - lastUpdateTime);
   double t = double(duration.count()) * microseconds::period::num / microseconds::period::den;
+  return t;
 }
 
 void Application::updateTime()

@@ -1,4 +1,6 @@
 #include "sphere.h"
+#include "body.h"
+#include "renderer.h"
 
 namespace physics
 {

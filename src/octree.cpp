@@ -1,4 +1,5 @@
 #include "octree.h"
+#include "body.h"
 
 namespace physics
 {
@@ -8,8 +9,8 @@ namespace physics
 	OCTreeNode::OCTreeNode(AABB aabb, int level, int index, OCTreeNode *parent)
 		:level(level)
 		,index(index)
-		,aabb(aabb)
 		,parent(parent)
+		,aabb(aabb)
 		,isAllStatic(true)
 	{}
 
@@ -73,7 +74,6 @@ namespace physics
 		if (!children.empty())
 			return false;
 
-		int level = level + 1;
 		Vector3 corners[16];
 		getSplitCorners(corners);
 
@@ -81,7 +81,7 @@ namespace physics
 		{
 			Vector3 min = corners[i * 2];
 			Vector3 max = corners[i * 2 + 1];
-			OCTreeNode *child = new OCTreeNode(AABB(min, max), level, i, this);
+			OCTreeNode *child = new OCTreeNode(AABB(min, max), level + 1, i, this);
 			children.push_back(child);
 		}
 		return true;

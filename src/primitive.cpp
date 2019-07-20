@@ -1,6 +1,7 @@
 #include <assert.h>
 #include "primitive.h"
-
+#include "body.h"
+#include "octree.h"
 
 namespace physics
 {

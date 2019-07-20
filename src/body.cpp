@@ -1,6 +1,5 @@
 #include <assert.h>
 #include "body.h"
-#include "primitive.h"
 
 namespace physics
 {

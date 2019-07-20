@@ -1,4 +1,5 @@
 #include "plane.h"
+#include "renderer.h"
 
 namespace physics
 {
@@ -22,7 +23,7 @@ namespace physics
 
   void Plane::render()
   {
-    
+    Renderer::renderPlane(this);
   }
   
 }

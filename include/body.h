@@ -6,11 +6,10 @@
 #include "quaternion.h"
 #include "matrix3.h"
 #include "matrix4.h"
+#include "primitive.h"
 
 namespace physics
 {
-  class Primitive;
-
   class RigidBody
   {
   public:

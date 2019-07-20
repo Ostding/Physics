@@ -2,12 +2,13 @@
 #define __PRIMITIVE_H__
 
 #include "types.h"
+#include "matrix4.h"
 #include "aabb.h"
-#include "body.h"
-#include "octree.h"
 
 namespace physics
 {
+  class RigidBody;
+  class OCTreeNode;
 
   enum PRIMITIVE_TYPE
   {
@@ -49,13 +50,12 @@ namespace physics
   public:
     virtual void refreshAABB();
     virtual void render();
-    
+
     void    updateTransform();
     
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;
-
- };
+  };
 }
 
 

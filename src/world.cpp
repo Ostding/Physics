@@ -5,8 +5,8 @@ namespace physics
   int World::__pri_id = 0;
 
   World::World(const Vector3 &min, const Vector3 &max, unsigned maxContacts, unsigned iterations/* =0 */)
-  :cGenerator(min, max)
-  ,cProcessor(iterations)
+  :cProcessor(iterations)
+  ,cGenerator(min, max)
   ,cData(maxContacts)
   {}
 
@@ -120,7 +120,7 @@ namespace physics
   void World::render()
   {
     fManager.render();
-    cGenerator.render;
+    cGenerator.render();
     cProcessor.render();
     cData.render();
     renderPrimitives();

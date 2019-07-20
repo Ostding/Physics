@@ -1,5 +1,6 @@
 #include "renderer.h"
 #include "aabb.h"
+#include "body.h"
 
 namespace physics
 {

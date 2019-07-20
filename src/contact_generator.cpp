@@ -138,12 +138,12 @@ namespace physics
 
   unsigned ContactGenerator::genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData)
   {
-    
+    return 1;
   }
 
   unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData)
   {
-
+    return 1;
   }
 
 
