@@ -45,8 +45,13 @@ void PrimitivesDemo::onDisplay()
   render();
 
   glColor3f(0.0f, 0.0f, 0.0f);
-  textOut(10.0f, 34.0f, "Physic Demo: Test Fraction \n \
-    Press 'g' to run demo and watch primitives in window; \n \
+  textOut(10.0f, 100.0f, "Physic Demo: Test Fraction \n \
+    Press 'g' to run; \n \
+    Press 's' to pause; \n \
+    Press 'space' to simulate one step; \n \
+    Drag mouse to adjust camera angle; \n \
+    Press 'f' to move camera forward; \n \
+    Press 'b' to move camera back; \n \
     Press 'q' to quite sample application;");
 }
 
@@ -154,7 +159,7 @@ void PrimitivesDemo::initTest()
   sphere->body->enableSleep(true);
   sphere->body->setAwake();
 
-  Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
+  Vector3 pos = Vector3(ffloat(2), ffloat(10), ffzero);
   sphere->body->setPosition(pos);
   world->addPrimitive( sphere );
 
