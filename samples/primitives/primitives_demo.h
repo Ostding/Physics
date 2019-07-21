@@ -13,8 +13,10 @@ public:
 
 public:
   virtual void onDisplay();
-  void onKeyboardPress(unsigned char key);
+  virtual void onKeyboardPress(unsigned char key);
   virtual void onUpdate();
+  virtual void onMousePress(int button, int state, int x, int y);
+  virtual void onMouseMove(int x, int y);
 
 private:
   void render();
@@ -23,6 +25,17 @@ private:
 private:
   bool simulate;
   World *world;
+  
+  typedef struct point
+  {
+    int x;
+    int y;
+  } Point;
+  Point lastPoint;
+  bool lBtnDown;
+  float radY;
+  float radP;
+  float lookDist;
 };
 
 #endif

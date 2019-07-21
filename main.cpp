@@ -74,9 +74,9 @@ void setupCallBacks()
 {
   glutDisplayFunc( displayFunc );
   glutReshapeFunc( reshapeFunc );
-  glutMouseFunc( mousePressFunc );
-  glutMotionFunc(mouseMoveFunc);
   glutKeyboardFunc( keyboardFunc );
+  glutMouseFunc( mousePressFunc );
+  glutMotionFunc( mouseMoveFunc );
   glutIdleFunc( updateFunc );
 }
 

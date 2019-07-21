@@ -1,6 +1,8 @@
+#include <math.h>
 #include "primitives_demo.h"
 #include "physics.h"
 
+static const double pi = 3.1416;
 static ffloat deltaTime = ffloat(0.02f);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
@@ -11,6 +13,10 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   unsigned iterations = 4;
   world = new World(spaceMin, spaceMax, maxContacts, iterations);
   simulate = false;
+  lBtnDown = false;
+  radY = (1.0f/6)*pi;
+  radP = 0;
+  lookDist = 50;
 }
 
 PrimitivesDemo::~PrimitivesDemo()
@@ -27,7 +33,12 @@ void PrimitivesDemo::onDisplay()
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glLoadIdentity();
-  gluLookAt(15.0f, 15.0f, 0.0f,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f);
+
+  float rp = lookDist * std::cos(radY);
+  float ex = std::sin(radP) * rp;
+  float ez = std::cos(radP) * rp;
+  float ey = lookDist * std::sin(radY);;
+  gluLookAt(ex, ey, ez,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f);
 
   render();
 
@@ -35,6 +46,43 @@ void PrimitivesDemo::onDisplay()
   textOut(10.0f, 34.0f, "Physic Demo: Test Fraction \n \
     Press 'g' to run demo and watch primitives in window; \n \
     Press 'q' to quite sample application;");
+}
+
+void PrimitivesDemo::onMousePress(int button, int state, int x, int y)
+{
+  if(button == GLUT_LEFT_BUTTON)
+  {
+    if(state == GLUT_DOWN)
+    {
+      lastPoint.x = x;
+      lastPoint.y = y;
+      lBtnDown = true;
+    }
+    else
+    {
+      lBtnDown = false;
+    }
+  }
+}
+
+void PrimitivesDemo::onMouseMove(int x, int y)
+{
+  if(lBtnDown)
+  {
+    int deltaX = x - lastPoint.x;
+    int deltaY = y - lastPoint.y;
+
+    float dtP = pi * ((float)deltaX / (float)width);
+    float dtY = pi * ((float)deltaY / (float)height);
+
+    lastPoint.x = x;
+    lastPoint.y = y;
+    
+    radY += dtY;
+    radP += dtP;
+    if(radY < 0) radY = 0;
+    if(radY > (pi/2)) radY = pi/2;
+  }
 }
 
 void PrimitivesDemo::onKeyboardPress(unsigned char key)
@@ -53,6 +101,12 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
   case ' ':
     simulate = false;
     world->update(deltaTime);
+    break;
+  case 'f': case 'F':
+    lookDist -= 0.5;
+    break;
+  case 'b': case 'B':
+    lookDist += 0.5;
     break;
   }
 
@@ -79,7 +133,7 @@ void PrimitivesDemo::doTest()
 {
   Vector3 direction = Vector3::up;
   Vector3 center = Vector3(ffzero, ffzero, ffzero); 
-  Vector3 extents = Vector3(ffloat(100), ffloat(100), ffloat(100));
+  Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
   Plane *plane = new Plane(direction, center, extents);
   world->addPrimitive( plane );
 
