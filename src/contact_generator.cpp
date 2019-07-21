@@ -139,8 +139,7 @@ namespace physics
     if (cData->contactsLeft <= 0) return 0;
 
     Vector3 ps = sphere.getColumnVector(3);
-    Vector3 p = plane.center;
-    Vector3 v = (ps - p);
+    Vector3 v = (ps - plane.center);
     ffloat dist = v.dot(plane.direction);
     
     if (dist*dist > sphere.radius*sphere.radius)
@@ -178,6 +177,31 @@ namespace physics
 
   unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData)
   {
+    if (cData->contactsLeft <= 0) return 0;
+
+    Vector3 ptA = sphereA.getColumnVector(3);
+    Vector3 ptB = SphereB.getColumnVector(3);
+
+    Vector3 mid = ptA - ptB;
+    ffloat len = mid.mag();
+    if (len <= ffzero || len >= (sphereA.radius + SphereB.radius))
+      return 0;
+
+    Vector3 normal = mid * (ffone / len);
+
+    Contact* contact = cData->nextContact;
+		contact->contactNormal = normal;
+		contact->contactPoint = ptA + mid * ffhalf;
+		contact->penetration = (sphereA.radius + SphereB.radius - len);
+
+		RigidBody * b1 = b1->primitive->isStatic ? NULL : b1;
+		RigidBody * b2 = b2->primitive->isStatic ? NULL : b2;
+		if(!b1 && !b2)
+			return 0;
+
+		contact->setBodyData(b1, b2, cData->friction, cData->restitution);
+		cData->addContacts(1);
+
     return 1;
   }
 
