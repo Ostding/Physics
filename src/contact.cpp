@@ -289,8 +289,8 @@ namespace physics
       totalInertia += linearInertia[i] + angularInertia[i];
     }
 
-    angularMove[0] = (-penetration) * angularInertia[0] / totalInertia;
-    linearMove[0] = (-penetration) * bodies[0]->inverseMass / totalInertia;
+    angularMove[0] = penetration * angularInertia[0] / totalInertia;
+    linearMove[0] = penetration * bodies[0]->inverseMass / totalInertia;
 
     Vector3 projection = relativeContactPosition[0];
     projection.addScaledVector(contactNormal, -relativeContactPosition[0].dot(contactNormal));
@@ -338,6 +338,7 @@ namespace physics
       else
         velocityChange[i] *= linearMove[i];
       
+      // linearMove[i] = ffloat(1);
       bodies[i]->position.addScaledVector(contactNormal, linearMove[i]);
       bodies[i]->orientation.addScaledVector(rotationDirection[i], (rotationAmount[i] * ffhalf));
       bodies[i]->orientation.normalise();

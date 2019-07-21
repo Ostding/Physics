@@ -135,6 +135,44 @@ namespace physics
 
   unsigned ContactGenerator::genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData)
   {
+    if (sphere.isStatic) return 0;
+    if (cData->contactsLeft <= 0) return 0;
+
+    Vector3 ps = sphere.getColumnVector(3);
+    Vector3 p = plane.center;
+    Vector3 v = (ps - p);
+    ffloat dist = v.dot(plane.direction);
+    
+    if (dist*dist > sphere.radius*sphere.radius)
+      return 0;
+    
+    ffloat dmax = plane.extents.x + sphere.radius;
+    //Find sphere center point's projection on this plane
+    Vector3 pp = ps - plane.direction.scale(dist);
+    ffloat dtx = pp.x - plane.center.x;
+    if(dtx >= dmax)
+      return 0;
+
+    ffloat dty = pp.y - plane.center.y;
+    if(dty >= dmax)
+      return 0;
+
+    ffloat dtz = pp.z - plane.center.z;
+    if(dtz >= dmax)
+      return 0;
+
+    ffloat penetration = sphere.radius - ffabs(dist);
+    Vector3 normal = plane.direction;
+    if(dist < ffzero)
+      normal = -normal;
+
+    Contact* contact = cData->nextContact;
+    contact->contactNormal = normal;
+    contact->penetration = penetration;
+    contact->contactPoint = pp;
+    contact->setBodyData(sphere.body, NULL, cData->friction, cData->restitution);
+    cData->addContacts(1);
+
     return 1;
   }
 

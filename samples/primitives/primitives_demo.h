@@ -20,10 +20,11 @@ public:
 
 private:
   void render();
-  void doTest();
+  void initTest();
 
 private:
   bool simulate;
+  bool started;
   World *world;
   
   typedef struct point

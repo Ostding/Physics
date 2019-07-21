@@ -8,6 +8,7 @@ namespace physics
   CollisionData::CollisionData(unsigned maxContacts)
   { 
     CollisionData::maxContacts = maxContacts;
+    contactArray = new Contact[maxContacts];
     reset();
   }
 

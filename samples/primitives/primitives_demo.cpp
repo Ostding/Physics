@@ -17,6 +17,7 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   radY = (1.0f/6)*pi;
   radP = 0;
   lookDist = 50;
+  started = false;
 }
 
 PrimitivesDemo::~PrimitivesDemo()
@@ -33,6 +34,7 @@ void PrimitivesDemo::onDisplay()
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glLoadIdentity();
+  glEnable(GL_DEPTH_TEST);
 
   float rp = lookDist * std::cos(radY);
   float ex = std::sin(radP) * rp;
@@ -80,7 +82,7 @@ void PrimitivesDemo::onMouseMove(int x, int y)
     
     radY += dtY;
     radP += dtP;
-    if(radY < 0) radY = 0;
+    if(radY < (-pi/2)) radY = -pi/2;
     if(radY > (pi/2)) radY = pi/2;
   }
 }
@@ -89,11 +91,8 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
-    if(!simulate)
-    {
-      doTest();
-      simulate = true;
-    }
+    simulate = true;
+    initTest();
     break;
   case 's': case 'S':
     simulate = false;
@@ -129,15 +128,16 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
-void PrimitivesDemo::doTest()
+void PrimitivesDemo::initTest()
 {
+  if(started) return;
+
   Vector3 direction = Vector3::up;
   Vector3 center = Vector3(ffzero, ffzero, ffzero); 
   Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
   Plane *plane = new Plane(direction, center, extents);
   world->addPrimitive( plane );
 
-  
   ffloat radius = ffloat(3.0f);
   Sphere * sphere = new Sphere(radius);
 
@@ -157,6 +157,8 @@ void PrimitivesDemo::doTest()
   Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
   sphere->body->setPosition(pos);
   world->addPrimitive( sphere );
+
+  started = true;
 }
 
 Application * getApp()

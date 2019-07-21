@@ -6,7 +6,6 @@ namespace physics
 {
   void Renderer::renderAABB(const AABB &o)
   {
-    glEnable(GL_DEPTH_TEST);
     //back
     glBegin(GL_LINE_LOOP);
     COLOR_AABB
@@ -41,7 +40,6 @@ namespace physics
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.max.z.to_d());
     glEnd();
 
-    glDisable(GL_DEPTH_TEST);
   }
 
   void Renderer::renderPlane(Plane *p)
@@ -49,7 +47,7 @@ namespace physics
     GLfloat mat[16];
 		p->transform.fillArray(mat);
 
-		glColor3f(0.1, 0.1, 0.1);
+		glColor3f(0.5, 0.3, 0.2);
 		glPushMatrix();
     glMultMatrixf(mat);
 

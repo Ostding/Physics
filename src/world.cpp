@@ -106,6 +106,8 @@ namespace physics
 			it->second->body->updateDerivedData();
 			it->second->updateTransform();
 		}
+
+    cData.reset();
   }
 
   void World::renderPrimitives()

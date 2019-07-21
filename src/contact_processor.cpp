@@ -160,66 +160,66 @@ void ContactProcessor::adjustVelocities(Contact *c, unsigned numContacts, ffloat
     positionIterationsUsed = 0;
     while(positionIterationsUsed < positionIterations)
     {
-        // Find biggest penetration
-        max = positionEpsilon;
-        index = numContacts;
-        for(i=0;i<numContacts;i++) 
+      // Find biggest penetration
+      max = positionEpsilon;
+      index = numContacts;
+      for(i=0;i<numContacts;i++) 
+      {
+        if(c[i].penetration > max)
         {
-          if(c[i].penetration > max)
+          max=c[i].penetration;
+          index=i;
+        }
+      }
+      if (index == numContacts) break;
+
+      // Match the awake state at the contact
+      c[index].updateAwake();
+
+      // Resolve the penetration.
+      c[index].applyPositionChange(velocityChange, rotationChange, rotationAmount, max);
+
+      // Again this action may have changed the penetration of other bodies, so we update contacts.
+      for(i = 0; i < numContacts; i++)
+      {
+        if(c[i].bodies[0] == c[index].bodies[0])
+        {
+          cp = rotationChange[0].cross(c[i].relativeContactPosition[0]);
+
+          cp += velocityChange[0];
+          ffloat x = rotationAmount[0] * cp.dot(c[i].contactNormal);
+          c[i].penetration -=  x;
+        }
+        else if(c[i].bodies[0]==c[index].bodies[1])
+        {
+          cp = rotationChange[1].cross(c[i].relativeContactPosition[0]);
+
+          cp += velocityChange[1];
+
+          c[i].penetration -= rotationAmount[1]*cp.dot(c[i].contactNormal);
+        }
+
+        if(c[i].bodies[1])
+        {
+          if(c[i].bodies[1]==c[index].bodies[0])
           {
-              max=c[i].penetration;
-              index=i;
+            cp = rotationChange[0].cross(c[i].relativeContactPosition[1]);
+
+            cp += velocityChange[0];
+
+            c[i].penetration += rotationAmount[0]*cp.dot(c[i].contactNormal);
+          }
+          else if(c[i].bodies[1]==c[index].bodies[1])
+          {
+            cp = rotationChange[1].cross(c[i].relativeContactPosition[1]);
+
+            cp += velocityChange[1];
+
+            c[i].penetration += rotationAmount[1]*cp.dot(c[i].contactNormal);
           }
         }
-        if (index == numContacts) break;
-
-        // Match the awake state at the contact
-        c[index].updateAwake();
-
-        // Resolve the penetration.
-        c[index].applyPositionChange(velocityChange, rotationChange, rotationAmount, max);
-
-        // Again this action may have changed the penetration of other bodies, so we update contacts.
-        for(i = 0; i < numContacts; i++)
-        {
-            if(c[i].bodies[0] == c[index].bodies[0])
-            {
-                cp = rotationChange[0].cross(c[i].relativeContactPosition[0]);
-
-                cp += velocityChange[0];
-								ffloat x = rotationAmount[0] * cp.dot(c[i].contactNormal);
-                c[i].penetration -=  x;
-						}
-            else if(c[i].bodies[0]==c[index].bodies[1])
-            {
-                cp = rotationChange[1].cross(c[i].relativeContactPosition[0]);
-
-                cp += velocityChange[1];
-
-                c[i].penetration -=  rotationAmount[1]*cp.dot(c[i].contactNormal);
-						}
-
-            if(c[i].bodies[1])
-            {
-                if(c[i].bodies[1]==c[index].bodies[0])
-                {
-                    cp = rotationChange[0].cross(c[i].relativeContactPosition[1]);
-
-                    cp += velocityChange[0];
-
-                    c[i].penetration +=  rotationAmount[0]*cp.dot(c[i].contactNormal);
-								}
-                else if(c[i].bodies[1]==c[index].bodies[1])
-                {
-                    cp = rotationChange[1].cross(c[i].relativeContactPosition[1]);
-
-                    cp += velocityChange[1];
-
-                    c[i].penetration += rotationAmount[1]*cp.dot(c[i].contactNormal);
-								}
-            }
-        }
-        positionIterationsUsed++;
+      }
+      positionIterationsUsed++;
     }
   }
 
