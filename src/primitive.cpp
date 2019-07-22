@@ -16,7 +16,9 @@ namespace physics
     , isStatic( false )
     , isTrigger( false )
     , interCount( 0 )
-    {} 
+    {
+      body = new RigidBody(this);
+    } 
 
     Primitive::~Primitive()
     {
@@ -50,5 +52,29 @@ namespace physics
     Vector3 Primitive::getTransformPos() const
     {
       return transform.getTransformPos();
+    }
+
+    void Primitive::setPosition(const Vector3 &pos)
+    {
+      body->setPosition(pos);
+		  body->updateDerivedData();
+      updateTransform();
+    }
+
+    void Primitive::setOrientation(const Quaternion &dir)
+    {
+      body->setOrientation(dir);
+      body->updateDerivedData();
+      updateTransform();
+    }
+
+    Vector3 Primitive::getPosition()
+    {
+      return body->position;
+    }
+
+    Quaternion Primitive::getOrientation()
+    {
+      return body->orientation;
     }
 }

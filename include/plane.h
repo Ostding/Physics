@@ -10,15 +10,25 @@ namespace physics
   {
   public:
     Vector3 direction;
-    Vector3 center;
-    Vector3 extents;
-  
+    Vector3 ptLocalLB;
+    Vector3 ptLocalLT;
+    Vector3 ptLocalRB;
+    Vector3 ptLocalRT;
+
+    Vector3 ptLB;
+    Vector3 ptLT;
+    Vector3 ptRB;
+    Vector3 ptRT;
+
   public:
     Plane();
-    Plane(Vector3 direction, Vector3 center, Vector3 extents);
+    Plane(Vector3 direction, Vector3 extents);
 
     virtual void refreshAABB();
     virtual void render();
+    virtual void updateTransform();
+  private:
+    void clacDiagonalPoints(const Vector3 &extents);
   };
 }
 

@@ -91,7 +91,7 @@ namespace physics
     void setRotation(const Vector3 &rotation);
     void addRotation(const Vector3 & deltaRotation);
 
-    void setOrentation(const Quaternion &orientation);
+    void setOrientation(const Quaternion &orientation);
     
     Vector3 getPosInBodySpace(const Vector3 &pos) const;
     Vector3 getPosInWorldSpace(const Vector3 &pos) const;

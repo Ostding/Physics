@@ -200,7 +200,7 @@ namespace physics
 			rotation += deltaRotation;
 		}
 
-    void RigidBody::setOrentation(const Quaternion &orientation)
+    void RigidBody::setOrientation(const Quaternion &orientation)
 		{
 			RigidBody::orientation = orientation;
     	RigidBody::orientation.normalise();

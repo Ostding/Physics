@@ -74,7 +74,7 @@ namespace physics
   {
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
     {
-      if (it->second->body == NULL) continue;
+      if (it->second->body == 0) continue;
       it->second->body->clearAccumulators();
       it->second->body->updateDerivedData();
       it->second->updateTransform();
@@ -83,10 +83,11 @@ namespace physics
 
   void World::update(ffloat deltaTime)
   {
+    cData.reset();
     fManager.updateForces(deltaTime);
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
 		{ 
-			if (it->second->body == NULL)
+			if (it->second->body == 0)
 				continue;
 			it->second->body->update(deltaTime);
 		}
@@ -98,7 +99,7 @@ namespace physics
 
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
 		{
-			if (it->second->body == NULL || 
+			if (it->second->body == 0 || 
           it->second->isStatic ||
           !it->second->body->isAwake )
 				continue;
@@ -106,8 +107,6 @@ namespace physics
 			it->second->body->updateDerivedData();
 			it->second->updateTransform();
 		}
-
-    cData.reset();
   }
 
   void World::renderPrimitives()
@@ -121,11 +120,11 @@ namespace physics
 
   void World::render()
   {
+    renderPrimitives();
     fManager.render();
     cGenerator.render();
     cProcessor.render();
     cData.render();
-    renderPrimitives();
   }
 
 }

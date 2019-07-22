@@ -138,10 +138,16 @@ void PrimitivesDemo::initTest()
   if(started) return;
 
   Vector3 direction = Vector3::up;
-  Vector3 center = Vector3(ffzero, ffzero, ffzero); 
-  Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
-  Plane *plane = new Plane(direction, center, extents);
-  world->addPrimitive( plane );
+  // Vector3 center = Vector3(ffzero, ffzero, ffzero); 
+  // Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
+  // Plane *plane = new Plane(direction, center, extents);
+  // world->addPrimitive( plane );
+
+  Vector3 center2 = Vector3(ffloat(12), ffloat(1.5), ffzero); 
+  Vector3 extents2 = Vector3(ffloat(10), ffloat(0.1), ffloat(10));
+  Plane *plane2 = new Plane(direction, extents2);
+  plane2->setPosition(center2);
+  world->addPrimitive( plane2 );
 
   ffloat radius = ffloat(3.0f);
   Sphere * sphere = new Sphere(radius);
@@ -159,10 +165,11 @@ void PrimitivesDemo::initTest()
   sphere->body->enableSleep(true);
   sphere->body->setAwake();
 
-  Vector3 pos = Vector3(ffloat(2), ffloat(10), ffzero);
-  sphere->body->setPosition(pos);
+  Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
+  sphere->setPosition(pos);
   world->addPrimitive( sphere );
 
+  world->prepare();
   started = true;
 }
 

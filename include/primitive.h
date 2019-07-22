@@ -46,15 +46,19 @@ namespace physics
     Primitive(PRIMITIVE_TYPE t);
     virtual ~Primitive();
 
-
   public:
     virtual void refreshAABB();
     virtual void render();
-
-    void    updateTransform();
+    virtual void updateTransform();
     
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;
+
+    void setPosition(const Vector3 &pos);
+    void setOrientation(const Quaternion &dir);
+
+    Vector3 getPosition();
+    Quaternion getOrientation();
   };
 }
 

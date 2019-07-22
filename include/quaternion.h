@@ -163,6 +163,19 @@ namespace physics
         return fftodeg(fftwo * ffacos(r));
       }
 
+      static Quaternion fromVectorToVector(const Vector3 &from, const Vector3 &to)
+      {
+        Quaternion ret;
+        Vector3 h = from + to;     
+        h = h.normalize();
+
+        ret.r = from.dot(h);
+        ret.i = from.y*h.z - from.z*h.y;     
+        ret.j = from.z*h.x - from.x*h.z;     
+        ret.k = from.x*h.y - from.y*h.x;     
+        return ret;
+      }
+
       static Quaternion fromEulerAngles(const Vector3 &v)
       {
         ffloat radX = fftorad(v.x * ffhalf);

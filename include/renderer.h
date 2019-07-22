@@ -7,6 +7,7 @@
 #include "types.h"
 #include "plane.h"
 #include "sphere.h"
+#include "contact.h"
 
 namespace physics
 {
@@ -15,10 +16,10 @@ namespace physics
   class Renderer
   {
   public:
-    #define COLOR_AABB glColor3f(0, 1, 0);
     static void renderAABB(const AABB &o);
     static void renderPlane(Plane *p);
     static void renderSphere(Sphere *p);
+    static void renderContact(Contact *p);
   };
 }
 

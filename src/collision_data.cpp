@@ -1,4 +1,5 @@
 #include "collision_data.h"
+#include "renderer.h"
 
 namespace physics
 {
@@ -43,5 +44,9 @@ namespace physics
   void CollisionData::render()
   {
     //to do show contact point normal and penetration
+    for(Contact *p = contactArray; p < nextContact; p ++)
+    {
+      Renderer::renderContact(p);
+    }
   }
 }

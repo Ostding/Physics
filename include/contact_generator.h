@@ -51,7 +51,7 @@ namespace physics
       void fillContactCeofficient(Primitive *cpa, Primitive *cpb, CollisionData *cData);
 
       unsigned genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData);
-      unsigned genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData);
+      unsigned genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData);
 
   };
 }

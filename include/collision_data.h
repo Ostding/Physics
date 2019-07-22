@@ -6,6 +6,7 @@
 
 namespace physics
 {
+
   class CollisionData
   {
     public:

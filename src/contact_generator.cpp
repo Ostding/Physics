@@ -1,17 +1,18 @@
 #include "contact_generator.h"
+#include "utils.h"
 
 namespace physics
 {
   ContactGenerator::ContactGenerator(const Vector3 &min, const Vector3 &max)
 	{
 		AABB a = AABB(min, max);
-		octreeRoot = new OCTreeNode(a, 0, 0, NULL);
+		octreeRoot = new OCTreeNode(a, 0, 0, 0);
 	}
 
   ContactGenerator::~ContactGenerator() 
   {
 		OCTreeNode::destroy(octreeRoot);
-		octreeRoot = NULL;
+		octreeRoot = 0;
 	}
 
   void ContactGenerator::addPrimitive(Primitive *pri)
@@ -139,52 +140,88 @@ namespace physics
     if (cData->contactsLeft <= 0) return 0;
 
     Vector3 ps = sphere.getColumnVector(3);
-    Vector3 v = (ps - plane.center);
-    ffloat dist = v.dot(plane.direction);
+    Vector3 dirWrold = plane.body->getDirectionInWorldSpace(plane.direction);
     
-    if (dist*dist > sphere.radius*sphere.radius)
-      return 0;
+    Vector3 v = (ps - plane.ptLB);
+    ffloat dist = v.dot(dirWrold);
+    Vector3 pp = ps - dirWrold.scale(dist);
+
+    bool inLT = Utils::pointInTrangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
+    bool inRB = Utils::pointInTrangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
+    if(inRB || inLT)
+    {
+      if (dist > sphere.radius)
+        return 0;
+
+      ffloat penetration = sphere.radius - ffabs(dist);
+      Vector3 normal = dirWrold;
+      if(dist < ffzero)
+        normal = -normal;
+
+      Contact* contact = cData->nextContact;
+      contact->contactNormal = normal;
+      contact->penetration = penetration;
+      contact->contactPoint = pp;
+      contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
+      cData->addContacts(1);
+      return 1;
+    }
+
+    //Find the edge whose distance to the projection point is the smallest 
+    Vector3 projPoint, minPoint; ffloat dist2, minDist;
+    Utils::pointProjectionToSeg(pp, plane.ptLB, plane.ptLT, projPoint, dist2);
+    minDist = dist2;
+    minPoint = projPoint;
+    Utils::pointProjectionToSeg(pp, plane.ptLT, plane.ptRT, projPoint, dist2);
+    if(dist2 < minDist)
+    {
+      minDist = dist2;
+      minPoint = projPoint;
+    }
+    Utils::pointProjectionToSeg(pp, plane.ptRT, plane.ptRB, projPoint, dist2);
+    if(dist2 < minDist)
+    {
+      minDist = dist2;
+      minPoint = projPoint;
+    }
+    Utils::pointProjectionToSeg(pp, plane.ptRB, plane.ptLB, projPoint, dist2);
+    if(dist2 < minDist)
+    {
+      minDist = dist2;
+      minPoint = projPoint;
+    }
     
-    ffloat dmax = plane.extents.x + sphere.radius;
-    //Find sphere center point's projection on this plane
-    Vector3 pp = ps - plane.direction.scale(dist);
-    ffloat dtx = pp.x - plane.center.x;
-    if(dtx >= dmax)
-      return 0;
-
-    ffloat dty = pp.y - plane.center.y;
-    if(dty >= dmax)
-      return 0;
-
-    ffloat dtz = pp.z - plane.center.z;
-    if(dtz >= dmax)
-      return 0;
-
-    ffloat penetration = sphere.radius - ffabs(dist);
-    Vector3 normal = plane.direction;
-    if(dist < ffzero)
-      normal = -normal;
+    Vector3 cp = (ps - minPoint);
+    ffloat magCP = cp.mag();
+    if (magCP > sphere.radius)
+        return 0;
+    ffloat penetration = (sphere.radius - magCP);
 
     Contact* contact = cData->nextContact;
-    contact->contactNormal = normal;
+    contact->contactNormal = cp.normalize();
     contact->penetration = penetration;
-    contact->contactPoint = pp;
-    contact->setBodyData(sphere.body, NULL, cData->friction, cData->restitution);
+    contact->contactPoint = minPoint;
+    contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
     cData->addContacts(1);
 
     return 1;
   }
 
-  unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &SphereB, CollisionData *cData)
+  unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData)
   {
     if (cData->contactsLeft <= 0) return 0;
 
+    RigidBody * b1 = sphereA.isStatic ? 0 : sphereA.body;
+		RigidBody * b2 = sphereB.isStatic ? 0 : sphereB.body;
+		if(!b1 && !b2)
+			return 0;
+
     Vector3 ptA = sphereA.getColumnVector(3);
-    Vector3 ptB = SphereB.getColumnVector(3);
+    Vector3 ptB = sphereB.getColumnVector(3);
 
     Vector3 mid = ptA - ptB;
     ffloat len = mid.mag();
-    if (len <= ffzero || len >= (sphereA.radius + SphereB.radius))
+    if (len <= ffzero || len >= (sphereA.radius + sphereB.radius))
       return 0;
 
     Vector3 normal = mid * (ffone / len);
@@ -192,12 +229,7 @@ namespace physics
     Contact* contact = cData->nextContact;
 		contact->contactNormal = normal;
 		contact->contactPoint = ptA + mid * ffhalf;
-		contact->penetration = (sphereA.radius + SphereB.radius - len);
-
-		RigidBody * b1 = b1->primitive->isStatic ? NULL : b1;
-		RigidBody * b2 = b2->primitive->isStatic ? NULL : b2;
-		if(!b1 && !b2)
-			return 0;
+		contact->penetration = (sphereA.radius + sphereB.radius - len);
 
 		contact->setBodyData(b1, b2, cData->friction, cData->restitution);
 		cData->addContacts(1);

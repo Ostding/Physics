@@ -122,7 +122,7 @@ void Application::textOut(float x, float y, const char* text, void * font)
   glPushMatrix();
   glLoadIdentity();
 
-	if (font == NULL) {
+	if (font == 0) {
 		font = GLUT_BITMAP_HELVETICA_10;
 	}
 
