@@ -107,10 +107,10 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
     world->update(deltaTime);
     break;
   case 'f': case 'F':
-    lookDist -= 0.5;
+    lookDist -= 1;
     break;
   case 'b': case 'B':
-    lookDist += 0.5;
+    lookDist += 1;
     break;
   }
 
