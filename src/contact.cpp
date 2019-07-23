@@ -338,7 +338,6 @@ namespace physics
       else
         velocityChange[i] *= linearMove[i];
       
-      // linearMove[i] = ffloat(1);
       bodies[i]->position.addScaledVector(contactNormal, linearMove[i]);
       bodies[i]->orientation.addScaledVector(rotationDirection[i], (rotationAmount[i] * ffhalf));
       bodies[i]->orientation.normalise();

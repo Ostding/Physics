@@ -133,29 +133,13 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
-void PrimitivesDemo::initTest()
+void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass)
 {
-  if(started) return;
-
-  Vector3 direction = Vector3::up;
-  // Vector3 center = Vector3(ffzero, ffzero, ffzero); 
-  // Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
-  // Plane *plane = new Plane(direction, center, extents);
-  // world->addPrimitive( plane );
-
-  Vector3 center2 = Vector3(ffloat(12), ffloat(1.5), ffzero); 
-  Vector3 extents2 = Vector3(ffloat(10), ffloat(0.1), ffloat(10));
-  Plane *plane2 = new Plane(direction, extents2);
-  plane2->setPosition(center2);
-  world->addPrimitive( plane2 );
-
-  ffloat radius = ffloat(3.0f);
   Sphere * sphere = new Sphere(radius);
 
   sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.2f));
 
-  ffloat mass = ffloat(10);
   ffloat coeff = ffloat(0.4f) * mass * radius * radius;
   Matrix3 tensor;
   tensor.setDiagonal(coeff, coeff, coeff);
@@ -165,9 +149,34 @@ void PrimitivesDemo::initTest()
   sphere->body->enableSleep(true);
   sphere->body->setAwake();
 
-  Vector3 pos = Vector3(ffzero, ffloat(10), ffzero);
   sphere->setPosition(pos);
   world->addPrimitive( sphere );
+}
+
+void PrimitivesDemo::initOnePlane(const Vector3 &pos, const Vector3 &dir, const Vector3 &extents)
+{
+  Plane *plane = new Plane(dir, extents);
+  plane->setPosition(pos);
+  world->addPrimitive( plane );
+}
+
+void PrimitivesDemo::initTest()
+{
+  if(started) return;
+
+  Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
+  initOnePlane(Vector3::zero, Vector3::up, extents);
+
+  Vector3 pos = Vector3(ffloat(6), ffloat(8), ffzero); 
+  extents = Vector3(ffloat(10), ffloat(0.1), ffloat(10));
+  Vector3 dir = Vector3(ffloat(-1), ffone, ffzero);
+  dir.normalize();
+  initOnePlane(pos, dir, extents);
+
+  pos = Vector3(ffzero, ffloat(15), ffzero);
+  ffloat radius = ffloat(3);
+  ffloat mass = ffloat(10);
+  initOneSphere(radius, pos, mass);
 
   world->prepare();
   started = true;

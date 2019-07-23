@@ -21,6 +21,8 @@ public:
 private:
   void render();
   void initTest();
+  void initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass);
+  void initOnePlane(const Vector3 &pos, const Vector3 &dir, const Vector3 &extents);
 
 private:
   bool simulate;

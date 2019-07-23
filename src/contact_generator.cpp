@@ -153,14 +153,14 @@ namespace physics
       if (dist > sphere.radius)
         return 0;
 
-      ffloat penetration = sphere.radius - ffabs(dist);
+      ffloat pen = sphere.radius - ffabs(dist);
       Vector3 normal = dirWrold;
       if(dist < ffzero)
         normal = -normal;
 
       Contact* contact = cData->nextContact;
       contact->contactNormal = normal;
-      contact->penetration = penetration;
+      contact->penetration = pen;
       contact->contactPoint = pp;
       contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
       cData->addContacts(1);
@@ -195,8 +195,8 @@ namespace physics
     ffloat magCP = cp.mag();
     if (magCP > sphere.radius)
         return 0;
-        
     ffloat penetration = (sphere.radius - magCP);
+
     cp.normalize();
     Contact* contact = cData->nextContact;
     contact->contactNormal = cp;

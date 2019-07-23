@@ -51,7 +51,7 @@ namespace physics
 		Contact *contacts = cData->contactArray;
     prepareContacts(contacts, numContacts, deltaTime);
     adjustPositions(contacts, numContacts, deltaTime);
-    // adjustVelocities(contacts, numContacts, deltaTime);
+    adjustVelocities(contacts, numContacts, deltaTime);
   }
 
   void ContactProcessor::prepareContacts(Contact* contacts,
