@@ -99,7 +99,7 @@ namespace physics
           return;
         }
 
-        ffloat f = mag / den;
+        ffloat f = ffone / den;
         r *= f;
         i *= f;
         j *= f;
@@ -167,7 +167,7 @@ namespace physics
       {
         Quaternion ret;
         Vector3 h = from + to;     
-        h = h.normalize();
+        h.normalize();
 
         ret.r = from.dot(h);
         ret.i = from.y*h.z - from.z*h.y;     

@@ -195,10 +195,11 @@ namespace physics
     ffloat magCP = cp.mag();
     if (magCP > sphere.radius)
         return 0;
+        
     ffloat penetration = (sphere.radius - magCP);
-
+    cp.normalize();
     Contact* contact = cData->nextContact;
-    contact->contactNormal = cp.normalize();
+    contact->contactNormal = cp;
     contact->penetration = penetration;
     contact->contactPoint = minPoint;
     contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);

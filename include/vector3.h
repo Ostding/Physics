@@ -247,12 +247,11 @@ namespace physics
       x = y = z = 0;
     }
 
-    Vector3 normalize()
+    void normalize()
     {
       ffloat l = mag();
       if (l > ffzero)
-        return this->scale(ffone / l);
-      return *this;
+        scaleUpdate(ffone / l);
     }
 
     void inspect(const char *pszTag = "") const

@@ -10,7 +10,7 @@ namespace physics
 	typedef long long 	        int64;
 	typedef unsigned long long 	uint64;
 
-	#define enlarge 100000
+	#define enlarge 100000LL
 	#define ficast(v) 	((int64)v * enlarge)
 	#define ffcast(v)		((int64)((double)v * enlarge))
 	#define fdcast(v)	((double)v / enlarge)
@@ -85,7 +85,9 @@ namespace physics
 		{
 			double a = to_d();
 			double b = other.to_d();
-			return FixedFloat(a / b);
+			double dr = a / b;
+			int64 v = ((int64)(dr * enlarge));
+			return FixedFloat((v == 0LL) ? 1LL : v);
 		}
 
 		FixedFloat & operator += (const FixedFloat & other) { value += other.value; return *this; }
@@ -101,9 +103,13 @@ namespace physics
 
 		FixedFloat & operator /= (const FixedFloat & other) 
 		{ 
+			if(value == 0LL) 
+				return *this;
+
 			double a = to_d();
 			double b = other.to_d();
 			value = ffcast(a / b);
+			value = (value == 0LL) ? 1LL : value;
 			return *this;
 		}
 
