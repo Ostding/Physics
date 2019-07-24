@@ -1,6 +1,7 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
-
+#include <vector>
+using namespace std;
 #include "types.h"
 #include "vector3.h"
 
@@ -26,7 +27,9 @@ namespace physics
                                 Vector3 &ptProjection, ffloat &distance);
 
       //Algorithm refer to http://mathworld.wolfram.com/BarycentricCoordinates.html
-      static bool pointInTrangle(const Vector3 &pt, const Vector3 &ptA, const Vector3 &ptB, const Vector3 &ptC);
+      static bool pointInTriangle(const Vector3 &pt, const Vector3 &ptA, const Vector3 &ptB, const Vector3 &ptC);
+      
+      static Vector3 findFarthestPointInDirection(const Vector3 &dir, std::vector<Vector3> &points);
   };
 }
 

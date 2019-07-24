@@ -154,8 +154,8 @@ namespace physics
     ffloat dist = v.dot(dirWrold);
     Vector3 pp = ps - dirWrold.scale(dist);
 
-    bool inLT = Utils::pointInTrangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
-    bool inRB = Utils::pointInTrangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
+    bool inLT = Utils::pointInTriangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
+    bool inRB = Utils::pointInTriangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
     if(inRB || inLT)
     {
       if (dist > sphere.radius)

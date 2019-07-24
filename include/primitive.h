@@ -14,7 +14,7 @@ namespace physics
   {
     PRIT_PLANE        = 1,
     PRIT_SPHERE       = 2,
-    PRIT_QUBE         = 4,
+    PRIT_BOX          = 4,
     PRIT_CAPSULE      = 8,
     PRIT_POLYHEDRON   = 16,
   };

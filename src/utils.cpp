@@ -55,7 +55,7 @@ namespace physics
     return true;
   }
 
-  bool Utils::pointInTrangle(const Vector3 &pt, const Vector3 &ptA, const Vector3 &ptB, const Vector3 &ptC)
+  bool Utils::pointInTriangle(const Vector3 &pt, const Vector3 &ptA, const Vector3 &ptB, const Vector3 &ptC)
   {
     Vector3 v0 = ptC - ptA ;
     Vector3 v1 = ptB - ptA ;
@@ -78,6 +78,22 @@ namespace physics
       return false ;
 
     return (u + v) <= ffone ;
+  }
+
+  Vector3 Utils::findFarthestPointInDirection(const Vector3 &dir, std::vector<Vector3> &points)
+  {
+    int fi = 0;
+    ffloat maxValue = points[0].dot(dir) * points[0].squareMag();
+    for (int i = 1; i < points.size(); i++)
+    {
+      ffloat value = points[i].dot(dir) * points[i].squareMag();
+      if (maxValue < value)
+      {
+        fi = i;
+        maxValue = value;
+      }
+    }
+    return points[fi];
   }
 
 }

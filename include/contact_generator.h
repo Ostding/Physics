@@ -10,6 +10,7 @@ using namespace std;
 #include "primitive.h"
 #include "sphere.h"
 #include "plane.h"
+#include "box.h"
 
 namespace physics
 {
@@ -50,9 +51,27 @@ namespace physics
       void generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
       void fillContactCeofficient(Primitive *cpa, Primitive *cpb, CollisionData *cData);
 
+      //sphere
       unsigned genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData);
       unsigned genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData);
 
+      //box
+      unsigned genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData);
+      unsigned genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData);
+      unsigned genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData);
+
+      //capsule
+      // unsigned genCapsuleAndPlane( Capsule &capsule, Plane &plane, CollisionData *cData);
+      // unsigned genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData);
+      // unsigned genCapsuleAndBox( Capsule &capsule, Box &box, CollisionData *cData);
+      // unsigned genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData);
+
+      //polyhedron
+      // unsigned genPolyhedronAndPlane( Polyhedron &poly, Plane &plane, CollisionData *cData);
+      // unsigned genPolyhedronAndSphere( Polyhedron &poly, Sphere &sphere, CollisionData *cData);
+      // unsigned genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData);
+      // unsigned genPolyhedronAndCapsule( Polyhedron &poly, Capsule &capsule, CollisionData *cData);
+      // unsigned genPolyhedronAndCapsule( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData);
   };
 }
 

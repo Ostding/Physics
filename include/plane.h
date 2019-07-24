@@ -6,6 +6,8 @@
 
 namespace physics
 {
+  //Plz note that: plane usually used as a static ground or platform 
+  //with massive mass, so it can not move 
   class Plane : public Primitive
   {
   public:
