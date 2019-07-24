@@ -125,12 +125,20 @@ namespace physics
       genSphereAndPlane(*box, *plane, cData);
     }
     else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE &&
-        cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
     {
       Sphere *box = dynamic_cast<Sphere *>(cpb);
 			Plane *plane = dynamic_cast<Plane *>(cpa);
 			fillContactCeofficient(box, plane, cData);
       genSphereAndPlane(*box, *plane, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
+    {
+      Sphere *sA = dynamic_cast<Sphere *>(cpa);
+			Sphere *sB = dynamic_cast<Sphere *>(cpb);
+			fillContactCeofficient(sA, sB, cData);
+      genSphereAndSphere(*sA, *sB, cData);
     }
   }
 
@@ -221,15 +229,17 @@ namespace physics
     Vector3 ptB = sphereB.getColumnVector(3);
 
     Vector3 mid = ptA - ptB;
-    ffloat len = mid.mag();
-    if (len <= ffzero || len >= (sphereA.radius + sphereB.radius))
+    ffloat squareLen = mid.squareMag();
+    ffloat dist = (sphereA.radius + sphereB.radius);
+    if (squareLen >= (dist * dist))
       return 0;
 
+    ffloat len = ffsqrt(squareLen);
     Vector3 normal = mid * (ffone / len);
 
     Contact* contact = cData->nextContact;
 		contact->contactNormal = normal;
-		contact->contactPoint = ptA + mid * ffhalf;
+		contact->contactPoint = ptB + mid * ffhalf;
 		contact->penetration = (sphereA.radius + sphereB.radius - len);
 
 		contact->setBodyData(b1, b2, cData->friction, cData->restitution);
