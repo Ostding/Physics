@@ -111,7 +111,6 @@ void Application::onExit()
 
 void Application::textOut(float x, float y, const char* text, void * font)
 {
-  return;
 	glDisable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);

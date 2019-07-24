@@ -35,18 +35,6 @@ void PrimitivesDemo::onDisplay()
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   
 	glLoadIdentity();    
-
-  GLfloat light_position[] = { 0.0, 50.0, 0.0, 0.0 }; 
-  GLfloat light_ambient [] = { 0.0, 0.0, 0.0, 1.0 };
-  GLfloat light_diffuse [] = { 1.0, 1.0, 1.0, 1.0 };
-  GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 }; 
-  glLightfv(GL_LIGHT0, GL_POSITION, light_position); 
-  glLightfv(GL_LIGHT0, GL_AMBIENT , light_ambient );
-  glLightfv(GL_LIGHT0, GL_DIFFUSE , light_diffuse ); 
-  glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-  
-  glEnable(GL_LIGHT0);
-  glEnable(GL_LIGHTING);
   glEnable(GL_DEPTH_TEST);
 
   float rp = lookDist * std::cos(radY);

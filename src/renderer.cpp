@@ -6,21 +6,7 @@ namespace physics
 {
   void Renderer::setColor(float r, float g, float b)
   {
-    GLfloat sun_mat_ambient[]  = {0.0f, 0.0f, 1.0f, 1.0f};
-		GLfloat sun_mat_diffuse[]  = {r, g, b, 1.0f};
-		GLfloat sun_mat_specular[] = {0.8f, 0.0f, 0.0f, 1.0f};
-		GLfloat sun_mat_emission[] = {0.0f, 0.0f, 0.0f, 1.0f};
-		GLfloat sun_mat_shininess  = 30.0f;        
-		glMaterialfv(GL_FRONT, GL_AMBIENT,    sun_mat_ambient);    
-		glMaterialfv(GL_FRONT, GL_DIFFUSE,    sun_mat_diffuse);   
-		glMaterialfv(GL_FRONT, GL_SPECULAR,   sun_mat_specular);    
-		glMaterialfv(GL_FRONT, GL_EMISSION,   sun_mat_emission);   
-		glMaterialf (GL_FRONT, GL_SHININESS, sun_mat_shininess);
-    glMaterialfv(GL_BACK, GL_AMBIENT,    sun_mat_ambient);    
-		glMaterialfv(GL_BACK, GL_DIFFUSE,    sun_mat_diffuse);   
-		glMaterialfv(GL_BACK, GL_SPECULAR,   sun_mat_specular);    
-		glMaterialfv(GL_BACK, GL_EMISSION,   sun_mat_emission);   
-		glMaterialf (GL_BACK, GL_SHININESS, sun_mat_shininess);
+    glColor3f(r,g,b);
   }
 
   void Renderer::renderAABB(const AABB &o)
@@ -63,7 +49,8 @@ namespace physics
 
   void Renderer::renderPlane(Plane *p)
   {
-		setColor(0.5, 0.3, 0.2);
+    float r = ((float)((int64)p % 10000))/10000.0f;
+		setColor(r, r, r);
 	  glBegin(GL_TRIANGLE_STRIP);
 
     glVertex3f(p->ptLT.x.to_d(), p->ptLT.y.to_d(), p->ptLT.z.to_d());
@@ -78,11 +65,11 @@ namespace physics
   {
     GLfloat mat[16];
 		p->transform.fillArray(mat);
-
+  
 		if (p->body->isAwake) 
-      setColor(1.0, 0.7, 0.7);
-		else 
-      setColor(0.7, 0.7, 1.0);
+      setColor(0.6, 0.4, 0.2);
+		else
+      setColor(0.2, 0.6, 0.4);
 
 		glPushMatrix();
 		glMultMatrixf(mat);
