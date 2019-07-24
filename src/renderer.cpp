@@ -4,11 +4,30 @@
 
 namespace physics
 {
+  void Renderer::setColor(float r, float g, float b)
+  {
+    GLfloat sun_mat_ambient[]  = {0.0f, 0.0f, 1.0f, 1.0f};
+		GLfloat sun_mat_diffuse[]  = {r, g, b, 1.0f};
+		GLfloat sun_mat_specular[] = {0.8f, 0.0f, 0.0f, 1.0f};
+		GLfloat sun_mat_emission[] = {0.0f, 0.0f, 0.0f, 1.0f};
+		GLfloat sun_mat_shininess  = 30.0f;        
+		glMaterialfv(GL_FRONT, GL_AMBIENT,    sun_mat_ambient);    
+		glMaterialfv(GL_FRONT, GL_DIFFUSE,    sun_mat_diffuse);   
+		glMaterialfv(GL_FRONT, GL_SPECULAR,   sun_mat_specular);    
+		glMaterialfv(GL_FRONT, GL_EMISSION,   sun_mat_emission);   
+		glMaterialf (GL_FRONT, GL_SHININESS, sun_mat_shininess);
+    glMaterialfv(GL_BACK, GL_AMBIENT,    sun_mat_ambient);    
+		glMaterialfv(GL_BACK, GL_DIFFUSE,    sun_mat_diffuse);   
+		glMaterialfv(GL_BACK, GL_SPECULAR,   sun_mat_specular);    
+		glMaterialfv(GL_BACK, GL_EMISSION,   sun_mat_emission);   
+		glMaterialf (GL_BACK, GL_SHININESS, sun_mat_shininess);
+  }
+
   void Renderer::renderAABB(const AABB &o)
   {
     //back
     glBegin(GL_LINE_LOOP);
-    glColor3f(0, 1, 0);
+    setColor(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.max.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.min.z.to_d());
@@ -17,7 +36,7 @@ namespace physics
 
     //front
     glBegin(GL_LINE_LOOP);
-    glColor3f(0, 1, 0);
+    setColor(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
     glVertex3f(o.max.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.max.z.to_d());
@@ -26,7 +45,7 @@ namespace physics
 
     //side
     glBegin(GL_LINES);
-    glColor3f(0, 1, 0);
+    setColor(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
 
@@ -44,7 +63,7 @@ namespace physics
 
   void Renderer::renderPlane(Plane *p)
   {
-		glColor3f(0.5, 0.3, 0.2);
+		setColor(0.5, 0.3, 0.2);
 	  glBegin(GL_TRIANGLE_STRIP);
 
     glVertex3f(p->ptLT.x.to_d(), p->ptLT.y.to_d(), p->ptLT.z.to_d());
@@ -61,9 +80,9 @@ namespace physics
 		p->transform.fillArray(mat);
 
 		if (p->body->isAwake) 
-      glColor3f(1.0, 0.7, 0.7);
+      setColor(1.0, 0.7, 0.7);
 		else 
-      glColor3f(0.7, 0.7, 1.0);
+      setColor(0.7, 0.7, 1.0);
 
 		glPushMatrix();
 		glMultMatrixf(mat);
@@ -79,9 +98,9 @@ namespace physics
   { 
     //Contact point
     glDisable(GL_DEPTH_TEST);
-    glEnable(GL_POINT_SMOOTH);
+    // glEnable(GL_POINT_SMOOTH);
     glPointSize(1);
-    glColor3f(1.0, 0, 0);
+    setColor(1.0, 0, 0);
     glBegin(GL_POINTS);
       glVertex3f(p->contactPoint.x.to_d(), 
                  p->contactPoint.y.to_d(),
@@ -91,7 +110,7 @@ namespace physics
     glEnable(GL_DEPTH_TEST);
 
     //Contact normal
-    glColor3f(1, 1, 0);
+    setColor(1, 1, 0);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_LINES);
       glVertex3f(p->contactPoint.x.to_d(), 

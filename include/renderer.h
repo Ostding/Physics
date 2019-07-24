@@ -16,6 +16,7 @@ namespace physics
   class Renderer
   {
   public:
+    static void setColor(float r, float g, float b);
     static void renderAABB(const AABB &o);
     static void renderPlane(Plane *p);
     static void renderSphere(Sphere *p);
