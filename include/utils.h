@@ -4,6 +4,7 @@
 using namespace std;
 #include "types.h"
 #include "vector3.h"
+#include "matrix4.h"
 
 namespace physics
 {
@@ -30,6 +31,8 @@ namespace physics
       static bool pointInTriangle(const Vector3 &pt, const Vector3 &ptA, const Vector3 &ptB, const Vector3 &ptC);
       
       static Vector3 findFarthestPointInDirection(const Vector3 &dir, std::vector<Vector3> &points);
+
+      static ffloat calcProjectionLengthOnAxis(const Vector3 &extents, const Matrix4 &transform, const Vector3 &axis);
   };
 }
 

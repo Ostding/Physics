@@ -96,4 +96,11 @@ namespace physics
     return points[fi];
   }
 
+  ffloat Utils::calcProjectionLengthOnAxis(const Vector3 &extents, const Matrix4 &transform, const Vector3 &axis)
+  { 
+    return  extents.x * ffabs(axis.dot(transform.getColumnVector(0))) +
+            extents.y * ffabs(axis.dot(transform.getColumnVector(1))) +
+            extents.z * ffabs(axis.dot(transform.getColumnVector(2)));
+  }
+
 }

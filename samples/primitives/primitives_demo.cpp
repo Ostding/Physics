@@ -134,6 +134,30 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
+void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass)
+{
+  Box *box = new Box(extents);
+  box->body->setLinearDamp(ffloat(0.95f));
+	box->body->setAngularDamp(ffloat(0.2f));
+
+  Vector3 squares = extents.product(extents);
+  ffloat f3 = ffone / ffloat(enlarge * 12ll);
+  ffloat yz = mass * (squares.y + squares.z);
+  ffloat xz = mass * (squares.x + squares.z);
+  ffloat xy = mass * (squares.x + squares.y);
+
+  Matrix3 tensor;
+  tensor.setDiagonal(f3 * yz, f3 * xz, f3 * xy);
+  box->body->setInertiaTensor(tensor);
+
+  box->body->setMass(mass);
+  box->body->enableSleep(true);
+  box->body->setAwake();
+
+  box->setPosition(pos);
+  world->addPrimitive( box );
+}
+
 void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass)
 {
   Sphere * sphere = new Sphere(radius);

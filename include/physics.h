@@ -19,6 +19,7 @@
 #include "primitive.h"
 #include "plane.h"
 #include "sphere.h"
+#include "box.h"
 #include "world.h"
 #include "renderer.h"
 

@@ -26,13 +26,13 @@ namespace physics
 
   void Box::refreshAABB()
   {
-    Vector3 pt = body->getPosInWorldSpace(points[0]);
+    Vector3 pt = body->getPosInWorldSpace(pointsLocal[0]);
     ffloat xMax = pt.x, xMin = pt.x;
     ffloat yMax = pt.y, yMin = pt.y;
     ffloat zMax = pt.z, zMin = pt.z;
-    for (int i = 1; i < points.size(); i++)
+    for (int i = 1; i < pointsLocal.size(); i++)
     {
-      Vector3 pt = body->getPosInWorldSpace(points[i]);
+      Vector3 pt = body->getPosInWorldSpace(pointsLocal[i]);
       
       if (pt.x > xMax)
         xMax = pt.x;
@@ -48,6 +48,8 @@ namespace physics
         zMax = pt.z;
       if (pt.z < zMin)
         zMin = pt.z;
+        
+      pointsWorld[i] = pt;
     }
 
     aabb.set(Vector3(xMin, yMin, zMin), Vector3(xMax, yMax, zMax));
@@ -55,17 +57,17 @@ namespace physics
 
   void Box::updateCorners()
   {
-    if (points.size() > 0)
+    if (pointsLocal.size() > 0)
 		return;
 
-    points.push_back(offset * Vector3(-extents.x, -extents.y,	-extents.z));
-    points.push_back(offset * Vector3(-extents.x, -extents.y,	extents.z));
-    points.push_back(offset * Vector3(extents.x,	-extents.y,	-extents.z));
-    points.push_back(offset * Vector3(extents.x,	-extents.y,	extents.z));
-    points.push_back(offset * Vector3(-extents.x, extents.y,		-extents.z));
-    points.push_back(offset * Vector3(-extents.x, extents.y,		extents.z));
-    points.push_back(offset * Vector3(extents.x,	extents.y,		-extents.z));
-    points.push_back(offset * Vector3(extents.x,	extents.y,		extents.z));
+    pointsLocal.push_back(offset * Vector3(-extents.x, -extents.y,	-extents.z));
+    pointsLocal.push_back(offset * Vector3(-extents.x, -extents.y,	extents.z));
+    pointsLocal.push_back(offset * Vector3(extents.x,	-extents.y,	-extents.z));
+    pointsLocal.push_back(offset * Vector3(extents.x,	-extents.y,	extents.z));
+    pointsLocal.push_back(offset * Vector3(-extents.x, extents.y,	-extents.z));
+    pointsLocal.push_back(offset * Vector3(-extents.x, extents.y,	extents.z));
+    pointsLocal.push_back(offset * Vector3(extents.x,	extents.y,	-extents.z));
+    pointsLocal.push_back(offset * Vector3(extents.x,	extents.y,	extents.z));
 
     refreshAABB();
   }

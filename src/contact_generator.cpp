@@ -140,8 +140,26 @@ namespace physics
 			fillContactCeofficient(sA, sB, cData);
       genSphereAndSphere(*sA, *sB, cData);
     }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE)
+    {
+      Box *box = dynamic_cast<Box *>(cpa);
+			Plane *plane = dynamic_cast<Plane *>(cpb);
+			fillContactCeofficient(box, plane, cData);
+      genBoxAndPlane(*box, *plane, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX)
+    {
+      Box *box = dynamic_cast<Box *>(cpb);
+			Plane *plane = dynamic_cast<Plane *>(cpa);
+			fillContactCeofficient(box, plane, cData);
+      genBoxAndPlane(*box, *plane, cData);
+    }
   }
 
+
+  /////Sphere
   unsigned ContactGenerator::genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData)
   {
     if (sphere.isStatic) return 0;
@@ -248,5 +266,59 @@ namespace physics
     return 1;
   }
 
+
+
+
+  ///////Box
+  bool ContactGenerator::overlapOnAxis(Box &boxA, Box &boxB, const Vector3 &axis)
+  {
+    return false;
+  }
+
+  unsigned ContactGenerator::genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData)
+  {
+    if (box.isStatic) return 0;
+    if (cData->contactsLeft <= 0) return 0;
+
+    Vector3 dirWorld = plane.body->getDirectionInWorldSpace(plane.direction);
+    ffloat projLen = Utils::calcProjectionLengthOnAxis(box.extents, box.transform, dirWorld);
+    ffloat projDist = box.getColumnVector(3).dot(dirWorld);
+    ffloat boxToOrign = projDist - projLen;
+    ffloat planeToOrign = plane.getColumnVector(3).mag();
+    if(boxToOrign >= planeToOrign) 
+      return 0;
+
+    unsigned n = 0;
+    Box::Points::iterator it = box.pointsWorld.begin();
+    for(; it < box.pointsWorld.end(); it++)
+    {
+      ffloat ptToOrign = (*it).dot(dirWorld);
+      if(ptToOrign <= planeToOrign) 
+      {
+        ffloat penetration = (planeToOrign - ptToOrign);
+        Vector3 contactPoint = plane.direction * (-penetration);
+
+        Contact* contact = cData->nextContact;
+        contact->contactNormal = dirWorld;
+        contact->contactPoint = contactPoint;
+        contact->penetration = penetration;
+
+        contact->setBodyData(box.body, 0, cData->friction, cData->restitution);
+        cData->addContacts(1);
+        n += 1;
+      }
+    }
+    return n;
+  }
+
+  unsigned ContactGenerator::genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData)
+  {
+    return 0;
+  }
+
+  unsigned ContactGenerator::genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData)
+  {
+    return 0;
+  }
 
 }

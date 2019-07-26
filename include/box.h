@@ -14,7 +14,9 @@ namespace physics
   {
     public:
       Vector3 extents;
-      std::vector<Vector3> points;
+      typedef std::vector<Vector3> Points;
+      Points pointsLocal;
+      Points pointsWorld;
 
     public:
       Box();

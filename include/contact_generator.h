@@ -56,6 +56,7 @@ namespace physics
       unsigned genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData);
 
       //box
+      bool overlapOnAxis(Box &boxA, Box &boxB, const Vector3 &axis);
       unsigned genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData);
       unsigned genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData);
       unsigned genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData);
