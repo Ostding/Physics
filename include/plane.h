@@ -6,31 +6,19 @@
 
 namespace physics
 {
-  //Plz note that: plane usually used as a static ground or platform 
-  //with massive mass, so it can not move 
   class Plane : public Primitive
   {
   public:
     Vector3 direction;
-    Vector3 ptLocalLB;
-    Vector3 ptLocalLT;
-    Vector3 ptLocalRB;
-    Vector3 ptLocalRT;
-
-    Vector3 ptLB;
-    Vector3 ptLT;
-    Vector3 ptRB;
-    Vector3 ptRT;
+    Vector3 extents;
+    ffloat offset;
 
   public:
     Plane();
-    Plane(Vector3 direction, Vector3 extents);
+    Plane(const Vector3 &direction, const Vector3 &extents, const ffloat &offset);
 
     virtual void refreshAABB();
     virtual void render();
-    virtual void updateTransform();
-  private:
-    void clacDiagonalPoints(const Vector3 &extents);
   };
 }
 

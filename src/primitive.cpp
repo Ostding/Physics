@@ -41,7 +41,7 @@ namespace physics
 
     void Primitive::updateTransform()
     {
-      transform = body->transformMatrix * offset;
+      transform = body->transformMatrix;
     }
 
     Vector3 Primitive::getColumnVector(unsigned index) const
@@ -54,16 +54,16 @@ namespace physics
       return transform.getTransformPos();
     }
 
-    void Primitive::setPosition(const Vector3 &pos)
+    void Primitive::setPosition(const Vector3 &position)
     {
-      body->setPosition(pos);
+      body->setPosition(position);
 		  body->updateDerivedData();
       updateTransform();
     }
 
-    void Primitive::setOrientation(const Quaternion &dir)
+    void Primitive::setOrientation(const Quaternion &direction)
     {
-      body->setOrientation(dir);
+      body->setOrientation(direction);
       body->updateDerivedData();
       updateTransform();
     }

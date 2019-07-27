@@ -22,7 +22,7 @@ private:
   void render();
   void initTest();
   void initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass);
-  void initOnePlane(const Vector3 &pos, const Vector3 &dir, const Vector3 &extents);
+  void initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset);
   void initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass);
 
 private:

@@ -81,11 +81,32 @@ namespace physics
     Renderer::renderAABB(p->aabb);
   }
 
+  void Renderer::renderBox(Box *p)
+  {
+    GLfloat mat[16];
+		p->transform.fillArray(mat);
+
+    if (p->body->isAwake) 
+      setColor(0.6, 0.4, 0.2);
+		else
+      setColor(0.2, 0.6, 0.4);
+
+    glPushMatrix();
+		glMultMatrixf(mat);
+
+		glScalef(p->extents.x.to_d() * 2, p->extents.y.to_d() * 2, p->extents.z.to_d() * 2);
+
+		glutSolidCube(1.0f);
+		glPopMatrix();
+
+    Renderer::renderAABB(p->aabb);
+  }
+
   void Renderer::renderContact(Contact *p)
   { 
     //Contact point
     glDisable(GL_DEPTH_TEST);
-    // glEnable(GL_POINT_SMOOTH);
+    glEnable(GL_POINT_SMOOTH);
     glPointSize(1);
     setColor(1.0, 0, 0);
     glBegin(GL_POINTS);

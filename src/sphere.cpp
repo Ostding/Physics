@@ -20,7 +20,7 @@ namespace physics
   void Sphere::refreshAABB()
   {
     Vector3 center(ffzero, ffzero, ffzero);
-    center = body->getPosInWorldSpace(offset * center);
+    center = body->getPosInWorldSpace(center);
     Vector3 extents(radius, radius, radius);
     aabb.set2(center, extents);
   }

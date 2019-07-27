@@ -30,8 +30,6 @@ namespace physics
 
     AABB aabb;
     RigidBody *body;
-
-    Matrix4 offset;
     Matrix4 transform;
     
     Primitive * parent;
@@ -54,8 +52,8 @@ namespace physics
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;
 
-    void setPosition(const Vector3 &pos);
-    void setOrientation(const Quaternion &dir);
+    void setPosition(const Vector3 &position);
+    void setOrientation(const Quaternion &direction);
 
     Vector3 getPosition();
     Quaternion getOrientation();

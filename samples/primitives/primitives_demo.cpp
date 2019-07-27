@@ -178,10 +178,9 @@ void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mas
   world->addPrimitive( sphere );
 }
 
-void PrimitivesDemo::initOnePlane(const Vector3 &pos, const Vector3 &dir, const Vector3 &extents)
+void PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset)
 {
-  Plane *plane = new Plane(dir, extents);
-  plane->setPosition(pos);
+  Plane *plane = new Plane(dir, extents, offset);
   world->addPrimitive( plane );
 }
 
@@ -189,16 +188,10 @@ void PrimitivesDemo::initTest()
 {
   if(started) return;
 
-  Vector3 extents = Vector3(ffloat(50), ffloat(0.5), ffloat(50));
-  initOnePlane(Vector3::zero, Vector3::up, extents);
+  Vector3 extents = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
+  initOnePlane( Vector3::up, extents, ffzero);
 
-  Vector3 pos = Vector3(ffloat(12), ffloat(8), ffzero); 
-  extents = Vector3(ffloat(10), ffloat(0.1), ffloat(10));
-  Vector3 dir = Vector3(ffloat(-1), ffone, ffzero);
-  dir.normalize();
-  initOnePlane(pos, Vector3::up, extents);
-
-  pos = Vector3(ffzero, ffloat(15), ffzero);
+  Vector3 pos = Vector3(ffzero, ffloat(15), ffzero);
   ffloat radius = ffloat(3);
   ffloat mass = ffloat(10);
   initOneSphere(radius, pos, mass);
@@ -207,6 +200,11 @@ void PrimitivesDemo::initTest()
   radius = ffloat(1.5);
   mass = ffloat(20);
   initOneSphere(radius, pos, mass);
+
+  pos = Vector3(fftwo, ffloat(20), ffzero);
+  extents = Vector3(ffone, ffone, ffone);
+  mass = ffloat(10);
+  initOneBox(pos, extents, mass);
 
   world->prepare();
   started = true;

@@ -1,4 +1,5 @@
 #include "box.h"
+#include "renderer.h"
 
 namespace physics
 {
@@ -11,7 +12,9 @@ namespace physics
   Box::Box(RigidBody *body)
   :Primitive(PRIMITIVE_TYPE::PRIT_BOX)
   {
+
     Primitive::body = body;
+    initWorldCorners();
   }
 
   Box::Box(const Vector3 &extents)
@@ -19,21 +22,38 @@ namespace physics
   ,extents(extents)
   {
     body = new RigidBody(this);
-
+    initWorldCorners();
     updateCorners();
+  }
+
+  void Box::setExtents(const Vector3 &extents)
+  {
+    Box::extents = extents;
+    updateCorners();
+  }
+
+  void Box::setPosition(const Vector3 &position)
+  {
+    body->setPosition(position);
+		body->updateDerivedData();
+
     refreshAABB();
+    updateTransform();
   }
 
   void Box::refreshAABB()
   {
     Vector3 pt = body->getPosInWorldSpace(pointsLocal[0]);
+    pointsWorld[0] = pt;
+
     ffloat xMax = pt.x, xMin = pt.x;
     ffloat yMax = pt.y, yMin = pt.y;
     ffloat zMax = pt.z, zMin = pt.z;
     for (int i = 1; i < pointsLocal.size(); i++)
     {
-      Vector3 pt = body->getPosInWorldSpace(pointsLocal[i]);
-      
+      pt = body->getPosInWorldSpace(pointsLocal[i]);
+      pointsWorld[i] = pt;
+
       if (pt.x > xMax)
         xMax = pt.x;
       if (pt.x < xMin)
@@ -48,8 +68,6 @@ namespace physics
         zMax = pt.z;
       if (pt.z < zMin)
         zMin = pt.z;
-        
-      pointsWorld[i] = pt;
     }
 
     aabb.set(Vector3(xMin, yMin, zMin), Vector3(xMax, yMax, zMax));
@@ -57,19 +75,28 @@ namespace physics
 
   void Box::updateCorners()
   {
-    if (pointsLocal.size() > 0)
-		return;
-
-    pointsLocal.push_back(offset * Vector3(-extents.x, -extents.y,	-extents.z));
-    pointsLocal.push_back(offset * Vector3(-extents.x, -extents.y,	extents.z));
-    pointsLocal.push_back(offset * Vector3(extents.x,	-extents.y,	-extents.z));
-    pointsLocal.push_back(offset * Vector3(extents.x,	-extents.y,	extents.z));
-    pointsLocal.push_back(offset * Vector3(-extents.x, extents.y,	-extents.z));
-    pointsLocal.push_back(offset * Vector3(-extents.x, extents.y,	extents.z));
-    pointsLocal.push_back(offset * Vector3(extents.x,	extents.y,	-extents.z));
-    pointsLocal.push_back(offset * Vector3(extents.x,	extents.y,	extents.z));
-
+    pointsLocal.clear();
+    pointsLocal.push_back(Vector3(-extents.x, -extents.y,	-extents.z));
+    pointsLocal.push_back(Vector3(-extents.x, -extents.y,	extents.z));
+    pointsLocal.push_back(Vector3(extents.x,	-extents.y,	-extents.z));
+    pointsLocal.push_back(Vector3(extents.x,	-extents.y,	extents.z));
+    pointsLocal.push_back(Vector3(-extents.x, extents.y,	-extents.z));
+    pointsLocal.push_back(Vector3(-extents.x, extents.y,	extents.z));
+    pointsLocal.push_back(Vector3(extents.x,	extents.y,	-extents.z));
+    pointsLocal.push_back(Vector3(extents.x,	extents.y,	extents.z));
     refreshAABB();
+  }
+
+  void Box::initWorldCorners()
+  {
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.push_back(Vector3::zero);
   }
 
   Vector3 Box::findFarthestPointInDirection(const Vector3 &dir)
@@ -98,5 +125,10 @@ namespace physics
       z = extents.z;
     
     return Vector3(x, y, z);
+  }
+
+  void Box::render()
+  {
+    Renderer::renderBox(this);
   }
 }

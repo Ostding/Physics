@@ -165,73 +165,101 @@ namespace physics
     if (sphere.isStatic) return 0;
     if (cData->contactsLeft <= 0) return 0;
 
-    Vector3 ps = sphere.getColumnVector(3);
-    Vector3 dirWrold = plane.body->getDirectionInWorldSpace(plane.direction);
-    
-    Vector3 v = (ps - plane.ptLB);
-    ffloat dist = v.dot(dirWrold);
-    Vector3 pp = ps - dirWrold.scale(dist);
+    Vector3 position = sphere.getColumnVector(3);
+    ffloat centreDistance = plane.direction.dot(position) - plane.offset;
 
-    bool inLT = Utils::pointInTriangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
-    bool inRB = Utils::pointInTriangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
-    if(inRB || inLT)
+    if (centreDistance * centreDistance > sphere.radius * sphere.radius)
+      return 0;
+
+    Vector3 normal = plane.direction;
+    ffloat penetration = -centreDistance;
+
+    if (centreDistance < ffzero)
     {
-      if (dist > sphere.radius)
-        return 0;
-
-      ffloat penetration = sphere.radius - ffabs(dist);
-      Vector3 normal = dirWrold;
-      if(dist < ffzero)
-        normal = -normal;
-
-      Contact* contact = cData->nextContact;
-      contact->contactNormal = normal;
-      contact->penetration = penetration;
-      contact->contactPoint = pp;
-      contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
-      cData->addContacts(1);
-      return 1;
+			normal = -normal;
+      penetration = -penetration;
     }
+    penetration += sphere.radius;
+		
+		RigidBody *b = sphere.isStatic ? NULL : sphere.body;
+		if (!b) 
+			return 0;
 
-    //Find the edge whose distance to the projection point is the smallest 
-    Vector3 projPoint, minPoint; ffloat dist2, minDist;
-    Utils::pointProjectionToSeg(pp, plane.ptLB, plane.ptLT, projPoint, dist2);
-    minDist = dist2;
-    minPoint = projPoint;
-    Utils::pointProjectionToSeg(pp, plane.ptLT, plane.ptRT, projPoint, dist2);
-    if(dist2 < minDist)
-    {
-      minDist = dist2;
-      minPoint = projPoint;
-    }
-    Utils::pointProjectionToSeg(pp, plane.ptRT, plane.ptRB, projPoint, dist2);
-    if(dist2 < minDist)
-    {
-      minDist = dist2;
-      minPoint = projPoint;
-    }
-    Utils::pointProjectionToSeg(pp, plane.ptRB, plane.ptLB, projPoint, dist2);
-    if(dist2 < minDist)
-    {
-      minDist = dist2;
-      minPoint = projPoint;
-    }
-    
-    Vector3 cp = (ps - minPoint);
-    ffloat magCP = cp.mag();
-    if (magCP > sphere.radius)
-        return 0;
-    ffloat penetration = (sphere.radius - magCP);
-
-    cp.normalize();
     Contact* contact = cData->nextContact;
-    contact->contactNormal = cp;
+    contact->contactNormal = normal;
     contact->penetration = penetration;
-    contact->contactPoint = minPoint;
-    contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
+    contact->contactPoint = position - plane.direction * centreDistance;
+    contact->setBodyData(b, NULL, cData->friction, cData->restitution);
     cData->addContacts(1);
-
     return 1;
+
+    // Vector3 ps = sphere.getColumnVector(3);
+    // Vector3 dirWrold = plane.body->getDirectionInWorldSpace(plane.direction);
+    
+    // Vector3 v = (ps - plane.ptLB);
+    // ffloat dist = v.dot(dirWrold);
+    // Vector3 pp = ps - dirWrold.scale(dist);
+
+    // bool inLT = Utils::pointInTriangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
+    // bool inRB = Utils::pointInTriangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
+    // if(inRB || inLT)
+    // {
+    //   if (dist > sphere.radius)
+    //     return 0;
+
+    //   ffloat penetration = sphere.radius - ffabs(dist);
+    //   Vector3 normal = dirWrold;
+    //   if(dist < ffzero)
+    //     normal = -normal;
+
+    //   Contact* contact = cData->nextContact;
+    //   contact->contactNormal = normal;
+    //   contact->penetration = penetration;
+    //   contact->contactPoint = pp;
+    //   contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
+    //   cData->addContacts(1);
+    //   return 1;
+    // }
+
+    // //Find the edge whose distance to the projection point is the smallest 
+    // Vector3 projPoint, minPoint; ffloat dist2, minDist;
+    // Utils::pointProjectionToSeg(pp, plane.ptLB, plane.ptLT, projPoint, dist2);
+    // minDist = dist2;
+    // minPoint = projPoint;
+    // Utils::pointProjectionToSeg(pp, plane.ptLT, plane.ptRT, projPoint, dist2);
+    // if(dist2 < minDist)
+    // {
+    //   minDist = dist2;
+    //   minPoint = projPoint;
+    // }
+    // Utils::pointProjectionToSeg(pp, plane.ptRT, plane.ptRB, projPoint, dist2);
+    // if(dist2 < minDist)
+    // {
+    //   minDist = dist2;
+    //   minPoint = projPoint;
+    // }
+    // Utils::pointProjectionToSeg(pp, plane.ptRB, plane.ptLB, projPoint, dist2);
+    // if(dist2 < minDist)
+    // {
+    //   minDist = dist2;
+    //   minPoint = projPoint;
+    // }
+    
+    // Vector3 cp = (ps - minPoint);
+    // ffloat magCP = cp.mag();
+    // if (magCP > sphere.radius)
+    //     return 0;
+    // ffloat penetration = (sphere.radius - magCP);
+
+    // cp.normalize();
+    // Contact* contact = cData->nextContact;
+    // contact->contactNormal = cp;
+    // contact->penetration = penetration;
+    // contact->contactPoint = minPoint;
+    // contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
+    // cData->addContacts(1);
+
+    // return 1;
   }
 
   unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData)
@@ -280,27 +308,23 @@ namespace physics
     if (box.isStatic) return 0;
     if (cData->contactsLeft <= 0) return 0;
 
-    Vector3 dirWorld = plane.body->getDirectionInWorldSpace(plane.direction);
-    ffloat projLen = Utils::calcProjectionLengthOnAxis(box.extents, box.transform, dirWorld);
-    ffloat projDist = box.getColumnVector(3).dot(dirWorld);
+    ffloat projLen = Utils::calcProjectionLengthOnAxis(box.extents, box.transform, plane.direction);
+    ffloat projDist = box.getColumnVector(3).dot(plane.direction);
     ffloat boxToOrign = projDist - projLen;
-    ffloat planeToOrign = plane.getColumnVector(3).mag();
-    if(boxToOrign >= planeToOrign) 
+    if(boxToOrign >= plane.offset) 
       return 0;
 
     unsigned n = 0;
     Box::Points::iterator it = box.pointsWorld.begin();
     for(; it < box.pointsWorld.end(); it++)
     {
-      ffloat ptToOrign = (*it).dot(dirWorld);
-      if(ptToOrign <= planeToOrign) 
+      ffloat ptToOrign = it->dot(plane.direction);
+      if(ptToOrign <= plane.offset) 
       {
-        ffloat penetration = (planeToOrign - ptToOrign);
-        Vector3 contactPoint = plane.direction * (-penetration);
-
+        ffloat penetration = (plane.offset - ptToOrign);
         Contact* contact = cData->nextContact;
-        contact->contactNormal = dirWorld;
-        contact->contactPoint = contactPoint;
+        contact->contactNormal = plane.direction;
+        contact->contactPoint = (*it);
         contact->penetration = penetration;
 
         contact->setBodyData(box.body, 0, cData->friction, cData->restitution);
