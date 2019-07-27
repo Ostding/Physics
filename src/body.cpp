@@ -4,8 +4,8 @@
 namespace physics
 {
 
-  ffloat RigidBody::sleepEpsilon = ffloat(30000LL); //0.3f
-  ffloat RigidBody::motionBias = ffpow(ffhalf, ffloat(2500LL));
+  ffloat RigidBody::sleepEpsilon = ffloat(30000000LL); //0.3f
+  ffloat RigidBody::motionBias = ffpow(ffhalf, ffloat(2500000LL));
   ffloat RigidBody::maxMotion = fften * sleepEpsilon;
 
   static inline void updateTransformMatrix( Matrix4 &transform,
@@ -150,7 +150,7 @@ namespace physics
     void RigidBody::setAngularDamp(ffloat damp)
     {
       angularDamp = damp;
-      powAngularDamp = ffpow(angularDamp, ffloat(2500LL));
+      powAngularDamp = ffpow(angularDamp, ffloat(2500000LL));
     }
 
     void RigidBody::setMass(const ffloat &mass)

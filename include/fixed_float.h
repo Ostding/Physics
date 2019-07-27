@@ -10,7 +10,7 @@ namespace physics
 	typedef long long 	        int64;
 	typedef unsigned long long 	uint64;
 
-	#define enlarge 100000LL
+	#define enlarge 100000000LL
 	#define ficast(v) 	((int64)v * enlarge)
 	#define ffcast(v)		((int64)((double)v * enlarge))
 	#define fdcast(v)	((double)v / enlarge)

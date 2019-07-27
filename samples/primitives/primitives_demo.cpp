@@ -126,7 +126,7 @@ void PrimitivesDemo::render()
 void PrimitivesDemo::onUpdate()
 {
   double elapse = calcDuration();
-  if(elapse >= 0.02f) 
+  if(elapse >= 0.01f) 
   {
     updateTime();
     if(simulate)
@@ -165,7 +165,7 @@ void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mas
   sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.2f));
 
-  ffloat coeff = ffloat(0.4f) * mass * radius * radius;
+  ffloat coeff = ffloat(40000LL) * mass * radius * radius;
   Matrix3 tensor;
   tensor.setDiagonal(coeff, coeff, coeff);
   sphere->body->setInertiaTensor(tensor);
@@ -196,12 +196,12 @@ void PrimitivesDemo::initTest()
   ffloat mass = ffloat(10);
   initOneSphere(radius, pos, mass);
 
-  pos = Vector3(ffzero, ffloat(20), ffzero);
-  radius = ffloat(1.5);
-  mass = ffloat(20);
+  pos = Vector3(ffone, ffloat(20), ffzero);
+  radius = ffloat(5);
+  mass = ffloat(50);
   initOneSphere(radius, pos, mass);
 
-  pos = Vector3(fftwo, ffloat(20), ffzero);
+  pos = Vector3(ffloat(4), ffloat(20), ffzero);
   extents = Vector3(ffone, ffone, ffone);
   mass = ffloat(10);
   initOneBox(pos, extents, mass);

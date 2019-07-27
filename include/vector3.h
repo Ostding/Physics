@@ -247,7 +247,7 @@ namespace physics
       x = y = z = 0;
     }
 
-    void normalize()
+    void normalise()
     {
       ffloat l = mag();
       if (l > ffzero)

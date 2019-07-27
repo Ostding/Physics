@@ -4,7 +4,7 @@
 namespace physics
 {
 
-  ffloat Contact::minRestituteVelocity = ffloat(25000LL);
+  ffloat Contact::minRestituteVelocity = ffloat(25000000LL);
   ffloat Contact::maxAngularMove = ffloat(100);
 
   void Contact::setBodyData(RigidBody *a, RigidBody *b, ffloat friction, ffloat restitution)
@@ -49,13 +49,19 @@ namespace physics
       ffloat den = ffsqrt(contactNormal.z * contactNormal.z + contactNormal.x * contactNormal.x);
       ffloat s = ffone;
       if (den == ffzero)
+      {
         contactNormal.y = ffone;
+        contactTangent[0].x = contactNormal.z;
+        contactTangent[0].y = ffzero;
+        contactTangent[0].z = -contactNormal.x;
+      }
       else
-        s = (ffone / den);
-      //The new X-axis is at right angles to the world Y-axis
-      contactTangent[0].x = contactNormal.z * s;
-      contactTangent[0].y = ffzero;
-      contactTangent[0].z = -contactNormal.x * s;
+      {
+        //The new X-axis is at right angles to the world Y-axis
+        contactTangent[0].x = contactNormal.z / den;
+        contactTangent[0].y = ffzero;
+        contactTangent[0].z = -contactNormal.x / den;
+      }
 
       //The new Y-axis is at right angles to the new X- and Z- axes
       contactTangent[1].x = (contactNormal.y * contactTangent[0].x);
@@ -66,16 +72,21 @@ namespace physics
     {
       //Scaling factor to ensure the results are normalised
       ffloat den = ffsqrt((contactNormal.z * contactNormal.z) + (contactNormal.y * contactNormal.y));
-      ffloat s = ffone;
-      if (den == ffzero)
-        contactNormal.y = ffone;
-      else
-        s = (ffone / den);
-
-      //The new X-axis is at right angles to the world X-axis
+      
       contactTangent[0].x = ffzero;
-      contactTangent[0].y = (-contactNormal.z * s);
-      contactTangent[0].z = (contactNormal.y * s);
+      if (den == ffzero)
+      {
+        contactNormal.y = ffone;
+        contactTangent[0].y = (-contactNormal.z);
+        contactTangent[0].z = (contactNormal.y);
+      }
+      else
+      {
+        //The new X-axis is at right angles to the world X-axis
+        
+        contactTangent[0].y = (-contactNormal.z / den);
+        contactTangent[0].z = (contactNormal.y / den);
+      }
 
       //The new Y-axis is at right angles to the new X- and Z- axes
       contactTangent[1].x = (contactNormal.y * contactTangent[0].z) - (contactNormal.z * contactTangent[0].y);

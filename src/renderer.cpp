@@ -49,14 +49,24 @@ namespace physics
 
   void Renderer::renderPlane(Plane *p)
   {
+    Vector3 _lb = Vector3(-p->extents.x, 0, -p->extents.z);
+    Vector3 _lt = Vector3(-p->extents.x, 0, p->extents.z);
+    Vector3 _rb = Vector3(p->extents.x, 0, -p->extents.z);
+    Vector3 _rt = Vector3(p->extents.x, 0, p->extents.z);
+
+    _lb = p->body->getPosInWorldSpace(_lb);
+    _lt = p->body->getPosInWorldSpace(_lt);
+    _rb = p->body->getPosInWorldSpace(_rb);
+    _rt = p->body->getPosInWorldSpace(_rt);
+
     float r = ((float)((int64)p % 10000))/10000.0f;
 		setColor(r, r, r);
 	  glBegin(GL_TRIANGLE_STRIP);
 
-    glVertex3f(p->ptLT.x.to_d(), p->ptLT.y.to_d(), p->ptLT.z.to_d());
-    glVertex3f(p->ptLB.x.to_d(), p->ptLB.y.to_d(), p->ptLB.z.to_d());
-    glVertex3f(p->ptRT.x.to_d(), p->ptRT.y.to_d(), p->ptRT.z.to_d());
-    glVertex3f(p->ptRB.x.to_d(), p->ptRB.y.to_d(), p->ptRB.z.to_d());
+    glVertex3f(_lt.x.to_d(), _lt.y.to_d(), _lt.z.to_d());
+    glVertex3f(_lb.x.to_d(), _lb.y.to_d(), _lb.z.to_d());
+    glVertex3f(_rt.x.to_d(), _rt.y.to_d(), _rt.z.to_d());
+    glVertex3f(_rb.x.to_d(), _rb.y.to_d(), _rb.z.to_d());
 
 		glEnd();
   }

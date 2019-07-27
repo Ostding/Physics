@@ -156,6 +156,22 @@ namespace physics
 			fillContactCeofficient(box, plane, cData);
       genBoxAndPlane(*box, *plane, cData);
     }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
+    {
+      Box *box = dynamic_cast<Box *>(cpa);
+			Sphere *sphere = dynamic_cast<Sphere *>(cpb);
+			fillContactCeofficient(box, sphere, cData);
+      genBoxAndSphere(*box, *sphere, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX)
+    {
+      Box *box = dynamic_cast<Box *>(cpb);
+			Sphere *sphere = dynamic_cast<Sphere *>(cpa);
+			fillContactCeofficient(box, sphere, cData);
+      genBoxAndSphere(*box, *sphere, cData);
+    }
   }
 
 
@@ -181,7 +197,7 @@ namespace physics
     }
     penetration += sphere.radius;
 		
-		RigidBody *b = sphere.isStatic ? NULL : sphere.body;
+		RigidBody *b = sphere.isStatic ? 0 : sphere.body;
 		if (!b) 
 			return 0;
 
@@ -189,77 +205,9 @@ namespace physics
     contact->contactNormal = normal;
     contact->penetration = penetration;
     contact->contactPoint = position - plane.direction * centreDistance;
-    contact->setBodyData(b, NULL, cData->friction, cData->restitution);
+    contact->setBodyData(b, 0, cData->friction, cData->restitution);
     cData->addContacts(1);
     return 1;
-
-    // Vector3 ps = sphere.getColumnVector(3);
-    // Vector3 dirWrold = plane.body->getDirectionInWorldSpace(plane.direction);
-    
-    // Vector3 v = (ps - plane.ptLB);
-    // ffloat dist = v.dot(dirWrold);
-    // Vector3 pp = ps - dirWrold.scale(dist);
-
-    // bool inLT = Utils::pointInTriangle(pp, plane.ptLB, plane.ptLT, plane.ptRT);
-    // bool inRB = Utils::pointInTriangle(pp, plane.ptRB, plane.ptLB, plane.ptRT);
-    // if(inRB || inLT)
-    // {
-    //   if (dist > sphere.radius)
-    //     return 0;
-
-    //   ffloat penetration = sphere.radius - ffabs(dist);
-    //   Vector3 normal = dirWrold;
-    //   if(dist < ffzero)
-    //     normal = -normal;
-
-    //   Contact* contact = cData->nextContact;
-    //   contact->contactNormal = normal;
-    //   contact->penetration = penetration;
-    //   contact->contactPoint = pp;
-    //   contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
-    //   cData->addContacts(1);
-    //   return 1;
-    // }
-
-    // //Find the edge whose distance to the projection point is the smallest 
-    // Vector3 projPoint, minPoint; ffloat dist2, minDist;
-    // Utils::pointProjectionToSeg(pp, plane.ptLB, plane.ptLT, projPoint, dist2);
-    // minDist = dist2;
-    // minPoint = projPoint;
-    // Utils::pointProjectionToSeg(pp, plane.ptLT, plane.ptRT, projPoint, dist2);
-    // if(dist2 < minDist)
-    // {
-    //   minDist = dist2;
-    //   minPoint = projPoint;
-    // }
-    // Utils::pointProjectionToSeg(pp, plane.ptRT, plane.ptRB, projPoint, dist2);
-    // if(dist2 < minDist)
-    // {
-    //   minDist = dist2;
-    //   minPoint = projPoint;
-    // }
-    // Utils::pointProjectionToSeg(pp, plane.ptRB, plane.ptLB, projPoint, dist2);
-    // if(dist2 < minDist)
-    // {
-    //   minDist = dist2;
-    //   minPoint = projPoint;
-    // }
-    
-    // Vector3 cp = (ps - minPoint);
-    // ffloat magCP = cp.mag();
-    // if (magCP > sphere.radius)
-    //     return 0;
-    // ffloat penetration = (sphere.radius - magCP);
-
-    // cp.normalize();
-    // Contact* contact = cData->nextContact;
-    // contact->contactNormal = cp;
-    // contact->penetration = penetration;
-    // contact->contactPoint = minPoint;
-    // contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
-    // cData->addContacts(1);
-
-    // return 1;
   }
 
   unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData)
@@ -298,11 +246,6 @@ namespace physics
 
 
   ///////Box
-  bool ContactGenerator::overlapOnAxis(Box &boxA, Box &boxB, const Vector3 &axis)
-  {
-    return false;
-  }
-
   unsigned ContactGenerator::genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData)
   {
     if (box.isStatic) return 0;
@@ -337,7 +280,105 @@ namespace physics
 
   unsigned ContactGenerator::genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData)
   {
-    return 0;
+    Vector3 centre = sphere.getColumnVector(3);
+    Vector3 relCentre = box.transform.inverseTransform(centre);
+    if (ffabs(relCentre.x) - sphere.radius > box.extents.x ||
+        ffabs(relCentre.y) - sphere.radius > box.extents.y ||
+        ffabs(relCentre.z) - sphere.radius > box.extents.z)
+    {
+      return 0;
+    }
+
+    Vector3 closestPt(0,0,0);
+    ffloat dist;
+  
+    dist = relCentre.x;
+		bool halfIn = true;
+		if (dist > box.extents.x) { dist = box.extents.x; halfIn = false; }
+    if (dist < -box.extents.x){ dist = -box.extents.x; halfIn = false; }
+    closestPt.x = dist;
+
+    dist = relCentre.y;
+    if (dist > box.extents.y) { dist = box.extents.y; halfIn = false; }
+    if (dist < -box.extents.y){ dist = -box.extents.y; halfIn = false; }
+    closestPt.y = dist;
+
+    dist = relCentre.z;
+		if (dist > box.extents.z) { dist = box.extents.z; halfIn = false; }
+		if (dist < -box.extents.z) { dist = -box.extents.z; halfIn = false; }
+    closestPt.z = dist;
+
+    Vector3 normal, closestPtWorld;
+		ffloat penetration = sphere.radius;
+		if (halfIn)
+		{
+      ffloat dx = ffabs(relCentre.x);
+      ffloat dy = ffabs(relCentre.y);
+      ffloat dz = ffabs(relCentre.z);
+      int d = 0;
+      if(dx > dy)
+      {
+        d = 1;
+        if(dy > dz)
+          d = 2;
+      }
+
+      if(d == 0) 
+      {
+        if(closestPt.x < ffzero)
+          closestPt.x = -box.extents.x;
+        else
+          closestPt.x = box.extents.x;
+      }
+      if(d == 1) 
+      {
+        if(closestPt.y < ffzero)
+          closestPt.y = -box.extents.y;
+        else
+          closestPt.y = box.extents.y;
+      }
+      if(d == 2) 
+      {
+        if(closestPt.z < ffzero)
+          closestPt.z = -box.extents.z;
+        else
+          closestPt.z = box.extents.z;
+      }
+
+      dist = (closestPt - relCentre).squareMag();
+      closestPtWorld = box.transform.transform(closestPt);
+      normal = (centre - closestPtWorld);
+      penetration += ffsqrt(dist);
+    }
+		else
+		{
+      dist = (closestPt - relCentre).squareMag();
+      closestPtWorld = box.transform.transform(closestPt);
+			normal = (closestPtWorld - centre);
+			penetration -= ffsqrt(dist);
+		}
+
+    normal.normalise();
+
+    Contact* contact = cData->nextContact;
+    contact->contactNormal = normal;
+    contact->contactPoint = closestPtWorld;
+		contact->penetration = penetration;
+
+    RigidBody *rb = box.isStatic ? 0 : box.body;
+    RigidBody *rs = sphere.isStatic ? 0 : sphere.body;
+		if (!rb && !rs)
+			return 0;
+
+    contact->setBodyData(rb, rs, cData->friction, cData->restitution);
+    cData->addContacts(1);
+
+    return 1;
+  }
+
+  bool ContactGenerator::overlapOnAxis(Box &boxA, Box &boxB, const Vector3 &axis)
+  {
+    return false;
   }
 
   unsigned ContactGenerator::genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData)

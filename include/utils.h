@@ -12,7 +12,7 @@ namespace physics
   {
     public:
       //Calculate smallest distance between point and plane
-      //Note: normal must be normalized vector
+      //Note: normal must be normalised vector
       static ffloat distPointToPlane(const Vector3 &pt, const Vector3 &ptOnPlane,  const Vector3 &planeNormal);
       
       //Calculate smallest distance between point and segement

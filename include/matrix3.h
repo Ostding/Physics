@@ -111,17 +111,15 @@ namespace physics
         if (t16 == ffzero) 
         	return;
 
-        ffloat t17 = ffone / t16;
-
-        data[0] = (m.data[4]*m.data[8]-m.data[5]*m.data[7])*t17;
-        data[1] = -(m.data[1]*m.data[8]-m.data[2]*m.data[7])*t17;
-        data[2] = (m.data[1]*m.data[5]-m.data[2]*m.data[4])*t17;
-        data[3] = -(m.data[3]*m.data[8]-m.data[5]*m.data[6])*t17;
-        data[4] = (m.data[0]*m.data[8]-t14)*t17;
-        data[5] = -(t6-t10)*t17;
-        data[6] = (m.data[3]*m.data[7]-m.data[4]*m.data[6])*t17;
-        data[7] = -(m.data[0]*m.data[7]-t12)*t17;
-        data[8] = (t4-t8)*t17;
+        data[0] = (m.data[4]*m.data[8]-m.data[5]*m.data[7]) / t16;
+        data[1] = -(m.data[1]*m.data[8]-m.data[2]*m.data[7]) / t16;
+        data[2] = (m.data[1]*m.data[5]-m.data[2]*m.data[4]) / t16;
+        data[3] = -(m.data[3]*m.data[8]-m.data[5]*m.data[6]) / t16;
+        data[4] = (m.data[0]*m.data[8]-t14) / t16;
+        data[5] = -(t6-t10) / t16;
+        data[6] = (m.data[3]*m.data[7]-m.data[4]*m.data[6]) / t16;
+        data[7] = -(m.data[0]*m.data[7]-t12) / t16;
+        data[8] = (t4-t8) / t16;
       }
 
       Matrix3 inverse() const
