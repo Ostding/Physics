@@ -54,6 +54,8 @@ void PrimitivesDemo::onDisplay()
     Press 'f' to move camera forward; \n \
     Press 'b' to move camera back; \n \
     Press 'q' to quite sample application;");
+  
+  Application::onDisplay();
 }
 
 void PrimitivesDemo::onMousePress(int button, int state, int x, int y)
@@ -128,7 +130,7 @@ void PrimitivesDemo::onUpdate()
   double elapse = calcDuration();
   if(elapse >= 0.01f) 
   {
-    updateTime();
+    updateTime(elapse);
     if(simulate)
       world->update(deltaTime);
   }
@@ -188,23 +190,28 @@ void PrimitivesDemo::initTest()
 {
   if(started) return;
 
-  Vector3 extents = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
-  initOnePlane( Vector3::up, extents, ffzero);
+  Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
+  initOnePlane( Vector3::up, e1, ffzero);
 
-  Vector3 pos = Vector3(ffzero, ffloat(15), ffzero);
-  ffloat radius = ffloat(3);
-  ffloat mass = ffloat(10);
-  initOneSphere(radius, pos, mass);
+  // Vector3 p1 = Vector3(ffzero, ffloat(15), ffzero);
+  // ffloat r1 = ffloat(3);
+  // ffloat m1 = ffloat(10);
+  // initOneSphere(r1, p1, m1);
 
-  pos = Vector3(ffone, ffloat(20), ffzero);
-  radius = ffloat(5);
-  mass = ffloat(50);
-  initOneSphere(radius, pos, mass);
+  // Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
+  // ffloat r2 = ffloat(5);
+  // ffloat m2 = ffloat(10);
+  // initOneSphere(r2, p2, m2);
 
-  pos = Vector3(ffloat(4), ffloat(20), ffzero);
-  extents = Vector3(ffone, ffone, ffone);
-  mass = ffloat(10);
-  initOneBox(pos, extents, mass);
+  Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
+  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  ffloat m3 = ffloat(10);
+  initOneBox(p3, e3, m3);
+
+  Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
+  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  ffloat m4 = ffloat(10);
+  initOneBox(p4, e4, m4);
 
   world->prepare();
   started = true;

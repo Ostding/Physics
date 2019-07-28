@@ -27,13 +27,14 @@ namespace physics
       virtual void refreshAABB();
       virtual void render();
 
+      virtual Vector3 findFarthestPointInDirection(const Vector3 &dir);
+
       void setExtents(const Vector3 &extents);
       void setPosition(const Vector3 &position);
 
     private:
       void updateCorners();
       void initWorldCorners();
-      Vector3 findFarthestPointInDirection(const Vector3 &dir);
   };
 }
 

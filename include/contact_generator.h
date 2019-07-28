@@ -58,7 +58,6 @@ namespace physics
       //box  
       unsigned genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData);
       unsigned genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData);
-      bool overlapOnAxis(Box &boxA, Box &boxB, const Vector3 &axis);
       unsigned genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData);
 
       //capsule

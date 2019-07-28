@@ -17,6 +17,8 @@ namespace physics
 	#define ffpow  			FixedFloat::pow
 	#define ffmod  			FixedFloat::mod	
 
+	#define ffmax				FixedFloat::max
+	#define ffmin				FixedFloat::min
 	#define ffzero 			FixedFloat::zero
 	#define ffone  			FixedFloat::one
 	#define ffhalf  		FixedFloat::half

@@ -1,13 +1,13 @@
 #include "application.h"
 
 Application::Application()
-:width(0),height(0),title(0)
+:width(0),height(0),title(0),fps(0),elapse(0.0f),frames(0)
 {
   lastUpdateTime = system_clock::now();
 }
 
 Application::Application(const char *title, int width, int height)
-:width(width),height(height),title(title)
+:width(width),height(height),title(title),fps(0),elapse(0.0f),frames(0)
 {
   lastUpdateTime = system_clock::now();
 }
@@ -50,6 +50,9 @@ void Application::setupView()
 
 void Application::onDisplay()
 {
+  char psz[32] = {0};
+  sprintf(psz, "fps:%d", fps);
+  textOut(10, height - 10, psz);
 }
 
 void Application::onUpdate()
@@ -64,8 +67,17 @@ double Application::calcDuration()
   return t;
 }
 
-void Application::updateTime()
+void Application::updateTime(double duration)
 {
+  Application::elapse += duration;
+  if(Application::elapse >= 1.0f)
+  {
+    fps = frames;
+    frames = 0;
+    Application::elapse = 0.0f;
+  }
+  
+  frames += 1;
   lastUpdateTime = system_clock::now();
 }
 

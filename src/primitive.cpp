@@ -77,4 +77,14 @@ namespace physics
     {
       return body->orientation;
     }
+
+    Vector3 Primitive::findFarthestPointInDirection(const Vector3 &dir)
+    {
+      return Vector3::zero;
+    }
+
+    Vector3 Primitive::getPointInWorldSpace(const Vector3 &point)
+    {
+      return body->getPosInWorldSpace(point);
+    }
 }

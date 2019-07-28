@@ -35,12 +35,15 @@ public:
 
 	void textOut(float x, float y, const char* text, void * font = 0);
 	double calcDuration();
-	void updateTime();
+	void updateTime(double elapse);
 
 protected:
 	int width;
 	int height;
 	const char *title;
+	unsigned fps;
+	double elapse;
+	unsigned frames;
 	
 	system_clock::time_point lastUpdateTime;
 };

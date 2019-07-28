@@ -50,6 +50,8 @@ namespace physics
 
 
 	public:
+		static const FixedFloat max;
+		static const FixedFloat min;
 		static const FixedFloat zero;
 		static const FixedFloat one;
 		static const FixedFloat half;

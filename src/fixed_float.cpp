@@ -1,7 +1,9 @@
 #include "fixed_float.h"
 
 namespace physics
-{
+{ 
+	const FixedFloat FixedFloat::max 		= FixedFloat(9223372036854775807LL);
+ 	const FixedFloat FixedFloat::min 		= FixedFloat(-9223372036854775807LL - 1LL);
 	const FixedFloat FixedFloat::zero 	= FixedFloat(0);
 	const FixedFloat FixedFloat::one 		= FixedFloat(100000000LL);
 	const FixedFloat FixedFloat::half 	= FixedFloat(50000000LL);
