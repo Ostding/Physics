@@ -193,15 +193,15 @@ void PrimitivesDemo::initTest()
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
 
-  // Vector3 p1 = Vector3(ffzero, ffloat(15), ffzero);
-  // ffloat r1 = ffloat(3);
-  // ffloat m1 = ffloat(10);
-  // initOneSphere(r1, p1, m1);
+  Vector3 p1 = Vector3(ffzero, ffloat(15), ffzero);
+  ffloat r1 = ffloat(3);
+  ffloat m1 = ffloat(10);
+  initOneSphere(r1, p1, m1);
 
-  // Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
-  // ffloat r2 = ffloat(5);
-  // ffloat m2 = ffloat(10);
-  // initOneSphere(r2, p2, m2);
+  Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
+  ffloat r2 = ffloat(5);
+  ffloat m2 = ffloat(10);
+  initOneSphere(r2, p2, m2);
 
   Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
   Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
