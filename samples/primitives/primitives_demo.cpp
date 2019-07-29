@@ -14,7 +14,7 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   world = new World(spaceMin, spaceMax, maxContacts, iterations);
   simulate = false;
   lBtnDown = false;
-  radY = (1.0f/6)*pi;
+  radY = (-1.0f/6)*pi;
   radP = pi;
 
   rBtnDown = false;
@@ -22,8 +22,8 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   radDP = 0.0f;
 
   eX = 0.0f;
-  eY = 1.0f;
-  eZ = 25.0f;
+  eY = 25.0f;
+  eZ = 50.0f;
 
   lookDist = 50;
   started = false;

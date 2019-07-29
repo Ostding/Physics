@@ -7,8 +7,8 @@ namespace physics
   ///////Box
   unsigned ContactGenerator::genBoxAndPlane( Box &box, Plane &plane, CollisionData *cData)
   {
-    if (box.isStatic) return 0;
     if (cData->contactsLeft <= 0) return 0;
+    if (!box.body->isAwake) return 0;
 
     ffloat projLen = Utils::calcProjectionLengthOnAxis(box.extents, box.transform, plane.direction);
     ffloat projDist = box.getColumnVector(3).dot(plane.direction);
@@ -39,6 +39,9 @@ namespace physics
 
   unsigned ContactGenerator::genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData)
   {
+    if (cData->contactsLeft <= 0) return 0;
+    if (!box.body->isAwake && !sphere.body->isAwake) return 0;
+
     Vector3 centre = sphere.getColumnVector(3);
     Vector3 relCentre = box.transform.inverseTransform(centre);
     if (ffabs(relCentre.x) - sphere.radius >= box.extents.x ||
@@ -139,6 +142,9 @@ namespace physics
 
   unsigned ContactGenerator::genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData)
   {
+    if (cData->contactsLeft <= 0) return 0;
+    if (!boxA.body->isAwake && !boxB.body->isAwake) return 0;
+
     bool suc = GjkEpa::generateContacts (&boxA, &boxB, cData);
     return suc ? 1 : 0;
   }

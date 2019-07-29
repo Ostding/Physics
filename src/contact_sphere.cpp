@@ -5,8 +5,8 @@ namespace physics
   /////Sphere
   unsigned ContactGenerator::genSphereAndPlane( Sphere &sphere, Plane &plane, CollisionData *cData)
   {
-    if (sphere.isStatic) return 0;
     if (cData->contactsLeft <= 0) return 0;
+    if (!sphere.body->isAwake) return 0;
 
     Vector3 position = sphere.getColumnVector(3);
     ffloat centreDistance = plane.direction.dot(position) - plane.offset;
@@ -40,6 +40,7 @@ namespace physics
   unsigned ContactGenerator::genSphereAndSphere( Sphere &sphereA, Sphere &sphereB, CollisionData *cData)
   {
     if (cData->contactsLeft <= 0) return 0;
+    if (!sphereA.body->isAwake && !sphereB.body->isAwake) return 0;
 
     RigidBody * b1 = sphereA.isStatic ? 0 : sphereA.body;
 		RigidBody * b2 = sphereB.isStatic ? 0 : sphereB.body;
