@@ -11,14 +11,14 @@ namespace physics
 {
   struct SupportPoint
   {
-    Vector3 minkowskiHullVertex;
+    Vector3 minkowskiPoint;
 
     Vector3 world_SupportPointA;
     Vector3 world_SupportPointB;
 
     Vector3 local_SupportPointA;
     Vector3 local_SupportPointB;
-    bool operator == (const SupportPoint & ref) { return minkowskiHullVertex == ref.minkowskiHullVertex; }
+    bool operator == (const SupportPoint & ref) { return minkowskiPoint == ref.minkowskiPoint; }
   
     static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
     {
@@ -30,7 +30,7 @@ namespace physics
       newSupportPoint.world_SupportPointA = pri1->getPointInWorldSpace(newSupportPoint.local_SupportPointA);
       newSupportPoint.world_SupportPointB = pri2->getPointInWorldSpace(newSupportPoint.local_SupportPointB);
       
-      newSupportPoint.minkowskiHullVertex = newSupportPoint.world_SupportPointA - newSupportPoint.world_SupportPointB;
+      newSupportPoint.minkowskiPoint = newSupportPoint.world_SupportPointA - newSupportPoint.world_SupportPointB;
       return newSupportPoint;
     };
   };
@@ -116,7 +116,7 @@ namespace physics
 			// line case
 			if (size == 2)
 			{
-				LineSegment line(a.minkowskiHullVertex, b.minkowskiHullVertex);
+				LineSegment line(a.minkowskiPoint, b.minkowskiPoint);
 				ffloat u = ffzero;
 				ffloat v = ffzero;
 
@@ -142,19 +142,19 @@ namespace physics
 			}
 			else if (size == 3)
 			{
-				Vector3 newPointToPrigin = -a.minkowskiHullVertex;
-				Vector3 edge1 = b.minkowskiHullVertex - a.minkowskiHullVertex;
-				Vector3 edge2 = c.minkowskiHullVertex - a.minkowskiHullVertex;
+				Vector3 newPointToOrigin = -a.minkowskiPoint;
+				Vector3 edge1 = b.minkowskiPoint - a.minkowskiPoint;
+				Vector3 edge2 = c.minkowskiPoint - a.minkowskiPoint;
 
 				Vector3 triangleNormal = edge1.cross(edge2);
 				Vector3 edge1Normal = edge1.cross(triangleNormal);
 				Vector3 edge2Normal = triangleNormal.cross(edge2);
 
-				if (edge2Normal.dot(newPointToPrigin) > ffzero)
+				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
-					if (edge2.dot(newPointToPrigin) > ffzero)
+					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
-						searchDir = Vector3::tripleCross(edge2, newPointToPrigin, edge2);
+						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						//return as [A,C]
 						clear();
 						set(a, c);
@@ -162,9 +162,9 @@ namespace physics
 					}
 					else
 					{
-						if (edge1.dot(newPointToPrigin) > ffzero)
+						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
-							searchDir = Vector3::tripleCross(edge1, newPointToPrigin, edge1);
+							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							//return as [A,B]
 							clear();
 							set(a, b);
@@ -172,7 +172,7 @@ namespace physics
 						}
 						else
 						{
-							searchDir = newPointToPrigin;
+							searchDir = newPointToOrigin;
 							//return a point A
 							clear();
 							set(a);
@@ -183,12 +183,12 @@ namespace physics
 				else
 				{
 					//If closer to the first edge normal
-					if (edge1Normal.dot(newPointToPrigin) > ffzero)
+					if (edge1Normal.dot(newPointToOrigin) > ffzero)
 					{
 						//If new search direction should be along edge normal
-						if (edge1.dot(newPointToPrigin) > ffzero)
+						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
-							searchDir = Vector3::tripleCross(edge1, newPointToPrigin, edge1);
+							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							// Return it as [A, B]
 							clear();
 							set(a, b);
@@ -196,7 +196,7 @@ namespace physics
 						}
 						else
 						{
-							searchDir = newPointToPrigin;
+							searchDir = newPointToOrigin;
 							clear();
 							set(a);
 							return false;
@@ -205,7 +205,7 @@ namespace physics
 					else
 					{
 						// Check if it is above the triangle
-						if (triangleNormal.dot(newPointToPrigin) > ffzero)
+						if (triangleNormal.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = triangleNormal;
 							return false;
@@ -221,15 +221,15 @@ namespace physics
 			}
 			else if (size == 4)
 			{
-				Vector3 edge1 = b.minkowskiHullVertex - a.minkowskiHullVertex;
-				Vector3 edge2 = c.minkowskiHullVertex - a.minkowskiHullVertex;
-				Vector3 edge3 = d.minkowskiHullVertex - a.minkowskiHullVertex;
+				Vector3 edge1 = b.minkowskiPoint - a.minkowskiPoint;
+				Vector3 edge2 = c.minkowskiPoint - a.minkowskiPoint;
+				Vector3 edge3 = d.minkowskiPoint - a.minkowskiPoint;
 
 				Vector3 face1Normal = edge1.cross(edge2);
 				Vector3 face2Normal = edge2.cross(edge3);
 				Vector3 face3Normal = edge3.cross(edge1);
 
-				Vector3 newPointToOrigin = -a.minkowskiHullVertex;
+				Vector3 newPointToOrigin = -a.minkowskiPoint;
 				if (face1Normal.dot(newPointToOrigin) > ffzero)
 				{
 					// Origin is in front of first face, simplex is correct already
@@ -295,8 +295,8 @@ namespace physics
 			points[0] = supportA;
 			points[1] = supportB;
 			points[2] = supportC;
-			Vector3 edge1 = supportB.minkowskiHullVertex - supportA.minkowskiHullVertex;
-			Vector3 edge2 = supportC.minkowskiHullVertex - supportA.minkowskiHullVertex;
+			Vector3 edge1 = supportB.minkowskiPoint - supportA.minkowskiPoint;
+			Vector3 edge2 = supportC.minkowskiPoint - supportA.minkowskiPoint;
 			faceNormal = edge1.cross(edge2);
 			faceNormal.normalise();
 		}

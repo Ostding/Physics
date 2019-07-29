@@ -8,7 +8,7 @@ namespace physics
 
     Vector3 searchDir = Vector3::one;
     SupportPoint sp = SupportPoint::support(cpa, cpb, searchDir);
-    if (searchDir.dot(sp.minkowskiHullVertex) >= sp.minkowskiHullVertex.mag() * ffloat(80000000LL)) //0.8
+    if (searchDir.dot(sp.minkowskiPoint) >= sp.minkowskiPoint.mag() * ffloat(80000000LL)) //0.8
     {
       searchDir = Vector3::dy;
       sp = SupportPoint::support(cpa, cpb, searchDir);
@@ -24,14 +24,14 @@ namespace physics
       if (iterationCount++ >= iterationLimit)
         return false;
 
-      static ffloat _MIN_SMAG_DIR = ffloat(1000LL); //0.00001f
+      static ffloat _MIN_SMAG_DIR = ffloat(100000LL); //0.001f
       if (searchDir.squareMag() <= _MIN_SMAG_DIR)
         return false;
 
       SupportPoint newSp = SupportPoint::support(cpa, cpb, searchDir);
       simplex.push(newSp);
 
-      ffloat x = newSp.minkowskiHullVertex.dot(searchDir);
+      ffloat x = newSp.minkowskiPoint.dot(searchDir);
       if (x < ffzero)
       {
         return false;
@@ -72,7 +72,7 @@ namespace physics
       std::list<PolytopeFace>::iterator closestFace = polytopeFaces.begin();
       for (auto iterator = polytopeFaces.begin(); iterator != polytopeFaces.end(); ++iterator)
       {
-        ffloat distance = iterator->faceNormal.dot(iterator->points[0].minkowskiHullVertex);
+        ffloat distance = iterator->faceNormal.dot(iterator->points[0].minkowskiPoint);
         if (distance < minimumDistance)
         {
           minimumDistance = distance;
@@ -85,7 +85,7 @@ namespace physics
 
       // If this new point is within a tolerable limit of the origin, 
       // assume we have found the closest triangle on the Minkowski Hull to the origin
-      if ((closestFace->faceNormal.dot(newPolytopePoint.minkowskiHullVertex) - minimumDistance) < exitThreshold)
+      if ((closestFace->faceNormal.dot(newPolytopePoint.minkowskiPoint) - minimumDistance) < exitThreshold)
       {
         return extrapolateContactInformation(&(*closestFace), cpa, cpb, cData);
       }
@@ -94,7 +94,7 @@ namespace physics
       for (auto iterator = polytopeFaces.begin(); iterator != polytopeFaces.end();)
       {
         // A face is considered as "seen" if the new support point is on the positive halfspace of the plane defined by it
-        Vector3 planeVector = newPolytopePoint.minkowskiHullVertex - iterator->points[0].minkowskiHullVertex;
+        Vector3 planeVector = newPolytopePoint.minkowskiPoint - iterator->points[0].minkowskiPoint;
 
         if (iterator->faceNormal.dot(planeVector) > ffzero)
         {
@@ -120,16 +120,16 @@ namespace physics
 
   bool GjkEpa::extrapolateContactInformation(PolytopeFace * aClosestFace, Primitive * cpa, Primitive * cpb, CollisionData  * cData)
   {
-    ffloat distanceFromOrigin = aClosestFace->faceNormal.dot(aClosestFace->points[0].minkowskiHullVertex);
+    ffloat distanceFromOrigin = aClosestFace->faceNormal.dot(aClosestFace->points[0].minkowskiPoint);
 
     // calculate the barycentric coordinates of the closest triangle with respect to
     // the projection of the origin onto the triangle
     ffloat bary_u, bary_v, bary_w;
     Vector3 v = aClosestFace->faceNormal * distanceFromOrigin;
     bool suc = barycentricProjection(v,
-      aClosestFace->points[0].minkowskiHullVertex,
-      aClosestFace->points[1].minkowskiHullVertex,
-      aClosestFace->points[2].minkowskiHullVertex,
+      aClosestFace->points[0].minkowskiPoint,
+      aClosestFace->points[1].minkowskiPoint,
+      aClosestFace->points[2].minkowskiPoint,
       bary_u, bary_v, bary_w);
     if (!suc)
       return false;
@@ -139,7 +139,7 @@ namespace physics
     if (ffabs(bary_u) > ffone || ffabs(bary_v) > ffone || ffabs(bary_w) > ffone)
       return false;
 
-    //distanceFromOrigin = distanceFromOrigin * aClosestFace->Points[0].MinkowskiHullVertex.magnitude();
+    //distanceFromOrigin = distanceFromOrigin * aClosestFace->Points[0].MinkowskiPoint.magnitude();
     // A Contact points
     Vector3 supportLocal1 = aClosestFace->points[0].local_SupportPointA;
     Vector3 supportLocal2 = aClosestFace->points[1].local_SupportPointA;

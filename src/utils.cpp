@@ -29,7 +29,31 @@ namespace physics
     return (va.squareMag() - projLen * projLen);
   }
 
-  bool Utils::pointProjectionToSeg( const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB, 
+  Vector3 Utils::closestPointOnSegment(const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB)
+  {
+    Vector3 line = (ptSegB - ptSegA);
+    ffloat len = line.mag();
+    line.normalise();
+
+    ffloat v = (-ptSegA.dot(line)) / len;
+    ffloat u = ptSegB.dot(line) / len;
+
+    Vector3 closestPt;
+    if (u <= ffzero)
+    {
+      return ptSegB;
+    }
+    else if (v <= ffzero)
+    {
+      return ptSegA;
+    }
+    else
+    {
+      return (ptSegA * u + ptSegB * v);
+    }
+  }
+
+  bool Utils::pointProjectionToSegment( const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB, 
                               Vector3 &ptProjection, ffloat &distance)
   {
     Vector3 va = pt - ptSegA;
