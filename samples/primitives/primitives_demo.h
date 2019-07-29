@@ -35,10 +35,16 @@ private:
     int x;
     int y;
   } Point;
+  
   Point lastPoint;
   bool lBtnDown;
   float radY;
   float radP;
+
+  bool rBtnDown;
+  float radDY;
+  float radDP;
+
   float lookDist;
   float eX, eY, eZ;
   float dX, dY, dZ;

@@ -16,6 +16,11 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   lBtnDown = false;
   radY = (1.0f/6)*pi;
   radP = pi;
+
+  rBtnDown = false;
+  radDY = 0.0f;
+  radDP = 0.0f;
+
   eX = 0.0f;
   eY = 1.0f;
   eZ = 25.0f;
@@ -50,6 +55,7 @@ void PrimitivesDemo::onDisplay()
   dX = eX + dx;
   dY = eY + dy;
   dZ = eZ + dz;
+
   gluLookAt(eX, eY, eZ,  dX, dY, dZ,  0.0f, 1.0f, 0.0f);
 
   render();
@@ -57,11 +63,12 @@ void PrimitivesDemo::onDisplay()
   glColor3f(0.0f, 0.0f, 0.0f);
   textOut(10.0f, 100.0f, "Physic Demo: Test Fraction \n \
     Press 'g' to run; \n \
-    Press 's' to pause; \n \
     Press 'space' to simulate one step; \n \
-    Drag mouse to adjust camera angle; \n \
-    Press 'f' to move camera forward; \n \
-    Press 'b' to move camera back; \n \
+    Press mouse left button and drag to adjust camera angle; \n \
+    Press 'w' to move camera forward; \n \
+    Press 'a' to move camera left; \n \
+    Press 's' to move camera back; \n \
+    Press 'd' to move camera right; \n \
     Press 'q' to quite sample application;");
   
   Application::onDisplay();
@@ -81,26 +88,58 @@ void PrimitivesDemo::onMousePress(int button, int state, int x, int y)
     {
       lBtnDown = false;
     }
+  }else 
+  if(button == GLUT_RIGHT_BUTTON)
+  {
+    if(state == GLUT_DOWN)
+    {
+      radDY = 0.0f;
+      radDP = 0.0f;
+
+      lastPoint.x = x;
+      lastPoint.y = y;
+      rBtnDown = true;
+    }
+    else
+    {
+      rBtnDown = false;
+    }
   }
 }
 
 void PrimitivesDemo::onMouseMove(int x, int y)
 {
+  int deltaX = x - lastPoint.x;
+  int deltaY = y - lastPoint.y;
+
+  float dtP = pi * ((float)deltaX / (float)width);
+  float dtY = pi * ((float)deltaY / (float)height);
+
+  lastPoint.x = x;
+  lastPoint.y = y;
+
   if(lBtnDown)
-  {
-    int deltaX = x - lastPoint.x;
-    int deltaY = y - lastPoint.y;
-
-    float dtP = pi * ((float)deltaX / (float)width);
-    float dtY = pi * ((float)deltaY / (float)height);
-
-    lastPoint.x = x;
-    lastPoint.y = y;
-    
+  {  
     radY += dtY;
     radP += dtP;
     if(radY < (-pi/2)) radY = -pi/2;
     if(radY > (pi/2)) radY = pi/2;
+
+  }else
+  if(rBtnDown)
+  {
+    radDY += dtY;
+    radDP += dtP;
+    if(radDY < (-pi/2)) radDY = -pi/2;
+    if(radDY > (pi/2)) radDY = pi/2;
+
+    float rp = std::abs(lookDist * std::cos(radDY));
+    float dx = std::sin(radDP) * rp;
+    float dz = std::cos(radDP) * rp;
+    float dy = lookDist * std::sin(radDY);
+    eX = dX + dx;
+    eY = dY + dy;
+    eZ = dZ + dz;
   }
 }
 
