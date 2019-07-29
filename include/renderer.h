@@ -9,6 +9,7 @@
 #include "sphere.h"
 #include "contact.h"
 #include "box.h"
+#include "polyhedron.h"
 
 namespace physics
 {
@@ -23,6 +24,7 @@ namespace physics
     static void renderPlane(Plane *p);
     static void renderSphere(Sphere *p);
     static void renderBox(Box *p);
+    static void renderPolyhedron(Polyhedron *p);
   };
 }
 

@@ -100,7 +100,7 @@ namespace physics
 			Primitive *cpb = pa.second;
 			generateContacts(cpa, cpb, cData);
 
-			curPotentialContacts.push_back(std::make_pair(pa.first, pa.second));
+			curPotentialContacts.emplace_back(std::make_pair(pa.first, pa.second));
 		}
   }
 

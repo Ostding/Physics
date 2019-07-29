@@ -1,5 +1,5 @@
-#ifndef __BOX_H__
-#define __BOX_H__
+#ifndef __POLYHEDRON_H__
+#define __POLYHEDRON_H__
 
 #include <vector>
 using namespace std;
@@ -8,38 +8,31 @@ using namespace std;
 #include "vector3.h"
 #include "body.h"
 
+
 namespace physics
 {
-  class Box : public Primitive
+  class Polyhedron : public Primitive 
   {
     public:
-      Vector3 extents;
+      Polyhedron(RigidBody *body);
+      Polyhedron();
+
+    public:
       typedef std::vector<Vector3> Points;
       Points pointsLocal;
       Points pointsWorld;
-
-    public:
-      Box();
-      Box(RigidBody *body);
-      Box(const Vector3 &extents);
-
+      
     public:
       virtual void refreshAABB();
       virtual void render();
       virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld);
-
-      void setExtents(const Vector3 &extents);
+      
       void setPosition(const Vector3 &position);
       void setOrientation(const Quaternion &direction);
 
-    private:
-      void updateCorners();
-      void initWorldCorners();
+      void addPoints(Vector3 *points, unsigned count);
+
   };
 }
 
-
 #endif
-
-
-

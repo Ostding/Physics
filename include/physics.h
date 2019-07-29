@@ -20,6 +20,7 @@
 #include "plane.h"
 #include "sphere.h"
 #include "box.h"
+#include "polyhedron.h"
 #include "gjk_epa.h"
 #include "world.h"
 #include "utils.h"

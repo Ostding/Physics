@@ -13,24 +13,21 @@ namespace physics
   {
     Vector3 minkowskiPoint;
 
-    Vector3 world_SupportPointA;
-    Vector3 world_SupportPointB;
+    Vector3 worldPointA;
+    Vector3 worldPointB;
 
-    Vector3 local_SupportPointA;
-    Vector3 local_SupportPointB;
+    Vector3 localPointA;
+    Vector3 localPointB;
     bool operator == (const SupportPoint & ref) { return minkowskiPoint == ref.minkowskiPoint; }
   
     static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
     {
       direction.normalise();
       SupportPoint newSupportPoint;
-      newSupportPoint.local_SupportPointA = pri1->findFarthestPointInDirection(direction);
-      newSupportPoint.local_SupportPointB = pri2->findFarthestPointInDirection(-direction);
-
-      newSupportPoint.world_SupportPointA = pri1->getPointInWorldSpace(newSupportPoint.local_SupportPointA);
-      newSupportPoint.world_SupportPointB = pri2->getPointInWorldSpace(newSupportPoint.local_SupportPointB);
+			pri1->findFarthestPointInDirection(direction, newSupportPoint.localPointA, newSupportPoint.worldPointA);
+      pri2->findFarthestPointInDirection(-direction, newSupportPoint.localPointB, newSupportPoint.worldPointB);
       
-      newSupportPoint.minkowskiPoint = newSupportPoint.world_SupportPointA - newSupportPoint.world_SupportPointB;
+      newSupportPoint.minkowskiPoint = newSupportPoint.worldPointA - newSupportPoint.worldPointB;
       return newSupportPoint;
     };
   };

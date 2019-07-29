@@ -41,6 +41,15 @@ namespace physics
     updateTransform();
   }
 
+  void Box::setOrientation(const Quaternion &direction)
+  {
+    body->setOrientation(direction);
+    body->updateDerivedData();
+
+    refreshAABB();
+    updateTransform();
+  }
+
   void Box::refreshAABB()
   {
     Vector3 pt = body->getPosInWorldSpace(pointsLocal[0]);
@@ -76,55 +85,45 @@ namespace physics
   void Box::updateCorners()
   {
     pointsLocal.clear();
-    pointsLocal.push_back(Vector3(-extents.x, -extents.y,	-extents.z));
-    pointsLocal.push_back(Vector3(-extents.x, -extents.y,	extents.z));
-    pointsLocal.push_back(Vector3(extents.x,	-extents.y,	-extents.z));
-    pointsLocal.push_back(Vector3(extents.x,	-extents.y,	extents.z));
-    pointsLocal.push_back(Vector3(-extents.x, extents.y,	-extents.z));
-    pointsLocal.push_back(Vector3(-extents.x, extents.y,	extents.z));
-    pointsLocal.push_back(Vector3(extents.x,	extents.y,	-extents.z));
-    pointsLocal.push_back(Vector3(extents.x,	extents.y,	extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y,	-extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y,	extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x,	-extents.y,	-extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x,	-extents.y,	extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, extents.y,	-extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, extents.y,	extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x,	extents.y,	-extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x,	extents.y,	extents.z));
     refreshAABB();
   }
 
   void Box::initWorldCorners()
   {
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
-    pointsWorld.push_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
+    pointsWorld.emplace_back(Vector3::zero);
   }
 
-  Vector3 Box::findFarthestPointInDirection(const Vector3 &dir)
+  void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
   {
-    Vector3 dirLocal = body->getDirectionInBodySpace(dir);
-    ffloat x, y, z;
-    if(dirLocal.x < ffzero)
-      x = -extents.x;
-    else if (dirLocal.x == ffzero)
-      x = ffzero;
-    else
-      x = extents.x;
-
-    if (dirLocal.y < ffzero)
-      y = -extents.y;
-    else if (dirLocal.y == ffzero)
-      y = ffzero;
-    else
-      y = extents.y;
-
-    if (dirLocal.z < ffzero)
-      z = -extents.z;
-    else if (dirLocal.z == ffzero)
-      z = ffzero;
-    else
-      z = extents.z;
-    
-    return Vector3(x, y, z);
+    int i = 0;
+    Vector3 dirLocal = body->getDirectionInBodySpace(direction);
+    ffloat maxValue = pointsLocal[0].dot(dirLocal) * pointsLocal[0].squareMag();
+    for (int j = 1; j < pointsLocal.size(); j++)
+    {
+      ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
+      if (maxValue < value)
+      {
+        i = j;
+        maxValue = value;
+      }
+    }
+    pointLocal = pointsLocal[i];
+    pointWorld = pointsWorld[i];
   }
 
   void Box::render()

@@ -18,14 +18,10 @@ namespace physics
 
     searchDir = -searchDir;
 
-    std::vector<Vector3> tmp;
-
     const unsigned iterationMax = 16;
     unsigned iterationCount = 0;
     while (true)
     {
-      tmp.push_back(searchDir);
-
       if (iterationCount++ >= iterationMax)
       {
         printf(">>>>>>Gjk max count:%d \n", iterationCount);
@@ -151,9 +147,9 @@ namespace physics
 
     //distanceFromOrigin = distanceFromOrigin * aClosestFace->Points[0].MinkowskiPoint.magnitude();
     // A Contact points
-    Vector3 supportLocal1 = aClosestFace->points[0].local_SupportPointA;
-    Vector3 supportLocal2 = aClosestFace->points[1].local_SupportPointA;
-    Vector3 supportLocal3 = aClosestFace->points[2].local_SupportPointA;
+    Vector3 supportLocal1 = aClosestFace->points[0].localPointA;
+    Vector3 supportLocal2 = aClosestFace->points[1].localPointA;
+    Vector3 supportLocal3 = aClosestFace->points[2].localPointA;
 
     aClosestFace->faceNormal.normalise();
     Vector3 normal = -aClosestFace->faceNormal;

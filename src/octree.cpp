@@ -82,7 +82,7 @@ namespace physics
 			Vector3 min = corners[i * 2];
 			Vector3 max = corners[i * 2 + 1];
 			OCTreeNode *child = new OCTreeNode(AABB(min, max), level + 1, i, this);
-			children.push_back(child);
+			children.emplace_back(child);
 		}
 		return true;
 	}
@@ -107,7 +107,7 @@ namespace physics
 			OCTreeNode *v = children[i];
 			if (v->aabb.intersect(cp->aabb))
 			{
-				indices.push_back(i);
+				indices.emplace_back(i);
 			}
 			if (!ckMore && !indices.empty())
 			{
@@ -154,7 +154,7 @@ namespace physics
 		}
 
 		cp->node = this;
-		primitives.push_back(cp);
+		primitives.emplace_back(cp);
 
 		if (primitives.size() > OCTreeNode::MAX_OBJECTS && level < OCTreeNode::MAX_LEVEL)
 		{
@@ -229,7 +229,7 @@ namespace physics
 				if (!p->aabb.intersect(aabb))
 				{
 					primitives.erase(primitives.begin() + i);
-					toInsert.push_back(p);
+					toInsert.emplace_back(p);
 					continue;
 				}
 				else
@@ -244,7 +244,7 @@ namespace physics
 			if (indices.empty())
 			{//if primitive nolonger belongs to this node, we should reinsert it;
 				primitives.erase(primitives.begin() + i);
-				toInsert.push_back(p);
+				toInsert.emplace_back(p);
 			}
 			else if (indices.size() == 1)
 			{//if primitive belongs to this node, and intersects with only one child, then move it to the child
@@ -295,7 +295,7 @@ namespace physics
 					if(it == mapIgnore.end() || (it != mapIgnore.end() && !it->second))
 					{
 						if (a->aabb.intersect(b->aabb))
-							contacts.push_back(std::make_pair(a, b));
+							contacts.emplace_back(std::make_pair(a, b));
 					}
 				}
 			}
@@ -333,7 +333,7 @@ namespace physics
 				if (itor == mapIgnore.end() || (itor != mapIgnore.end() && !itor->second))
 				{
 					if (cp->aabb.intersect(p->aabb))
-						contacts.push_back(std::make_pair(cp, p));
+						contacts.emplace_back(std::make_pair(cp, p));
 				}
 			}
 		}

@@ -112,6 +112,11 @@ namespace physics
     Renderer::renderAABB(p->aabb);
   }
 
+  void Renderer::renderPolyhedron(Polyhedron *p)
+  {
+    
+  }
+
   void Renderer::renderContact(Contact *p)
   { 
     //Contact point
