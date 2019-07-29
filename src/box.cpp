@@ -108,6 +108,51 @@ namespace physics
     pointsWorld.emplace_back(Vector3::zero);
   }
 
+  // void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
+  // {
+  //   Vector3 dirLocal = body->getDirectionInBodySpace(direction);
+  //   if(dirLocal.x < ffzero)
+  //   {
+  //     pointLocal.x = -extents.x;
+  //   }  
+  //   else if (dirLocal.x == ffzero)
+  //   {
+  //     pointLocal.x = ffzero;
+  //   }
+  //   else
+  //   {
+  //     pointLocal.x = extents.x;
+  //   }
+
+  //   if (dirLocal.y < ffzero)
+  //   {
+  //     pointLocal.y = -extents.y;
+  //   }
+  //   else if (dirLocal.y == ffzero)
+  //   {
+  //     pointLocal.y = ffzero;
+  //   }
+  //   else
+  //   {
+  //     pointLocal.y = extents.y;
+  //   }
+
+  //   if (dirLocal.z < ffzero)
+  //   {
+  //     pointLocal.z = -extents.z;
+  //   }
+  //   else if (dirLocal.z == ffzero)
+  //   {
+  //     pointLocal.z = ffzero;
+  //   }
+  //   else
+  //   {
+  //     pointLocal.z = extents.z;
+  //   }
+    
+  //   pointWorld = body->getPosInWorldSpace(pointLocal);
+  // }
+
   void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
   {
     int i = 0;
@@ -125,7 +170,7 @@ namespace physics
     pointLocal = pointsLocal[i];
     pointWorld = pointsWorld[i];
   }
-
+  
   void Box::render()
   {
     Renderer::renderBox(this);
