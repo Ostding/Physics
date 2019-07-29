@@ -15,9 +15,14 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   simulate = false;
   lBtnDown = false;
   radY = (1.0f/6)*pi;
-  radP = 0;
+  radP = pi;
+  eX = 0.0f;
+  eY = 1.0f;
+  eZ = 25.0f;
+
   lookDist = 50;
   started = false;
+  
 }
 
 PrimitivesDemo::~PrimitivesDemo()
@@ -37,11 +42,15 @@ void PrimitivesDemo::onDisplay()
 	glLoadIdentity();    
   glEnable(GL_DEPTH_TEST);
 
-  float rp = lookDist * std::cos(radY);
-  float ex = std::sin(radP) * rp;
-  float ez = std::cos(radP) * rp;
-  float ey = lookDist * std::sin(radY);;
-  gluLookAt(ex, ey, ez,  0.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f);
+  float rp = std::abs(lookDist * std::cos(radY));
+  float dx = std::sin(radP) * rp;
+  float dz = std::cos(radP) * rp;
+  float dy = lookDist * std::sin(radY);
+  
+  dX = eX + dx;
+  dY = eY + dy;
+  dZ = eZ + dz;
+  gluLookAt(eX, eY, eZ,  dX, dY, dZ,  0.0f, 1.0f, 0.0f);
 
   render();
 
@@ -97,24 +106,60 @@ void PrimitivesDemo::onMouseMove(int x, int y)
 
 void PrimitivesDemo::onKeyboardPress(unsigned char key)
 {
-  switch( key ) {
-  case 'g': case 'G':
-    simulate = true;
-    initTest();
-    break;
-  case 's': case 'S':
-    simulate = false;
-    break;
-  case ' ':
-    simulate = false;
-    world->update(deltaTime);
-    break;
-  case 'f': case 'F':
-    lookDist -= 1;
-    break;
-  case 'b': case 'B':
-    lookDist += 1;
-    break;
+  switch( key ) 
+  {
+    case 'g': case 'G':
+      simulate = true;
+      initTest();
+      break;
+    case ' ':
+      simulate = false;
+      world->update(deltaTime);
+      break;
+    case 'w': case 'W':
+    {
+      float step = 1;
+      float rp = std::abs(step * std::cos(radY));
+      float dx = std::sin(radP) * rp;
+      float dz = std::cos(radP) * rp;
+      float dy = step * std::sin(radY);
+      eX += dx;
+      eY += dy;
+      eZ += dz;
+      break;
+    }
+    case 's': case 'S':
+    {
+      float step = 1;
+      float rp = std::abs(step * std::cos(radY));
+      float dx = std::sin(radP) * rp;
+      float dz = std::cos(radP) * rp;
+      float dy = step * std::sin(radY);
+      eX -= dx;
+      eY -= dy;
+      eZ -= dz;
+      break;
+    }
+    case 'a': case 'A':
+    {
+      float step = 1;
+      float rp = std::abs(step * std::cos(radY));
+      float dx = std::sin(radP + pi/2) * rp;
+      float dz = std::cos(radP + pi/2) * rp;
+      eX += dx;
+      eZ += dz;
+      break;
+    }
+    case 'd': case 'D':
+    {
+      float step = 1;
+      float rp = std::abs(step * std::cos(radY));
+      float dx = std::sin(radP - pi/2) * rp;
+      float dz = std::cos(radP - pi/2) * rp;
+      eX += dx;
+      eZ += dz;
+      break;
+    }
   }
 
   Application::onKeyboardPress(key);

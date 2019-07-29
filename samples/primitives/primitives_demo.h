@@ -40,6 +40,8 @@ private:
   float radY;
   float radP;
   float lookDist;
+  float eX, eY, eZ;
+  float dX, dY, dZ;
 };
 
 #endif
