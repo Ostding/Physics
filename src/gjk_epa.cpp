@@ -1,5 +1,6 @@
 #include "gjk_epa.h"
-
+#include <vector>
+using namespace std;
 namespace physics
 {
   bool GjkEpa::generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData)
@@ -17,14 +18,21 @@ namespace physics
 
     searchDir = -searchDir;
 
-    const unsigned iterationLimit = 64;
+    std::vector<Vector3> tmp;
+
+    const unsigned iterationMax = 16;
     unsigned iterationCount = 0;
     while (true)
     {
-      if (iterationCount++ >= iterationLimit)
-        return false;
+      tmp.push_back(searchDir);
 
-      static ffloat _MIN_SMAG_DIR = ffloat(100000LL); //0.001f
+      if (iterationCount++ >= iterationMax)
+      {
+        printf(">>>>>>Gjk max count:%d \n", iterationCount);
+        return false;
+      }
+
+      static ffloat _MIN_SMAG_DIR = ffloat(1000000LL); //0.01f
       if (searchDir.squareMag() <= _MIN_SMAG_DIR)
         return false;
 
@@ -40,6 +48,7 @@ namespace physics
       {
         if (simplex.isContainOrigin(searchDir))
         {
+          printf(">>>>>>Gjk iteration count:%d \n", iterationCount);
           // Run contact detection when collision is detected
           return epaContactDetection(simplex, cpa, cpb, cData);
         }
@@ -49,8 +58,8 @@ namespace physics
 
   bool GjkEpa::epaContactDetection(Simplex & aSimplex, Primitive * cpa, Primitive * cpb, CollisionData * cData)
   {
-    const ffloat exitThreshold = ffloat(10000LL);//0.0001f
-    const unsigned iterationLimit = 50;
+    const ffloat exitThreshold = ffloat(10000000LL);//0.1f
+    const unsigned iterationMax = 32;
     unsigned iterationCount = 0;
 
     std::list<PolytopeFace> polytopeFaces;
@@ -64,7 +73,7 @@ namespace physics
 
     while (true)
     {
-      if (iterationCount++ >= iterationLimit)
+      if (iterationCount++ >= iterationMax)
         return false;
 
       // Find the closest face to origin (i.e. projection of any vertex along its face normal with the least value)
@@ -87,6 +96,7 @@ namespace physics
       // assume we have found the closest triangle on the Minkowski Hull to the origin
       if ((closestFace->faceNormal.dot(newPolytopePoint.minkowskiPoint) - minimumDistance) < exitThreshold)
       {
+        printf(">>>>>>Epa iteration count:%d \n", iterationCount);
         return extrapolateContactInformation(&(*closestFace), cpa, cpb, cData);
       }
 

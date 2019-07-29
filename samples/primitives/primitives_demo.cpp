@@ -157,6 +157,8 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, fflo
   box->body->setAwake();
 
   box->setPosition(pos);
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffzero, ffzero, ffloat(45)));
+  box->setOrientation(q);
   world->addPrimitive( box );
 }
 
