@@ -6,14 +6,28 @@ namespace physics
 {
   void Renderer::setColor(float r, float g, float b)
   {
-    glColor3f(r,g,b);
+    GLfloat mat_ambient[]   = {0.8f,0.8f,0.8f,1.0f};
+    GLfloat mat_diffuse[]   = {r,g,b,1.0f};
+    GLfloat mat_specular[]  = {0.7f,0.7f,0.7f,1.0f};
+    GLfloat mat_emission[]  = {0.0f,0.0f,0.0f,1.f};
+    GLfloat mat_shininess   = 60.0f;
+
+    glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
+    glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
+    glMaterialfv(GL_FRONT,GL_SPECULAR,mat_specular);
+    glMaterialfv(GL_FRONT,GL_EMISSION,mat_emission);
+    glMaterialf(GL_FRONT,GL_SHININESS, mat_shininess);
   }
 
   void Renderer::renderAABB(const AABB &o)
   {
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+
     //back
     glBegin(GL_LINE_LOOP);
-    setColor(0, 1, 0);
+    glColor3f(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.max.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.min.z.to_d());
@@ -22,7 +36,7 @@ namespace physics
 
     //front
     glBegin(GL_LINE_LOOP);
-    setColor(0, 1, 0);
+    glColor3f(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
     glVertex3f(o.max.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.max.z.to_d());
@@ -31,7 +45,7 @@ namespace physics
 
     //side
     glBegin(GL_LINES);
-    setColor(0, 1, 0);
+    glColor3f(0, 1, 0);
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.min.z.to_d());
     glVertex3f(o.min.x.to_d(), o.min.y.to_d(), o.max.z.to_d());
 
@@ -45,6 +59,9 @@ namespace physics
     glVertex3f(o.max.x.to_d(), o.max.y.to_d(), o.max.z.to_d());
     glEnd();
 
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    
   }
 
   void Renderer::renderPlane(Plane *p)
@@ -119,11 +136,15 @@ namespace physics
 
   void Renderer::renderContact(Contact *p)
   { 
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+
     //Contact point
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_POINT_SMOOTH);
     glPointSize(1);
-    setColor(1.0, 0, 0);
+    glColor3f(1.0, 0, 0);
     glBegin(GL_POINTS);
       glVertex3f(p->contactPoint.x.to_d(), 
                  p->contactPoint.y.to_d(),
@@ -133,7 +154,7 @@ namespace physics
     glEnable(GL_DEPTH_TEST);
 
     //Contact normal
-    setColor(1, 1, 0);
+    glColor3f(1, 1, 0);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_LINES);
       glVertex3f(p->contactPoint.x.to_d(), 
@@ -145,6 +166,8 @@ namespace physics
     glEnd();
     glEnable(GL_DEPTH_TEST);
 
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
   }
 
 

@@ -36,7 +36,7 @@ public:
 	void textOut(float x, float y, const char* text, void * font = 0);
 	double calcDuration();
 	void updateTime(double elapse);
-
+	void initLight();
 protected:
 	int width;
 	int height;

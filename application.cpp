@@ -30,9 +30,28 @@ int Application::getHeight()
 	return height;
 }
 
+void Application::initLight()
+{
+  GLfloat light_position[]={0.0f,0.0f,0.0f,1.0f};
+  GLfloat light_ambient[] ={0.0f,0.0f,0.0f,1.0f};
+  GLfloat light_diffuse[] ={1.0f,1.0f,1.0f,1.0f};
+  GLfloat light_specular[]={1.0f,1.0f,1.0f,1.0f};
+
+  glLightfv(GL_LIGHT0,GL_POSITION,light_position);
+  glLightfv(GL_LIGHT0,GL_AMBIENT,light_ambient);
+  glLightfv(GL_LIGHT0,GL_DIFFUSE,light_diffuse);
+  glLightfv(GL_LIGHT0,GL_SPECULAR,light_specular);
+
+  glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHTING);
+}
+
 void Application::initGraphics()
 {
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+  initLight();
+  
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel(GL_SMOOTH);
 
@@ -123,6 +142,12 @@ void Application::onExit()
 
 void Application::textOut(float x, float y, const char* text, void * font)
 {
+  glDisable(GL_LIGHTING);
+  glEnable(GL_COLOR_MATERIAL); 
+
+  glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+  glColor3f(0.0, 0.0, 0.0);
+
 	glDisable(GL_DEPTH_TEST);
 
   glMatrixMode(GL_PROJECTION);
@@ -155,4 +180,7 @@ void Application::textOut(float x, float y, const char* text, void * font)
   glMatrixMode(GL_MODELVIEW);
 
   glEnable(GL_DEPTH_TEST);
+  glDisable(GL_COLOR_MATERIAL);
+  glEnable(GL_LIGHTING);
+  
 }
