@@ -17,10 +17,6 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   radY = (-1.0f/6)*pi;
   radP = pi;
 
-  rBtnDown = false;
-  radDY = 0.0f;
-  radDP = 0.0f;
-
   eX = 0.0f;
   eY = 25.0f;
   eZ = 50.0f;
@@ -88,22 +84,6 @@ void PrimitivesDemo::onMousePress(int button, int state, int x, int y)
     {
       lBtnDown = false;
     }
-  }else 
-  if(button == GLUT_RIGHT_BUTTON)
-  {
-    if(state == GLUT_DOWN)
-    {
-      radDY = 0.0f;
-      radDP = 0.0f;
-
-      lastPoint.x = x;
-      lastPoint.y = y;
-      rBtnDown = true;
-    }
-    else
-    {
-      rBtnDown = false;
-    }
   }
 }
 
@@ -125,21 +105,6 @@ void PrimitivesDemo::onMouseMove(int x, int y)
     if(radY < (-pi/2)) radY = -pi/2;
     if(radY > (pi/2)) radY = pi/2;
 
-  }else
-  if(rBtnDown)
-  {
-    radDY += dtY;
-    radDP += dtP;
-    if(radDY < (-pi/2)) radDY = -pi/2;
-    if(radDY > (pi/2)) radDY = pi/2;
-
-    float rp = std::abs(lookDist * std::cos(radDY));
-    float dx = std::sin(radDP) * rp;
-    float dz = std::cos(radDP) * rp;
-    float dy = lookDist * std::sin(radDY);
-    eX = dX + dx;
-    eY = dY + dy;
-    eZ = dZ + dz;
   }
 }
 

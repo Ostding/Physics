@@ -198,6 +198,14 @@ void TestFixedFloat::doTest()
 
 
   myPrintf("//////////////////\n\n");
+  //Precalculated
+
+  // for(double r = 0; r <= 6.283; r += 0.001)
+  // {
+  //   FixedFloat sv = FixedFloat::sin(FixedFloat(r));
+  //   printf("%lld,\n", sv.value);
+  // }
+
   // for(double r = 0; r <= 6.283; r += 0.001)
   // {
   //   FixedFloat sv = FixedFloat::cos(FixedFloat(r));
@@ -209,6 +217,7 @@ void TestFixedFloat::doTest()
   //    FixedFloat sv = FixedFloat::acos(FixedFloat(r));
   //    myPrintf("%lld,\n", sv.value);
   // }
+
 }
 
 void TestFixedFloat::doTestSpeed()

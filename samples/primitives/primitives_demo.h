@@ -41,10 +41,6 @@ private:
   float radY;
   float radP;
 
-  bool rBtnDown;
-  float radDY;
-  float radDP;
-
   float lookDist;
   float eX, eY, eZ;
   float dX, dY, dZ;
