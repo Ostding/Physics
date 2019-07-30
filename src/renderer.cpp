@@ -145,10 +145,16 @@ namespace physics
 
     for(unsigned i = 0; i < p->indecies.size(); i += 3)
     {
-      setColor(0.4 + i * 0.02, 0.6+ i * 0.02, 0.2+ i * 0.02);
+      // setColor(0.4 + i * 0.02, 0.6+ i * 0.02, 0.2+ i * 0.02);
       unsigned i0 = p->indecies[i];
       unsigned i1 = p->indecies[i+1];
       unsigned i2 = p->indecies[i+2];
+
+      Vector3 va = p->pointsLocal[i0] - p->pointsLocal[i1];
+      Vector3 vb = p->pointsLocal[i2] - p->pointsLocal[i1];
+      Vector3 normal = vb.cross(va);
+      normal.normalise();
+      glNormal3f(normal.x.to_d(), normal.y.to_d(), normal.z.to_d());
       glVertex3f(p->pointsLocal[i0].x.to_d(), p->pointsLocal[i0].y.to_d(), p->pointsLocal[i0].z.to_d());
       glVertex3f(p->pointsLocal[i1].x.to_d(), p->pointsLocal[i1].y.to_d(), p->pointsLocal[i1].z.to_d());
       glVertex3f(p->pointsLocal[i2].x.to_d(), p->pointsLocal[i2].y.to_d(), p->pointsLocal[i2].z.to_d());
