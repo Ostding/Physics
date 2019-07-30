@@ -61,7 +61,7 @@ namespace physics
 
     Contact* contact = cData->nextContact;
 		contact->contactNormal = normal;
-		contact->contactPoint = ptB + mid * ffhalf;
+		contact->contactPoint = ptA + mid * ffhalf;
 		contact->penetration = (sphereA.radius + sphereB.radius - len);
 
 		contact->setBodyData(b1, b2, cData->friction, cData->restitution);

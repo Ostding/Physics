@@ -15,8 +15,8 @@ dir:
 
 PHYSIC_O= build/timer.o build/fixed_float.o build/vector3.o build/quaternion.o build/body.o \
 					build/primitive.o build/plane.o build/sphere.o build/box.o build/polyhedron.o \
-					build/contact.o build/collision_data.o build/contact_generator.o \
-					build/contact_sphere.o build/contact_box.o build/contact_processor.o \
+					build/contact.o build/collision_data.o build/contact_generator.o build/contact_processor.o \
+					build/contact_sphere.o build/contact_box.o build/contact_polyhedron.o \
 					build/force_manager.o build/octree.o build/world.o build/renderer.o \
 					build/gjk_epa.o build/utils.o
 
@@ -45,6 +45,7 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_generator.cpp -o build/contact_generator.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_sphere.cpp -o build/contact_sphere.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_box.cpp -o build/contact_box.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_polyhedron.cpp -o build/contact_polyhedron.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/contact_processor.cpp -o build/contact_processor.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/force_manager.cpp -o build/force_manager.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/world.cpp -o build/world.o
