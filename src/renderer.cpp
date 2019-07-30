@@ -76,8 +76,7 @@ namespace physics
     _rb = p->body->getPosInWorldSpace(_rb);
     _rt = p->body->getPosInWorldSpace(_rt);
 
-    float r = ((float)((int64)p % 10000))/10000.0f;
-		setColor(r, r, r);
+		setColor(0.6f, 0.6f, 0.6f);
 	  glBegin(GL_TRIANGLE_STRIP);
 
     glVertex3f(_lt.x.to_d(), _lt.y.to_d(), _lt.z.to_d());
@@ -131,7 +130,34 @@ namespace physics
 
   void Renderer::renderPolyhedron(Polyhedron *p)
   {
-    
+    GLfloat mat[16];
+		p->transform.fillArray(mat);
+
+	  if (p->body->isAwake) 
+      setColor(0.4, 0.6, 0.2);
+		else
+      setColor(0.2, 0.6, 0.4);
+
+    glPushMatrix();
+		glMultMatrixf(mat);
+
+	  glBegin(GL_TRIANGLES);
+
+    for(unsigned i = 0; i < p->indecies.size(); i += 3)
+    {
+      setColor(0.4 + i * 0.02, 0.6+ i * 0.02, 0.2+ i * 0.02);
+      unsigned i0 = p->indecies[i];
+      unsigned i1 = p->indecies[i+1];
+      unsigned i2 = p->indecies[i+2];
+      glVertex3f(p->pointsLocal[i0].x.to_d(), p->pointsLocal[i0].y.to_d(), p->pointsLocal[i0].z.to_d());
+      glVertex3f(p->pointsLocal[i1].x.to_d(), p->pointsLocal[i1].y.to_d(), p->pointsLocal[i1].z.to_d());
+      glVertex3f(p->pointsLocal[i2].x.to_d(), p->pointsLocal[i2].y.to_d(), p->pointsLocal[i2].z.to_d());
+    }
+
+		glEnd();
+    glPopMatrix();
+
+    Renderer::renderAABB(p->aabb);
   }
 
   void Renderer::renderContact(Contact *p)

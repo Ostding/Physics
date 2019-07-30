@@ -185,6 +185,64 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
+void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
+{
+  Polyhedron::Points points;
+  points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(-2), ffloat(2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(2), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(2), ffloat(2), ffloat(2))); points.emplace_back(Vector3(ffloat(2), ffloat(2), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(-2)));
+  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-4))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(4)));
+
+  Polyhedron::Indecies indecies;
+  indecies.emplace_back(0); indecies.emplace_back(2); indecies.emplace_back(1);
+  indecies.emplace_back(1); indecies.emplace_back(2); indecies.emplace_back(3);
+  indecies.emplace_back(2); indecies.emplace_back(4); indecies.emplace_back(3);
+  indecies.emplace_back(3); indecies.emplace_back(4); indecies.emplace_back(5);
+  indecies.emplace_back(4); indecies.emplace_back(6); indecies.emplace_back(5);
+  indecies.emplace_back(5); indecies.emplace_back(6); indecies.emplace_back(7);
+  indecies.emplace_back(6); indecies.emplace_back(8); indecies.emplace_back(7);
+  indecies.emplace_back(7); indecies.emplace_back(8); indecies.emplace_back(9);
+  indecies.emplace_back(8); indecies.emplace_back(10); indecies.emplace_back(9);
+  indecies.emplace_back(9); indecies.emplace_back(10); indecies.emplace_back(11);
+  indecies.emplace_back(10); indecies.emplace_back(0); indecies.emplace_back(11);
+  indecies.emplace_back(11); indecies.emplace_back(0); indecies.emplace_back(1);
+
+  indecies.emplace_back(0); indecies.emplace_back(2); indecies.emplace_back(13);
+  indecies.emplace_back(2); indecies.emplace_back(4); indecies.emplace_back(13);
+  indecies.emplace_back(4); indecies.emplace_back(6); indecies.emplace_back(13);
+  indecies.emplace_back(6); indecies.emplace_back(8); indecies.emplace_back(13);
+  indecies.emplace_back(8); indecies.emplace_back(10); indecies.emplace_back(13);
+  indecies.emplace_back(10); indecies.emplace_back(0); indecies.emplace_back(13);
+  indecies.emplace_back(1); indecies.emplace_back(3); indecies.emplace_back(12);
+  indecies.emplace_back(3); indecies.emplace_back(5); indecies.emplace_back(12);
+  indecies.emplace_back(5); indecies.emplace_back(7); indecies.emplace_back(12);
+  indecies.emplace_back(7); indecies.emplace_back(9); indecies.emplace_back(12);
+  indecies.emplace_back(9); indecies.emplace_back(11); indecies.emplace_back(12);
+  indecies.emplace_back(11); indecies.emplace_back(1); indecies.emplace_back(12);
+
+
+  Polyhedron *poly = new Polyhedron();
+  poly->setPoints(points, indecies);
+
+  poly->body->setLinearDamp(ffloat(0.95f));
+	poly->body->setAngularDamp(ffloat(0.2f));
+  
+  Matrix3 tensor;
+  poly->getInertiaTensor(mass, tensor);
+
+  poly->body->setInertiaTensor(tensor);
+  poly->body->setMass(mass);
+  poly->body->enableSleep(true);
+  poly->body->setAwake();
+
+  poly->setPosition(pos);
+
+  world->addPrimitive( poly );
+}
+
 void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass)
 {
   Box *box = new Box(extents);
@@ -263,6 +321,10 @@ void PrimitivesDemo::initTest()
   Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
   ffloat m4 = ffloat(10);
   initOneBox(p4, e4, m4);
+
+  ffloat m5 = 20;
+  Vector3 p5 = Vector3(ffloat(20), ffloat(20), ffloat(-2));
+  initOnePolyHedron(p5, m5);
 
   world->prepare();
   started = true;

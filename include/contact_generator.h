@@ -60,18 +60,18 @@ namespace physics
       unsigned genBoxAndSphere( Box &box, Sphere &sphere, CollisionData *cData);
       unsigned genBoxAndBox( Box &boxA, Box &boxB, CollisionData *cData);
 
+      //polyhedron
+      unsigned genPolyhedronAndPlane( Polyhedron &poly, Plane &plane, CollisionData *cData);
+      unsigned genPolyhedronAndSphere( Polyhedron &poly, Sphere &sphere, CollisionData *cData);
+      unsigned genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData);
+      unsigned genPolyhedronAndCapsule( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData);
+
       //capsule
       // unsigned genCapsuleAndPlane( Capsule &capsule, Plane &plane, CollisionData *cData);
       // unsigned genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData);
       // unsigned genCapsuleAndBox( Capsule &capsule, Box &box, CollisionData *cData);
+      // unsigned genCapsuleAndPolyhedron( Capsule &capsule, Polyhedron &poly, CollisionData *cData);
       // unsigned genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData);
-
-      //polyhedron
-      // unsigned genPolyhedronAndPlane( Polyhedron &poly, Plane &plane, CollisionData *cData);
-      // unsigned genPolyhedronAndSphere( Polyhedron &poly, Sphere &sphere, CollisionData *cData);
-      // unsigned genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData);
-      // unsigned genPolyhedronAndCapsule( Polyhedron &poly, Capsule &capsule, CollisionData *cData);
-      // unsigned genPolyhedronAndCapsule( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData);
   };
 }
 

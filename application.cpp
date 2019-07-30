@@ -32,7 +32,7 @@ int Application::getHeight()
 
 void Application::initLight()
 {
-  GLfloat light_position[]={0.0f,0.0f,0.0f,1.0f};
+  GLfloat light_position[]={0.0f,10.0f,0.0f,1.0f};
   GLfloat light_ambient[] ={0.0f,0.0f,0.0f,1.0f};
   GLfloat light_diffuse[] ={1.0f,1.0f,1.0f,1.0f};
   GLfloat light_specular[]={1.0f,1.0f,1.0f,1.0f};
