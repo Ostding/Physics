@@ -33,6 +33,17 @@ namespace physics
 
   unsigned ContactGenerator::genPolyhedronAndSphere( Polyhedron &poly, Sphere &sphere, CollisionData *cData)
   {
+    if (cData->contactsLeft <= 0) return 0;
+    if (!poly.body->isAwake && !sphere.body->isAwake) return 0;
+
+    Vector3 posPoly = poly.getColumnVector(3);
+    Vector3 posSphere = sphere.getColumnVector(3);
+    Vector3 dir = posPoly - posSphere;
+
+    
+
+
+
     return 0;
   }
 
