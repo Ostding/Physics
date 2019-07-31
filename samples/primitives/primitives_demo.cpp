@@ -196,36 +196,36 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
   points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(-2)));
   points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-4))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(4)));
 
-  Polyhedron::Indecies indecies;
-  indecies.emplace_back(0); indecies.emplace_back(2); indecies.emplace_back(1);
-  indecies.emplace_back(1); indecies.emplace_back(2); indecies.emplace_back(3);
-  indecies.emplace_back(2); indecies.emplace_back(4); indecies.emplace_back(3);
-  indecies.emplace_back(3); indecies.emplace_back(4); indecies.emplace_back(5);
-  indecies.emplace_back(4); indecies.emplace_back(6); indecies.emplace_back(5);
-  indecies.emplace_back(5); indecies.emplace_back(6); indecies.emplace_back(7);
-  indecies.emplace_back(6); indecies.emplace_back(8); indecies.emplace_back(7);
-  indecies.emplace_back(7); indecies.emplace_back(8); indecies.emplace_back(9);
-  indecies.emplace_back(8); indecies.emplace_back(10); indecies.emplace_back(9);
-  indecies.emplace_back(9); indecies.emplace_back(10); indecies.emplace_back(11);
-  indecies.emplace_back(10); indecies.emplace_back(0); indecies.emplace_back(11);
-  indecies.emplace_back(11); indecies.emplace_back(0); indecies.emplace_back(1);
+  Polyhedron::Indices indices;
+  indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(1);
+  indices.emplace_back(1); indices.emplace_back(2); indices.emplace_back(3);
+  indices.emplace_back(2); indices.emplace_back(4); indices.emplace_back(3);
+  indices.emplace_back(3); indices.emplace_back(4); indices.emplace_back(5);
+  indices.emplace_back(4); indices.emplace_back(6); indices.emplace_back(5);
+  indices.emplace_back(5); indices.emplace_back(6); indices.emplace_back(7);
+  indices.emplace_back(6); indices.emplace_back(8); indices.emplace_back(7);
+  indices.emplace_back(7); indices.emplace_back(8); indices.emplace_back(9);
+  indices.emplace_back(8); indices.emplace_back(10); indices.emplace_back(9);
+  indices.emplace_back(9); indices.emplace_back(10); indices.emplace_back(11);
+  indices.emplace_back(10); indices.emplace_back(0); indices.emplace_back(11);
+  indices.emplace_back(11); indices.emplace_back(0); indices.emplace_back(1);
 
-  indecies.emplace_back(0); indecies.emplace_back(2); indecies.emplace_back(13);
-  indecies.emplace_back(2); indecies.emplace_back(4); indecies.emplace_back(13);
-  indecies.emplace_back(4); indecies.emplace_back(6); indecies.emplace_back(13);
-  indecies.emplace_back(6); indecies.emplace_back(8); indecies.emplace_back(13);
-  indecies.emplace_back(8); indecies.emplace_back(10); indecies.emplace_back(13);
-  indecies.emplace_back(10); indecies.emplace_back(0); indecies.emplace_back(13);
-  indecies.emplace_back(1); indecies.emplace_back(3); indecies.emplace_back(12);
-  indecies.emplace_back(3); indecies.emplace_back(5); indecies.emplace_back(12);
-  indecies.emplace_back(5); indecies.emplace_back(7); indecies.emplace_back(12);
-  indecies.emplace_back(7); indecies.emplace_back(9); indecies.emplace_back(12);
-  indecies.emplace_back(9); indecies.emplace_back(11); indecies.emplace_back(12);
-  indecies.emplace_back(11); indecies.emplace_back(1); indecies.emplace_back(12);
+  indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(13);
+  indices.emplace_back(2); indices.emplace_back(4); indices.emplace_back(13);
+  indices.emplace_back(4); indices.emplace_back(6); indices.emplace_back(13);
+  indices.emplace_back(6); indices.emplace_back(8); indices.emplace_back(13);
+  indices.emplace_back(8); indices.emplace_back(10); indices.emplace_back(13);
+  indices.emplace_back(10); indices.emplace_back(0); indices.emplace_back(13);
+  indices.emplace_back(1); indices.emplace_back(3); indices.emplace_back(12);
+  indices.emplace_back(3); indices.emplace_back(5); indices.emplace_back(12);
+  indices.emplace_back(5); indices.emplace_back(7); indices.emplace_back(12);
+  indices.emplace_back(7); indices.emplace_back(9); indices.emplace_back(12);
+  indices.emplace_back(9); indices.emplace_back(11); indices.emplace_back(12);
+  indices.emplace_back(11); indices.emplace_back(1); indices.emplace_back(12);
 
 
   Polyhedron *poly = new Polyhedron();
-  poly->setPoints(points, indecies);
+  poly->setPoints(points, indices);
 
   poly->body->setLinearDamp(ffloat(0.95f));
 	poly->body->setAngularDamp(ffloat(0.2f));
@@ -251,7 +251,7 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, fflo
 	box->body->setAngularDamp(ffloat(0.2f));
 
   Vector3 squares = extents.product(extents);
-  ffloat f3 = ffone / ffloat(enlarge * 12ll);
+  ffloat f3 = ffone / ffloat(enlarge * 12LL);
   ffloat yz = mass * (squares.y + squares.z);
   ffloat xz = mass * (squares.x + squares.z);
   ffloat xy = mass * (squares.x + squares.y);

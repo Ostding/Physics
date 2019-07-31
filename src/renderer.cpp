@@ -143,12 +143,12 @@ namespace physics
 
 	  glBegin(GL_TRIANGLES);
 
-    for(unsigned i = 0; i < p->indecies.size(); i += 3)
+    for(unsigned i = 0; i < p->indices.size(); i += 3)
     {
       // setColor(0.4 + i * 0.02, 0.6+ i * 0.02, 0.2+ i * 0.02);
-      unsigned i0 = p->indecies[i];
-      unsigned i1 = p->indecies[i+1];
-      unsigned i2 = p->indecies[i+2];
+      unsigned i0 = p->indices[i];
+      unsigned i1 = p->indices[i+1];
+      unsigned i2 = p->indices[i+2];
 
       Vector3 va = p->pointsLocal[i0] - p->pointsLocal[i1];
       Vector3 vb = p->pointsLocal[i2] - p->pointsLocal[i1];
