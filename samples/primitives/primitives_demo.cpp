@@ -231,7 +231,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
 	poly->body->setAngularDamp(ffloat(0.2f));
   
   Matrix3 tensor;
-  poly->getInertiaTensor(mass, tensor);
+  poly->getInertiaTensor( mass, tensor);
 
   poly->body->setInertiaTensor(tensor);
   poly->body->setMass(mass);
@@ -324,11 +324,11 @@ void PrimitivesDemo::initTest()
   ffloat m4 = ffloat(10);
   initOneBox(p4, e4, m4);
 
-  ffloat m5 = 20;
+  ffloat m5 = 2;
   Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
   initOnePolyHedron(p5, m5);
 
-  ffloat m6 = 20;
+  ffloat m6 = 2;
   Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
   initOnePolyHedron(p6, m6);
 

@@ -37,6 +37,7 @@ namespace physics
       // order: 1, x, y, z, x^2, y^2, z^2, xy, yz, zx
       ffloat intg[10] = {ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero} ; 
       unsigned triangleCount = indices.size() / 3;
+
       for (unsigned t = 0; t < triangleCount; t++)
       {
         // get vertices of triangle t
@@ -97,14 +98,21 @@ namespace physics
       massCenter.x = intg[1]/mass;
       massCenter.y = intg[2]/mass;
       massCenter.z = intg[3]/mass;
+
+      ffloat ixx = intg[5] + intg[6];
+      ffloat iyy = intg[4] + intg[6];
+      ffloat izz = intg[4] + intg[5];
+      ffloat ixy = -intg[7];
+      ffloat iyz = -intg[8];
+      ffloat ixz = -intg[9];
       
-      // inertia tensor relative to center of mass
-      ffloat ixx = intg[5]+intg[6]-mass*(massCenter.y * massCenter.y + massCenter.z * massCenter.z);
-      ffloat iyy = intg[4]+intg[6]-mass*(massCenter.z * massCenter.z + massCenter.x * massCenter.x);
-      ffloat izz = intg[4]+intg[5]-mass*(massCenter.x * massCenter.x + massCenter.y * massCenter.y);
-      ffloat ixy = -(intg[7]-mass * massCenter.x * massCenter.y);
-      ffloat iyz = -(intg[8]-mass * massCenter.y * massCenter.z);
-      ffloat ixz = -(intg[9]-mass * massCenter.z * massCenter.x);
+      // // inertia tensor relative to center of mass
+      // ffloat ixx = intg[5]+intg[6]-mass*(massCenter.y * massCenter.y + massCenter.z * massCenter.z);
+      // ffloat iyy = intg[4]+intg[6]-mass*(massCenter.z * massCenter.z + massCenter.x * massCenter.x);
+      // ffloat izz = intg[4]+intg[5]-mass*(massCenter.x * massCenter.x + massCenter.y * massCenter.y);
+      // ffloat ixy = -(intg[7]-mass * massCenter.x * massCenter.y);
+      // ffloat iyz = -(intg[8]-mass * massCenter.y * massCenter.z);
+      // ffloat ixz = -(intg[9]-mass * massCenter.z * massCenter.x);
 
       inertiaTensor.data[0] = ixx;
       inertiaTensor.data[1] = ixy;
@@ -122,8 +130,11 @@ namespace physics
       ffloat unitMass;
       Vector3 massCenter;
       Matrix3 tensor;
+
       calculateInertiaTensor(pointsLocal, indices, unitMass, massCenter, tensor);
-      tensor *= mass;
+      ffloat idensity = mass / unitMass;
+      tensor *= idensity;
+      
       inertiaTensor = tensor;
     }
 

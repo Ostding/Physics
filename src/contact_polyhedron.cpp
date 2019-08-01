@@ -19,9 +19,10 @@ namespace physics
       if(ptToOrign <= plane.offset) 
       {
         ffloat penetration = (plane.offset - ptToOrign);
+        Vector3 contactPoint = *it + plane.direction * penetration;
         Contact* contact = cData->nextContact;
         contact->contactNormal = plane.direction;
-        contact->contactPoint = (*it);
+        contact->contactPoint = contactPoint;
         contact->penetration = penetration;
 
         contact->setBodyData(poly.body, 0, cData->friction, cData->restitution);

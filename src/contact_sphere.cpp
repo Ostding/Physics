@@ -9,7 +9,7 @@ namespace physics
     if (!sphere.body->isAwake) return 0;
 
     Vector3 position = sphere.getColumnVector(3);
-    ffloat centreDistance = plane.direction.dot(position) - plane.offset;
+    ffloat centreDistance = position.dot(plane.direction) - plane.offset;
 
     if (centreDistance * centreDistance > sphere.radius * sphere.radius)
       return 0;
@@ -23,16 +23,12 @@ namespace physics
       penetration = -penetration;
     }
     penetration += sphere.radius;
-		
-		RigidBody *b = sphere.isStatic ? 0 : sphere.body;
-		if (!b) 
-			return 0;
 
     Contact* contact = cData->nextContact;
     contact->contactNormal = normal;
     contact->penetration = penetration;
     contact->contactPoint = position - plane.direction * centreDistance;
-    contact->setBodyData(b, 0, cData->friction, cData->restitution);
+    contact->setBodyData(sphere.body, 0, cData->friction, cData->restitution);
     cData->addContacts(1);
     return 1;
   }
