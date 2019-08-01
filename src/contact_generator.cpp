@@ -214,6 +214,30 @@ namespace physics
 			fillContactCeofficient(poly, sphere, cData);
       genPolyhedronAndSphere(*poly, *sphere, cData);
     }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX)
+    {
+      Polyhedron *poly = dynamic_cast<Polyhedron *>(cpa);
+			Box *box = dynamic_cast<Box *>(cpb);
+			fillContactCeofficient(poly, box, cData);
+      genPolyhedronAndBox(*poly, *box, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON)
+    {
+      Polyhedron *poly = dynamic_cast<Polyhedron *>(cpb);
+			Box *box = dynamic_cast<Box *>(cpa);
+		  fillContactCeofficient(poly, box, cData);
+      genPolyhedronAndBox(*poly, *box, cData);
+    }
+     else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON)
+    {
+      Polyhedron *polyA = dynamic_cast<Polyhedron *>(cpa);
+			Polyhedron *polyB = dynamic_cast<Polyhedron *>(cpb);
+		  fillContactCeofficient(polyA, polyB, cData);
+      genPolyhedronAndPolyhedron(*polyA, *polyB, cData);
+    }
   }
 
 

@@ -74,10 +74,10 @@ namespace physics
       }
     }
 
-    //debug closest triangle
-    contactTriangle[0] = triangleP0;
-    contactTriangle[1] = triangleP1;
-    contactTriangle[2] = triangleP2;
+    // //debug closest triangle
+    // contactTriangle[0] = triangleP0;
+    // contactTriangle[1] = triangleP1;
+    // contactTriangle[2] = triangleP2;
     
     Vector3 v = posSphere - triangleP0;
     ffloat dist = v.dot(normal);
@@ -139,12 +139,20 @@ namespace physics
 
   unsigned ContactGenerator::genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData)
   {
-    return 0;
+    if (cData->contactsLeft <= 0) return 0;
+    if (!poly.body->isAwake && !box.body->isAwake) return 0;
+    
+    bool suc = GjkEpa::generateContacts (&poly, &box, cData);
+    return suc ? 1 : 0;
   }
 
-  unsigned ContactGenerator::genPolyhedronAndCapsule( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData)
+  unsigned ContactGenerator::genPolyhedronAndPolyhedron( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData)
   {
-    return 0;
+    if (cData->contactsLeft <= 0) return 0;
+    if (!polyA.body->isAwake && !polyB.body->isAwake) return 0;
+    
+    bool suc = GjkEpa::generateContacts (&polyA, &polyB, cData);
+    return suc ? 1 : 0;
   }
 
 
