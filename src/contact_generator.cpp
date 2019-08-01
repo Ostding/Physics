@@ -78,6 +78,7 @@ namespace physics
   void ContactGenerator::ContactGenerator::render()
   {
     octreeRoot->render();
+    Renderer::renderContactGenerator(this);
   }
 
   void ContactGenerator::generateContacts(CollisionData *cData)
@@ -196,6 +197,22 @@ namespace physics
 			Plane *plane = dynamic_cast<Plane *>(cpa);
 			fillContactCeofficient(poly, plane, cData);
       genPolyhedronAndPlane(*poly, *plane, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
+    {
+      Polyhedron *poly = dynamic_cast<Polyhedron *>(cpa);
+			Sphere *sphere = dynamic_cast<Sphere *>(cpb);
+			fillContactCeofficient(poly, sphere, cData);
+      genPolyhedronAndSphere(*poly, *sphere, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON)
+    {
+      Polyhedron *poly = dynamic_cast<Polyhedron *>(cpb);
+			Sphere *sphere = dynamic_cast<Sphere *>(cpa);
+			fillContactCeofficient(poly, sphere, cData);
+      genPolyhedronAndSphere(*poly, *sphere, cData);
     }
   }
 

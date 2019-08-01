@@ -11,6 +11,7 @@ using namespace std;
 #include "sphere.h"
 #include "plane.h"
 #include "box.h"
+#include "vector3.h"
 
 namespace physics
 {
@@ -26,7 +27,8 @@ namespace physics
 
       OCTreeNode *octreeRoot;
       OCTreeNode::PotentialContacts curPotentialContacts;
-      
+
+      Vector3 contactTriangle[3];
     public:
       ContactGenerator(const Vector3 &min, const Vector3 &max);
 	    ~ContactGenerator();

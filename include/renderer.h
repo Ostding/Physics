@@ -14,13 +14,15 @@
 namespace physics
 {
   class AABB;
-
+  class ContactGenerator;
+  
   class Renderer
   {
   public:
     static void setColor(float r, float g, float b);
     static void renderAABB(const AABB &o);
     static void renderContact(Contact *p);
+    static void renderContactGenerator(ContactGenerator *p);
     static void renderPlane(Plane *p);
     static void renderSphere(Sphere *p);
     static void renderBox(Box *p);

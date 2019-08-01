@@ -308,23 +308,23 @@ void PrimitivesDemo::initTest()
   ffloat m1 = ffloat(10);
   initOneSphere(r1, p1, m1);
 
-  Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
-  ffloat r2 = ffloat(5);
-  ffloat m2 = ffloat(10);
-  initOneSphere(r2, p2, m2);
+  // Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
+  // ffloat r2 = ffloat(5);
+  // ffloat m2 = ffloat(10);
+  // initOneSphere(r2, p2, m2);
 
-  Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
-  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  ffloat m3 = ffloat(10);
-  initOneBox(p3, e3, m3);
+  // Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
+  // Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // ffloat m3 = ffloat(10);
+  // initOneBox(p3, e3, m3);
 
-  Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
-  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  ffloat m4 = ffloat(10);
-  initOneBox(p4, e4, m4);
+  // Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
+  // Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // ffloat m4 = ffloat(10);
+  // initOneBox(p4, e4, m4);
 
   ffloat m5 = 20;
-  Vector3 p5 = Vector3(ffloat(20), ffloat(20), ffloat(-2));
+  Vector3 p5 = Vector3(ffzero, ffloat(25), ffzero);
   initOnePolyHedron(p5, m5);
 
   world->prepare();

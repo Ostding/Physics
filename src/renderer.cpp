@@ -1,6 +1,7 @@
 #include "renderer.h"
 #include "aabb.h"
 #include "body.h"
+#include "contact_generator.h"
 
 namespace physics
 {
@@ -164,6 +165,28 @@ namespace physics
     glPopMatrix();
 
     Renderer::renderAABB(p->aabb);
+  }
+
+  void Renderer::renderContactGenerator(ContactGenerator *p)
+  {
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+
+    //Contact point
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(1);
+    glColor3f(1.0, 0, 0);
+    glBegin(GL_POINTS);
+      for(unsigned i = 0; i<3; i++)
+      {
+        Vector3 &pt = p->contactTriangle[i];
+        glVertex3f(pt.x.to_d(), pt.y.to_d(), pt.z.to_d());
+      }
+    glEnd();
+
+    glEnable(GL_DEPTH_TEST);
   }
 
   void Renderer::renderContact(Contact *p)
