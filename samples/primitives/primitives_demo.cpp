@@ -239,8 +239,10 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
   poly->body->setAwake();
 
   poly->setPosition(pos);
-  int angle = std::rand() % 180;
-  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffzero, ffzero, ffloat(angle)));
+  int anglex = std::rand() % 180;
+  int angley = std::rand() % 180;
+  int anglez = std::rand() % 180;
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   poly->setOrientation(q);
   world->addPrimitive( poly );
 }
