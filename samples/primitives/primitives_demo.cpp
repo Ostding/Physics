@@ -334,6 +334,15 @@ void PrimitivesDemo::initTest()
   Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
   initOnePolyHedron(p6, m6);
 
+  p6 = Vector3(ffloat(4), ffloat(15), ffzero);
+  initOnePolyHedron(p6, m6);
+  p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
+  initOnePolyHedron(p6, m6);
+  p6 = Vector3(ffzero, ffloat(15), ffloat(4));
+  initOnePolyHedron(p6, m6);
+  p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
+  initOnePolyHedron(p6, m6);
+
   world->prepare();
   started = true;
 }
