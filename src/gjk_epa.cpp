@@ -18,7 +18,7 @@ namespace physics
 
     searchDir = -searchDir;
 
-    const unsigned iterationMax = 128;
+    const unsigned iterationMax = 32;
     unsigned iterationCount = 0;
     while (true)
     {
