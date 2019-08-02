@@ -173,20 +173,72 @@ namespace physics
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 
 
-    //Contact point
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_POINT_SMOOTH);
-    glPointSize(1);
-    glColor3f(1.0, 0, 0);
-    glBegin(GL_POINTS);
-      for(unsigned i = 0; i<3; i++)
-      {
-        Vector3 &pt = p->contactTriangle[i];
-        glVertex3f(pt.x.to_d(), pt.y.to_d(), pt.z.to_d());
-      }
-    glEnd();
+    glEnable(GL_BLEND); 
+    glDisable(GL_DEPTH_TEST); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glColor4f(1.0f, 0.0f, 0.0f, 0.1); 
 
-    glEnable(GL_DEPTH_TEST);
+    OCTreeNode::PotentialContacts::iterator it = p->curPotentialContacts.begin();
+    for( ; it < p->curPotentialContacts.end(); it++)
+    {
+      AABB &o = it->second->aabb;
+      double xmin = o.min.x.to_d(); double xmax = o.max.x.to_d();
+      double ymin =  o.min.y.to_d(); double ymax = o.max.y.to_d();
+      double zmin = o.min.z.to_d(); double zmax = o.max.z.to_d();
+      //back
+      glBegin(GL_QUADS);
+      glVertex3f(xmin, ymin, zmin);
+      glVertex3f(xmax, ymin, zmin);
+      glVertex3f(xmax, ymax, zmin);
+      glVertex3f(xmin, ymax, zmin);
+      glEnd();
+
+      //front
+      glBegin(GL_QUADS);
+      glVertex3f(xmin, ymin, zmax);
+      glVertex3f(xmax, ymin, zmax);
+      glVertex3f(xmax, ymax, zmax);
+      glVertex3f(xmin, ymax, zmax);
+      glEnd();
+
+      //up
+      glBegin(GL_QUADS);
+      glVertex3f(xmin, ymax, zmin);
+      glVertex3f(xmax, ymax, zmin);
+      glVertex3f(xmax, ymax, zmax);
+      glVertex3f(xmin, ymax, zmax);
+      glEnd();
+
+      //down
+      glBegin(GL_QUADS);
+      glVertex3f(xmin, ymin, zmin);
+      glVertex3f(xmax, ymin, zmin);
+      glVertex3f(xmax, ymin, zmax);
+      glVertex3f(xmin, ymin, zmax);
+      glEnd();
+
+      //left
+      glBegin(GL_QUADS);
+      glVertex3f(xmin, ymin, zmin);
+      glVertex3f(xmin, ymax, zmin);
+      glVertex3f(xmin, ymax, zmax);
+      glVertex3f(xmin, ymin, zmax);
+      glEnd();
+
+      //right
+      glBegin(GL_QUADS);
+      glVertex3f(xmax, ymin, zmin);
+      glVertex3f(xmax, ymax, zmin);
+      glVertex3f(xmax, ymax, zmax);
+      glVertex3f(xmax, ymin, zmax);
+      glEnd();
+    }
+
+    glEnable(GL_DEPTH_TEST); 
+    glDisable(GL_BLEND); 
+
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
   }
 
   void Renderer::renderContact(Contact *p)

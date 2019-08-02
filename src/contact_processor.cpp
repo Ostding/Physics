@@ -167,8 +167,8 @@ void ContactProcessor::adjustVelocities(Contact *c, unsigned numContacts, ffloat
       {
         if(c[i].penetration > max)
         {
-          max=c[i].penetration;
-          index=i;
+          max = c[i].penetration;
+          index = i;
         }
       }
       if (index == numContacts) break;

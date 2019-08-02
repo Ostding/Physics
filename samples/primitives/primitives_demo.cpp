@@ -3,7 +3,7 @@
 #include "physics.h"
 
 static const double pi = 3.1416;
-static ffloat deltaTime = ffloat(0.02f);
+static ffloat deltaTime = ffloat(0.01f);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
 {
@@ -194,7 +194,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
   points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(-2)));
   points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(-2)));
   points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-4))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(4)));
+  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-2))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(2)));
 
   Polyhedron::Indices indices;
   indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(1);
@@ -242,7 +242,8 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
   int anglex = std::rand() % 180;
   int angley = std::rand() % 180;
   int anglez = std::rand() % 180;
-  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
+  // Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffzero, ffloat(90), ffzero));
   poly->setOrientation(q);
   world->addPrimitive( poly );
 }
@@ -306,25 +307,25 @@ void PrimitivesDemo::initTest()
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
 
-  Vector3 p1 = Vector3(ffzero, ffloat(15), ffzero);
-  ffloat r1 = ffloat(3);
-  ffloat m1 = ffloat(10);
-  initOneSphere(r1, p1, m1);
+  // Vector3 p1 = Vector3(ffzero, ffloat(15), ffzero);
+  // ffloat r1 = ffloat(3);
+  // ffloat m1 = ffloat(10);
+  // initOneSphere(r1, p1, m1);
 
-  Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
-  ffloat r2 = ffloat(5);
-  ffloat m2 = ffloat(10);
-  initOneSphere(r2, p2, m2);
+  // Vector3 p2 = Vector3(ffone, ffloat(20), ffzero);
+  // ffloat r2 = ffloat(5);
+  // ffloat m2 = ffloat(10);
+  // initOneSphere(r2, p2, m2);
 
-  Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
-  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  ffloat m3 = ffloat(10);
-  initOneBox(p3, e3, m3);
+  // Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
+  // Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // ffloat m3 = ffloat(10);
+  // initOneBox(p3, e3, m3);
 
-  Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
-  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  ffloat m4 = ffloat(10);
-  initOneBox(p4, e4, m4);
+  // Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
+  // Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // ffloat m4 = ffloat(10);
+  // initOneBox(p4, e4, m4);
 
   ffloat m5 = 2;
   Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
@@ -334,14 +335,14 @@ void PrimitivesDemo::initTest()
   Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
   initOnePolyHedron(p6, m6);
 
-  p6 = Vector3(ffloat(4), ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6);
-  p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6);
-  p6 = Vector3(ffzero, ffloat(15), ffloat(4));
-  initOnePolyHedron(p6, m6);
-  p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
-  initOnePolyHedron(p6, m6);
+  // p6 = Vector3(ffloat(4), ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6);
+  // p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6);
+  // p6 = Vector3(ffzero, ffloat(15), ffloat(4));
+  // initOnePolyHedron(p6, m6);
+  // p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
+  // initOnePolyHedron(p6, m6);
 
   world->prepare();
   started = true;

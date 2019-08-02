@@ -27,8 +27,6 @@ namespace physics
 
       OCTreeNode *octreeRoot;
       OCTreeNode::PotentialContacts curPotentialContacts;
-
-      Vector3 contactTriangle[3];
     public:
       ContactGenerator(const Vector3 &min, const Vector3 &max);
 	    ~ContactGenerator();

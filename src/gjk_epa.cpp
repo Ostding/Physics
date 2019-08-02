@@ -18,7 +18,7 @@ namespace physics
 
     searchDir = -searchDir;
 
-    const unsigned iterationMax = 16;
+    const unsigned iterationMax = 128;
     unsigned iterationCount = 0;
     while (true)
     {
@@ -161,14 +161,7 @@ namespace physics
     contact->contactNormal = normal;
     contact->contactPoint = contactPoint;
 
-
-    RigidBody *b1 = cpa->isStatic ? 0 : cpa->body;
-    RigidBody *b2 = cpb->isStatic ? 0 : cpb->body;
-
-    if (!b1 && !b2)
-      return false;
-
-    contact->setBodyData(b1, b2, cData->friction, cData->restitution);
+    contact->setBodyData(cpa->body, cpb->body, cData->friction, cData->restitution);
     cData->addContacts(1);
     return true;
   }
