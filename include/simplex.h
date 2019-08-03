@@ -149,12 +149,12 @@ namespace physics
 
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
-					//Is new point on right of edge2 ( which means it is out of triangle)
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						clear();
 						set(a, c); //return as [A,C]
+						printf(">>>3-1\n");
 						return false;
 					}
 					else
@@ -164,6 +164,7 @@ namespace physics
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); //return as [A,B]
+							printf(">>>3-2\n");
 							return false;
 						}
 						else
@@ -171,6 +172,7 @@ namespace physics
 							searchDir = newPointToOrigin;
 							clear();
 							set(a); //return a point A
+							printf(">>>3-3\n");
 							return false;
 						}
 					}
@@ -184,9 +186,9 @@ namespace physics
 						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
-							// Return it as [A, B]
 							clear();
-							set(a, b);
+							set(a, b); // Return it as [A, B]
+							printf(">>>3-3\n");
 							return false;
 						}
 						else
@@ -231,14 +233,14 @@ namespace physics
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
 					ffloat x = face1Normal.dot(newPointToOrigin);
-					printf(">>>1 x:%.3f \n", x.to_d());
+					printf(">>>4-1 x:%.3f \n", x.to_d());
 					goto proc;
 				}
 				// Origin is in front of second face, simplex is set to this triangle [A, C, D]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
 					ffloat x = face2Normal.dot(newPointToOrigin);
-					printf(">>>1 x:%.3f \n", x.to_d());
+					printf(">>>4-2 x:%.3f \n", x.to_d());
 
 					clear();
 					set(a, c, d);
@@ -248,7 +250,7 @@ namespace physics
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
 					ffloat x = face3Normal.dot(newPointToOrigin);
-					printf(">>>1 x:%.3f \n", x.to_d());
+					printf(">>>4-3 x:%.3f \n", x.to_d());
 
 					clear();
 					set(a, d, b);
