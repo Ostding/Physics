@@ -153,9 +153,8 @@ namespace physics
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
-						//return as [A,C]
 						clear();
-						set(a, c);
+						set(a, c); //return as [A,C]
 						return false;
 					}
 					else
@@ -163,17 +162,15 @@ namespace physics
 						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
-							//return as [A,B]
 							clear();
-							set(a, b);
+							set(a, b); //return as [A,B]
 							return false;
 						}
 						else
 						{
 							searchDir = newPointToOrigin;
-							//return a point A
 							clear();
-							set(a);
+							set(a); //return a point A
 							return false;
 						}
 					}
