@@ -149,6 +149,7 @@ namespace physics
 
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
+					//Is new point on right of edge2 ( which means it is out of triangle)
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
@@ -227,26 +228,31 @@ namespace physics
 				Vector3 face3Normal = edge3.cross(edge1);
 
 				Vector3 newPointToOrigin = -a.minkowskiPoint;
-				//Threshold of origin point close to face
-				//this value can reduce GJK iteration count
-				static const ffloat tolerance = ffloat(10000000LL); //0.1f
+
+				static const ffloat tolerance = ffloat(10000LL); //0.01f
+				// Origin is in front of first face, simplex is correct already
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// Origin is in front of first face, simplex is correct already
+					ffloat x = face1Normal.dot(newPointToOrigin);
+					printf(">>>1 x:%.3f \n", x.to_d());
 					goto proc;
 				}
-
+				// Origin is in front of second face, simplex is set to this triangle [A, C, D]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// Origin is in front of second face, simplex is set to this triangle [A, C, D]
+					ffloat x = face2Normal.dot(newPointToOrigin);
+					printf(">>>1 x:%.3f \n", x.to_d());
+
 					clear();
 					set(a, c, d);
 					goto proc;
 				}
-
+				// Origin is in front of third face, simplex is set to this triangle [A, D, B]
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// Origin is in front of third face, simplex is set to this triangle [A, D, B]
+					ffloat x = face3Normal.dot(newPointToOrigin);
+					printf(">>>1 x:%.3f \n", x.to_d());
+
 					clear();
 					set(a, d, b);
 					goto proc;

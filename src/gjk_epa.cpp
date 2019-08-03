@@ -28,9 +28,12 @@ namespace physics
         return false;
       }
 
-      static ffloat _MIN_SMAG_DIR = ffloat(1000000LL); //0.01f
+      static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
       if (searchDir.squareMag() <= _MIN_SMAG_DIR)
+      {
+        printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
         return false;
+      }
 
       SupportPoint newSp = SupportPoint::support(cpa, cpb, searchDir);
       simplex.push(newSp);
@@ -38,6 +41,9 @@ namespace physics
       ffloat x = newSp.minkowskiPoint.dot(searchDir);
       if (x < ffzero)
       {
+        printf(">>>>>>Gjk exit 1 iterationCount:%d pt(%.3f %.3f %.3f) dir(%.3f %.3f %.3f) \n", 
+                iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
+                newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
         return false;
       }
       else
