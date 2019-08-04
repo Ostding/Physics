@@ -147,10 +147,14 @@ namespace physics
 				Vector3 edge1Normal = edge1.cross(triangleNormal);
 				Vector3 edge2Normal = triangleNormal.cross(edge2);
 
+				
+				//原点在三角形外bc边外侧
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
+					//原点在ac边外
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
+						//垂直ac的方向重新搜索
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						clear();
 						set(a, c); //return as [A,C]
@@ -159,8 +163,10 @@ namespace physics
 					}
 					else
 					{
+						//原点在靠近ab边外
 						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
+							//垂直ab的方向重新搜索
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); //return as [A,B]
@@ -169,6 +175,7 @@ namespace physics
 						}
 						else
 						{
+							//原点在bc边对面且在三角形外
 							searchDir = newPointToOrigin;
 							clear();
 							set(a); //return a point A
@@ -179,38 +186,47 @@ namespace physics
 				}
 				else
 				{
-					//If closer to the first edge normal
+					//原点在三角形外ab边外侧
 					if (edge1Normal.dot(newPointToOrigin) > ffzero)
 					{
-						//If new search direction should be along edge normal
+						//原点在靠近ab边外
 						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
+							//垂直ab边重新搜索
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); // Return it as [A, B]
-							printf(">>>3-3\n");
+							printf(">>>3-4\n");
 							return false;
 						}
 						else
 						{
+							//原点在bc边对面且在三角形外
 							searchDir = newPointToOrigin;
 							clear();
 							set(a);
+							printf(">>>3-5\n");
 							return false;
 						}
 					}
 					else
 					{
-						// Check if it is above the triangle
+						//a点是沿垂直bc边搜索到的，所以现在看原点是否在三角形上方还是下面
 						if (triangleNormal.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = triangleNormal;
+							printf(">>>3-6\n");
 							return false;
 						}
 						else
-						{
+						{ //原点在三角形下面
 							searchDir = -triangleNormal;
 							set(a, c, b);
+
+							edge1.inspect();
+							edge2.inspect();
+							triangleNormal.inspect();
+							printf(">>>3-7\n");
 							return false;
 						}
 					}
@@ -232,15 +248,13 @@ namespace physics
 				// Origin is in front of first face, simplex is correct already
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
-					ffloat x = face1Normal.dot(newPointToOrigin);
-					printf(">>>4-1 x:%.3f \n", x.to_d());
+					printf(">>>4-1 \n");
 					goto proc;
 				}
 				// Origin is in front of second face, simplex is set to this triangle [A, C, D]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
-					ffloat x = face2Normal.dot(newPointToOrigin);
-					printf(">>>4-2 x:%.3f \n", x.to_d());
+					printf(">>>4-2 \n");
 
 					clear();
 					set(a, c, d);
@@ -249,8 +263,7 @@ namespace physics
 				// Origin is in front of third face, simplex is set to this triangle [A, D, B]
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
-					ffloat x = face3Normal.dot(newPointToOrigin);
-					printf(">>>4-3 x:%.3f \n", x.to_d());
+					printf(">>>4-3 \n");
 
 					clear();
 					set(a, d, b);
@@ -268,6 +281,7 @@ namespace physics
 					// Origin is along the normal of edge1, set the simplex to that edge [A, B]
 					clear();
 					set(a, b);
+					printf(">>>4-4 \n");
 					return false;
 				}
 
@@ -278,9 +292,11 @@ namespace physics
 					// Origin is along the normal of edge2, set the simplex to that edge [A, C]
 					clear();
 					set(a, c);
+					printf(">>>4-5 \n");
 					return false;
 				}
 
+				printf(">>>4-6 \n");
 				searchDir = face1Normal;
 				// If reached here the origin is along the first face normal, set the simplex to this face [A, B, C]
 				clear();

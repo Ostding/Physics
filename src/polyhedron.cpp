@@ -206,11 +206,22 @@ namespace physics
     {
       int i = 0;
       Vector3 dirLocal = body->getDirectionInBodySpace(direction);
-      ffloat maxValue = pointsLocal[0].dot(dirLocal) * pointsLocal[0].squareMag();
+      ffloat maxValue;
       for (int j = 1; j < pointsLocal.size(); j++)
       {
         ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
-        if (maxValue < value)
+        if (value != ffzero)
+        {
+          i = j;
+          maxValue = value;
+          break;
+        }
+      }
+
+      for (int j = i; j < pointsLocal.size(); j++)
+      {
+        ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
+        if (maxValue < value && value != ffzero)
         {
           i = j;
           maxValue = value;
