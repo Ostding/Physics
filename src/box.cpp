@@ -108,60 +108,26 @@ namespace physics
     pointsWorld.emplace_back(Vector3::zero);
   }
 
-  // void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
-  // {
-  //   Vector3 dirLocal = body->getDirectionInBodySpace(direction);
-  //   if(dirLocal.x < ffzero)
-  //   {
-  //     pointLocal.x = -extents.x;
-  //   }  
-  //   else if (dirLocal.x == ffzero)
-  //   {
-  //     pointLocal.x = ffzero;
-  //   }
-  //   else
-  //   {
-  //     pointLocal.x = extents.x;
-  //   }
-
-  //   if (dirLocal.y < ffzero)
-  //   {
-  //     pointLocal.y = -extents.y;
-  //   }
-  //   else if (dirLocal.y == ffzero)
-  //   {
-  //     pointLocal.y = ffzero;
-  //   }
-  //   else
-  //   {
-  //     pointLocal.y = extents.y;
-  //   }
-
-  //   if (dirLocal.z < ffzero)
-  //   {
-  //     pointLocal.z = -extents.z;
-  //   }
-  //   else if (dirLocal.z == ffzero)
-  //   {
-  //     pointLocal.z = ffzero;
-  //   }
-  //   else
-  //   {
-  //     pointLocal.z = extents.z;
-  //   }
-    
-  //   pointWorld = body->getPosInWorldSpace(pointLocal);
-  // }
-
   void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
   {
     int i = 0;
     Vector3 dirLocal = body->getDirectionInBodySpace(direction);
-    ffloat maxValue = pointsLocal[0].dot(dirLocal) * pointsLocal[0].squareMag();
+    ffloat maxValue;
     for (int j = 1; j < pointsLocal.size(); j++)
     {
       ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
-      if (maxValue < value)
+      if (value != ffzero)
+      {
+        i = j;
+        maxValue = value;
+        break;
+      }
+    }
+
+    for (int j = i; j < pointsLocal.size(); j++)
+    {
+      ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
+      if (maxValue < value && value != ffzero)
       {
         i = j;
         maxValue = value;
@@ -170,7 +136,7 @@ namespace physics
     pointLocal = pointsLocal[i];
     pointWorld = pointsWorld[i];
   }
-  
+
   void Box::render()
   {
     Renderer::renderBox(this);
