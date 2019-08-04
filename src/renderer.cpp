@@ -169,6 +169,7 @@ namespace physics
 
   void Renderer::renderContactGenerator(ContactGenerator *p)
   {
+    return;
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 

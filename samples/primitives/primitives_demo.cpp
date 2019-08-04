@@ -185,7 +185,7 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
-void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
+void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Vector3 &angles)
 {
   Polyhedron::Points points;
   points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(-2)));
@@ -243,7 +243,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass)
   int angley = std::rand() % 180;
   int anglez = std::rand() % 180;
   // Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
-  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffzero, ffloat(90), ffzero));
+  Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
   world->addPrimitive( poly );
 }
@@ -329,11 +329,11 @@ void PrimitivesDemo::initTest()
 
   ffloat m5 = 2;
   Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
-  initOnePolyHedron(p5, m5);
+  initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
 
   ffloat m6 = 2;
   Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6);
+  initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
 
   // p6 = Vector3(ffloat(4), ffloat(15), ffzero);
   // initOnePolyHedron(p6, m6);

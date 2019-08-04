@@ -24,7 +24,7 @@ private:
   void initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass);
   void initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset);
   void initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass);
-  void initOnePolyHedron(const Vector3 &pos, ffloat mass);
+  void initOnePolyHedron(const Vector3 &pos, ffloat mass, const Vector3 &angles);
 
 private:
   bool simulate;

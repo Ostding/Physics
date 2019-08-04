@@ -158,7 +158,7 @@ namespace physics
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						clear();
 						set(a, c); //return as [A,C]
-						printf(">>>3-1\n");
+						// printf(">>>3-1\n");
 						return false;
 					}
 					else
@@ -170,7 +170,7 @@ namespace physics
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); //return as [A,B]
-							printf(">>>3-2\n");
+							// printf(">>>3-2\n");
 							return false;
 						}
 						else
@@ -179,7 +179,7 @@ namespace physics
 							searchDir = newPointToOrigin;
 							clear();
 							set(a); //return a point A
-							printf(">>>3-3\n");
+							// printf(">>>3-3\n");
 							return false;
 						}
 					}
@@ -196,7 +196,7 @@ namespace physics
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); // Return it as [A, B]
-							printf(">>>3-4\n");
+							// printf(">>>3-4\n");
 							return false;
 						}
 						else
@@ -205,7 +205,7 @@ namespace physics
 							searchDir = newPointToOrigin;
 							clear();
 							set(a);
-							printf(">>>3-5\n");
+							// printf(">>>3-5\n");
 							return false;
 						}
 					}
@@ -215,7 +215,7 @@ namespace physics
 						if (triangleNormal.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = triangleNormal;
-							printf(">>>3-6\n");
+							// printf(">>>3-6\n");
 							return false;
 						}
 						else
@@ -223,10 +223,10 @@ namespace physics
 							searchDir = -triangleNormal;
 							set(a, c, b);
 
-							edge1.inspect();
-							edge2.inspect();
-							triangleNormal.inspect();
-							printf(">>>3-7\n");
+							// edge1.inspect();
+							// edge2.inspect();
+							// triangleNormal.inspect();
+							// printf(">>>3-7\n");
 							return false;
 						}
 					}
@@ -248,14 +248,13 @@ namespace physics
 				// Origin is in front of first face, simplex is correct already
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
-					printf(">>>4-1 \n");
+					// printf(">>>4-1 \n");
 					goto proc;
 				}
 				// Origin is in front of second face, simplex is set to this triangle [A, C, D]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
-					printf(">>>4-2 \n");
-
+					// printf(">>>4-2 \n");
 					clear();
 					set(a, c, d);
 					goto proc;
@@ -263,8 +262,7 @@ namespace physics
 				// Origin is in front of third face, simplex is set to this triangle [A, D, B]
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
-					printf(">>>4-3 \n");
-
+					// printf(">>>4-3 \n");
 					clear();
 					set(a, d, b);
 					goto proc;
@@ -281,7 +279,7 @@ namespace physics
 					// Origin is along the normal of edge1, set the simplex to that edge [A, B]
 					clear();
 					set(a, b);
-					printf(">>>4-4 \n");
+					// printf(">>>4-4 \n");
 					return false;
 				}
 
@@ -292,11 +290,11 @@ namespace physics
 					// Origin is along the normal of edge2, set the simplex to that edge [A, C]
 					clear();
 					set(a, c);
-					printf(">>>4-5 \n");
+					// printf(">>>4-5 \n");
 					return false;
 				}
 
-				printf(">>>4-6 \n");
+				// printf(">>>4-6 \n");
 				searchDir = face1Normal;
 				// If reached here the origin is along the first face normal, set the simplex to this face [A, B, C]
 				clear();
