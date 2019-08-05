@@ -317,13 +317,13 @@ void PrimitivesDemo::initTest()
   // ffloat m2 = ffloat(10);
   // initOneSphere(r2, p2, m2);
 
-  Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffloat(3));
+  Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffzero);
   Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
   Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
   ffloat m3 = ffloat(10);
   initOneBox(p3, e3, a3, m3);
 
-  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffloat(3));
+  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
   Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
   Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
   ffloat m4 = ffloat(10);

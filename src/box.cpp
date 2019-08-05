@@ -156,5 +156,13 @@ namespace physics
   {
     Renderer::renderBox(this);
   }
+
+  void Box::getAllPoints(std::vector<Vector3> &points)
+  {
+    for(int i=0; i<pointsWorld.size(); i++)
+    {
+      points.push_back(pointsWorld[i]);
+    }
+  }
   
 }

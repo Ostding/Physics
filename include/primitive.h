@@ -48,6 +48,7 @@ namespace physics
     virtual void refreshAABB();
     virtual void render();
     virtual void updateTransform();
+    virtual void getAllPoints(std::vector<Vector3> &points);
     virtual void findFarthestPointInDirection(const Vector3 &dir, Vector3 &pointLocal, Vector3 &pointWorld);
     virtual Vector3 getPointInWorldSpace(const Vector3 &point);
     

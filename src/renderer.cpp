@@ -2,9 +2,92 @@
 #include "aabb.h"
 #include "body.h"
 #include "contact_generator.h"
-
+#include "gjk_epa.h"
+#include "simplex.h"
 namespace physics
 {
+  extern std::vector<SupportPoint> minkowskiPoints;
+  extern std::vector<Vector3> allMinkowskiPoints;
+  static void renderMinkowskiPoints()
+  {
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+    
+    glBegin(GL_LINES);
+    //search lines
+    if(minkowskiPoints.size()>1)
+    {
+      int count = minkowskiPoints.size();
+      for(int i = 1; i<count; i++)
+      {
+        float c = 1.0f/count * (i - 1);
+        glColor3f(c, 0, 0);
+        Vector3 pta = minkowskiPoints[i-1].minkowskiPoint;
+        Vector3 ptb = minkowskiPoints[i].minkowskiPoint;
+        glVertex3f(pta.x.to_d(), pta.y.to_d(), pta.z.to_d());
+        glVertex3f(ptb.x.to_d(), ptb.y.to_d(), ptb.z.to_d());
+      }
+    }
+    glEnd();
+
+    //axis
+    glBegin(GL_LINES);
+      //x
+      glColor3f(0.5, 0, 0);
+      glVertex3f(-50, 0, 0);
+      glVertex3f(0, 0, 0);
+
+      glColor3f(1, 0, 0);
+      glVertex3f(0, 0, 0);
+      glVertex3f(50, 0, 0);
+
+      //y
+      glColor3f(0, 0.5, 0);
+      glVertex3f(0, -50, 0);
+      glVertex3f(0, 0, 0);
+
+      glColor3f(0, 1, 0);
+      glVertex3f(0, 0, 0);
+      glVertex3f(0, 50, 0);
+
+      //z
+      glColor3f(0, 0, 0.5);
+      glVertex3f(0, 0, -50);
+      glVertex3f(0, 0, 0);
+
+      glColor3f(0, 0, 1);
+      glVertex3f(0, 0, 0);
+      glVertex3f(0, 0, 50);
+    glEnd();
+
+    
+    glEnable(GL_POINT_SMOOTH);
+    glPointSize(3);
+    glColor3f(1.0, 0, 0);
+    glBegin(GL_POINTS);
+      //Draw orignal point
+      glVertex3f(0,0,0);
+
+      //all points
+      if(allMinkowskiPoints.size() > 1)
+      {
+        int count = allMinkowskiPoints.size();
+        for(int i = 0; i<count; i++)
+        {
+          float c = 1.0f/count * (i - 1);
+          glColor3f(0, c, 0);
+          Vector3 pt = allMinkowskiPoints[i];
+          glVertex3f(pt.x.to_d(), pt.y.to_d(), pt.z.to_d());
+        }
+      }
+    glEnd();
+
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+  }
+
   void Renderer::setColor(float r, float g, float b)
   {
     GLfloat mat_ambient[]   = {0.8f,0.8f,0.8f,1.0f};
@@ -67,6 +150,15 @@ namespace physics
 
   void Renderer::renderPlane(Plane *p)
   {
+    glDisable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL); 
+    glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+
+    glEnable(GL_BLEND); 
+    glDisable(GL_DEPTH_TEST); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    glColor4f(0.6f, 0.6f, 0.6f, 0.6); 
+
     Vector3 _lb = Vector3(-p->extents.x, 0, -p->extents.z);
     Vector3 _lt = Vector3(-p->extents.x, 0, p->extents.z);
     Vector3 _rb = Vector3(p->extents.x, 0, -p->extents.z);
@@ -77,7 +169,6 @@ namespace physics
     _rb = p->body->getPosInWorldSpace(_rb);
     _rt = p->body->getPosInWorldSpace(_rt);
 
-		setColor(0.6f, 0.6f, 0.6f);
 	  glBegin(GL_TRIANGLE_STRIP);
 
     glVertex3f(_lt.x.to_d(), _lt.y.to_d(), _lt.z.to_d());
@@ -86,6 +177,12 @@ namespace physics
     glVertex3f(_rb.x.to_d(), _rb.y.to_d(), _rb.z.to_d());
 
 		glEnd();
+
+    glEnable(GL_DEPTH_TEST); 
+    glDisable(GL_BLEND); 
+
+    glDisable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
   }
 
   void Renderer::renderSphere(Sphere *p)
@@ -244,6 +341,8 @@ namespace physics
 
   void Renderer::renderContact(Contact *p)
   { 
+    renderMinkowskiPoints();
+
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 

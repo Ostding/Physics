@@ -3,10 +3,28 @@
 using namespace std;
 namespace physics
 {
+  std::vector<SupportPoint> minkowskiPoints;
+  std::vector<Vector3> allMinkowskiPoints;
+
   bool GjkEpa::generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData)
   {
-    Simplex simplex;
+    minkowskiPoints.clear();
+    allMinkowskiPoints.clear();
+    std::vector<Vector3> pointsA, pointsB;
+    cpa->getAllPoints(pointsA);
+    cpb->getAllPoints(pointsB);
+    for(int i = 0; i<pointsA.size(); i++)
+    {
+      for(int j=0; j<pointsB.size(); j++)
+      {
+        Vector3 p = pointsA[i] - pointsB[j];
+        allMinkowskiPoints.push_back(p);
+      }
+    }
 
+
+
+    Simplex simplex;
     Vector3 searchDir = Vector3::one;
     SupportPoint sp = SupportPoint::support(cpa, cpb, searchDir);
     if (searchDir.dot(sp.minkowskiPoint) >= sp.minkowskiPoint.mag() * ffloat(80000000LL)) //0.8
@@ -14,6 +32,9 @@ namespace physics
       searchDir = Vector3::dy;
       sp = SupportPoint::support(cpa, cpb, searchDir);
     }
+    
+    minkowskiPoints.push_back(sp);
+
     simplex.push(sp);
 
     searchDir = -searchDir;
@@ -38,11 +59,13 @@ namespace physics
       SupportPoint newSp = SupportPoint::support(cpa, cpb, searchDir);
       simplex.push(newSp);
 
+      minkowskiPoints.push_back(newSp);
+
       ffloat x = newSp.minkowskiPoint.dot(searchDir);
       if (x < ffzero)
       {
-        printf(">>>>>>Gjk exit 1 iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
-                iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
+        printf(">>>>>>Gjk exit 1 x:%.5f iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
+                x.to_d(), iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
                 newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
         return false;
       }

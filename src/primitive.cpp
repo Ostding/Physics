@@ -84,6 +84,11 @@ namespace physics
       pointWorld = Vector3::zero;
     }
 
+    void Primitive::getAllPoints(std::vector<Vector3> &points)
+    {
+
+    }
+
     Vector3 Primitive::getPointInWorldSpace(const Vector3 &point)
     {
       return body->getPosInWorldSpace(point);

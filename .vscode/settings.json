@@ -50,6 +50,11 @@
     "type_traits": "cpp",
     "typeinfo": "cpp",
     "utility": "cpp",
-    "list": "cpp"
+    "list": "cpp",
+    "__nullptr": "cpp",
+    "__string": "cpp",
+    "__threading_support": "cpp",
+    "sstream": "cpp",
+    "string_view": "cpp"
   }
 }
