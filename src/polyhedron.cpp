@@ -207,7 +207,7 @@ namespace physics
       int i = 0;
       Vector3 dirLocal = body->getDirectionInBodySpace(direction);
       ffloat maxValue;
-      for (int j = 1; j < pointsLocal.size(); j++)
+      for (int j = 0; j < pointsLocal.size(); j++)
       {
         ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
         if (value != ffzero)
@@ -218,7 +218,7 @@ namespace physics
         }
       }
 
-      for (int j = i; j < pointsLocal.size(); j++)
+      for (int j = i+1; j < pointsLocal.size(); j++)
       {
         ffloat value = pointsLocal[j].dot(dirLocal) * pointsLocal[j].squareMag();
         if (maxValue < value && value != ffzero)
@@ -229,6 +229,8 @@ namespace physics
       }
       pointLocal = pointsLocal[i];
       pointWorld = pointsWorld[i];
+
+      printf(">>find:%d \n", i);
     }
 
     void Polyhedron::render()

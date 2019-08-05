@@ -18,7 +18,8 @@ namespace physics
 
     Vector3 localPointA;
     Vector3 localPointB;
-    bool operator == (const SupportPoint & ref) { return minkowskiPoint == ref.minkowskiPoint; }
+
+    bool operator == (const SupportPoint & other) { return minkowskiPoint == other.minkowskiPoint; }
   
     static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
     {
@@ -26,8 +27,14 @@ namespace physics
       SupportPoint newSupportPoint;
 			pri1->findFarthestPointInDirection(direction, newSupportPoint.localPointA, newSupportPoint.worldPointA);
       pri2->findFarthestPointInDirection(-direction, newSupportPoint.localPointB, newSupportPoint.worldPointB);
-      
+			
       newSupportPoint.minkowskiPoint = newSupportPoint.worldPointA - newSupportPoint.worldPointB;
+
+			newSupportPoint.worldPointA.inspect("A");
+			newSupportPoint.worldPointB.inspect("B");
+			newSupportPoint.minkowskiPoint.inspect("M");
+      printf("\n ");
+
       return newSupportPoint;
     };
   };
@@ -117,25 +124,20 @@ namespace physics
 				ffloat u = ffzero;
 				ffloat v = ffzero;
 
+				//找到原点到直线最近的点
 				Vector3 origin = Vector3::zero;
 				Point closestPoint = line.closestPointOnLineFromPoint(origin, u, v);
-				if (v <= ffzero)
-				{
+				
+				//该点在a点外
+				if (v < ffzero)
 					set(a);
-					searchDir = -closestPoint.position;
-					return false;
-				}
-				else if (u <= ffzero)
-				{
+				//该点在b点外
+				else if (u < ffzero)
 					set(b);
-					searchDir = -closestPoint.position;
-					return false;
-				}
-				else
-				{
-					searchDir = -closestPoint.position;
-					return false;
-				}
+				//该点在ab线段上
+
+				searchDir = -closestPoint.position;
+				return false;
 			}
 			else if (size == 3)
 			{
@@ -148,17 +150,17 @@ namespace physics
 				Vector3 edge2Normal = triangleNormal.cross(edge2);
 
 				
-				//原点在三角形外bc边外侧
+				//原点在三角形外ac边外侧
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
-					//原点在ac边外
+					//原点在ac对面
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
 						//垂直ac的方向重新搜索
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						clear();
 						set(a, c); //return as [A,C]
-						// printf(">>>3-1\n");
+					 	printf(">>>3-1\n");
 						return false;
 					}
 					else
@@ -170,7 +172,7 @@ namespace physics
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); //return as [A,B]
-							// printf(">>>3-2\n");
+						 	printf(">>>3-2\n");
 							return false;
 						}
 						else
@@ -179,7 +181,7 @@ namespace physics
 							searchDir = newPointToOrigin;
 							clear();
 							set(a); //return a point A
-							// printf(">>>3-3\n");
+						 	printf(">>>3-3\n");
 							return false;
 						}
 					}
@@ -196,7 +198,7 @@ namespace physics
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); // Return it as [A, B]
-							// printf(">>>3-4\n");
+						 	printf(">>>3-4\n");
 							return false;
 						}
 						else
@@ -205,7 +207,7 @@ namespace physics
 							searchDir = newPointToOrigin;
 							clear();
 							set(a);
-							// printf(">>>3-5\n");
+						 	printf(">>>3-5\n");
 							return false;
 						}
 					}
@@ -215,7 +217,7 @@ namespace physics
 						if (triangleNormal.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = triangleNormal;
-							// printf(">>>3-6\n");
+						 	printf(">>>3-6\n");
 							return false;
 						}
 						else
@@ -223,10 +225,7 @@ namespace physics
 							searchDir = -triangleNormal;
 							set(a, c, b);
 
-							// edge1.inspect();
-							// edge2.inspect();
-							// triangleNormal.inspect();
-							// printf(">>>3-7\n");
+						 	printf(">>>3-7\n");
 							return false;
 						}
 					}
@@ -245,56 +244,62 @@ namespace physics
 				Vector3 newPointToOrigin = -a.minkowskiPoint;
 
 				static const ffloat tolerance = ffloat(10000LL); //0.01f
-				// Origin is in front of first face, simplex is correct already
+				//原点在面abc外 simplex设置为三角形[a,b,c]
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// printf(">>>4-1 \n");
+				 	printf(">>>4-1 \n");
 					goto proc;
 				}
-				// Origin is in front of second face, simplex is set to this triangle [A, C, D]
+				//原点在面acd外 simplex设置为三角形[a,c,d]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// printf(">>>4-2 \n");
+				 	printf(">>>4-2 \n");
 					clear();
 					set(a, c, d);
 					goto proc;
 				}
-				// Origin is in front of third face, simplex is set to this triangle [A, D, B]
+				//原点在面adb外 simplex设置为三角形[a,d,b]
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
-					// printf(">>>4-3 \n");
+				 	printf(">>>4-3 \n");
 					clear();
 					set(a, d, b);
 					goto proc;
 				}
-				// If reached here it means the simplex MUST contain the origin, intersection confirmed
+				
+				printf(">>>4-4 \n");
+				//原点在锥体内部
 				return true;
 
 			proc:
+				//注意这里simplex已经退化为三角形了
+				//下面要做的是判断原点是否在三角形正上方
+				edge1 = b.minkowskiPoint - a.minkowskiPoint;
+				edge2 = c.minkowskiPoint - a.minkowskiPoint;
+				face1Normal = edge1.cross(edge2);
+				newPointToOrigin = -a.minkowskiPoint;
 
 				Vector3 edge1Normal = edge1.cross(face1Normal);
 				if (edge1Normal.dot(newPointToOrigin) > ffzero)
-				{
+				{//原点不在三角形abc正上方，在ab边外侧，则设置simplex为 边[a,b]
 					searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
-					// Origin is along the normal of edge1, set the simplex to that edge [A, B]
 					clear();
 					set(a, b);
-					// printf(">>>4-4 \n");
+				 	printf(">>>4-4 \n");
 					return false;
 				}
 
 				Vector3 edge2Normal = face1Normal.cross(edge2);
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
-				{
+				{//原点不在三角形acd正上方，在ac边外侧，则设置simplex为 边[a,c]
 					searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
-					// Origin is along the normal of edge2, set the simplex to that edge [A, C]
 					clear();
 					set(a, c);
-					// printf(">>>4-5 \n");
+				 	printf(">>>4-5 \n");
 					return false;
 				}
 
-				// printf(">>>4-6 \n");
+			 	printf(">>>4-6 \n");
 				searchDir = face1Normal;
 				// If reached here the origin is along the first face normal, set the simplex to this face [A, B, C]
 				clear();

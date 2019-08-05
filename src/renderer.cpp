@@ -262,15 +262,16 @@ namespace physics
     glEnable(GL_DEPTH_TEST);
 
     //Contact normal
+    Vector3 n = p->contactNormal * ffabs(p->penetration);
     glColor3f(1, 1, 0);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_LINES);
       glVertex3f(p->contactPoint.x.to_d(), 
                 p->contactPoint.y.to_d(),
                 p->contactPoint.z.to_d());
-      glVertex3f(p->contactPoint.x.to_d() + p->contactNormal.x.to_d(),
-                p->contactPoint.y.to_d() + p->contactNormal.y.to_d(),
-                p->contactPoint.z.to_d() + p->contactNormal.z.to_d());
+      glVertex3f(p->contactPoint.x.to_d() + n.x.to_d(),
+                p->contactPoint.y.to_d() + n.y.to_d(),
+                p->contactPoint.z.to_d() + n.z.to_d());
     glEnd();
     glEnable(GL_DEPTH_TEST);
 

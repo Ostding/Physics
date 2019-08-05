@@ -28,12 +28,12 @@ namespace physics
         return false;
       }
 
-      static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
-      if (searchDir.squareMag() <= _MIN_SMAG_DIR)
-      {
-        printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
-        return false;
-      }
+      // static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
+      // if (searchDir.squareMag() <= _MIN_SMAG_DIR)
+      // {
+      //   printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
+      //   return false;
+      // }
 
       SupportPoint newSp = SupportPoint::support(cpa, cpb, searchDir);
       simplex.push(newSp);
@@ -41,7 +41,7 @@ namespace physics
       ffloat x = newSp.minkowskiPoint.dot(searchDir);
       if (x < ffzero)
       {
-        printf(">>>>>>Gjk exit 1 iterationCount:%d pt(%.3f %.3f %.3f) dir(%.3f %.3f %.3f) \n", 
+        printf(">>>>>>Gjk exit 1 iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
                 iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
                 newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
         return false;
@@ -146,12 +146,13 @@ namespace physics
     if (!suc)
       return false;
 
-    // If any of the barycentric coefficients have a magnitude greater than 1 or lesser than and equal to 0, then the origin is not within the triangular prism described by 'triangle'
+    // If any of the barycentric coefficients have a magnitude greater than 1 or lesser than and equal to 0, 
+    // then the origin is not within the triangular prism described by 'triangle'
     // thus, there is no collision here, return false
     if (ffabs(bary_u) > ffone || ffabs(bary_v) > ffone || ffabs(bary_w) > ffone)
       return false;
 
-    //distanceFromOrigin = distanceFromOrigin * aClosestFace->Points[0].MinkowskiPoint.magnitude();
+    // distanceFromOrigin = distanceFromOrigin * aClosestFace->points[0].minkowskiPoint.mag();
     // A Contact points
     Vector3 supportLocal1 = aClosestFace->points[0].localPointA;
     Vector3 supportLocal2 = aClosestFace->points[1].localPointA;
@@ -166,6 +167,8 @@ namespace physics
     contact->penetration = distanceFromOrigin;
     contact->contactNormal = normal;
     contact->contactPoint = contactPoint;
+
+    printf(">>>pen:%.3f\n", distanceFromOrigin.to_d());
 
     contact->setBodyData(cpa->body, cpb->body, cData->friction, cData->restitution);
     cData->addContacts(1);

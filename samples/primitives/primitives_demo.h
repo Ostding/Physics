@@ -23,7 +23,7 @@ private:
   void initTest();
   void initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass);
   void initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset);
-  void initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass);
+  void initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, ffloat mass);
   void initOnePolyHedron(const Vector3 &pos, ffloat mass, const Vector3 &angles);
 
 private:

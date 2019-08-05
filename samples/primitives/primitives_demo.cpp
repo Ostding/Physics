@@ -248,7 +248,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   world->addPrimitive( poly );
 }
 
-void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, ffloat mass)
+void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, ffloat mass)
 {
   Box *box = new Box(extents);
   box->body->setLinearDamp(ffloat(0.95f));
@@ -269,7 +269,7 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, fflo
   box->body->setAwake();
 
   box->setPosition(pos);
-  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffzero, ffzero, ffloat(45)));
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(angles.x, angles.y, angles.z));
   box->setOrientation(q);
   world->addPrimitive( box );
 }
@@ -317,23 +317,25 @@ void PrimitivesDemo::initTest()
   // ffloat m2 = ffloat(10);
   // initOneSphere(r2, p2, m2);
 
-  // Vector3 p3 = Vector3(ffloat(3), ffloat(20), ffzero);
-  // Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  // ffloat m3 = ffloat(10);
-  // initOneBox(p3, e3, m3);
+  Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffloat(3));
+  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
+  ffloat m3 = ffloat(10);
+  initOneBox(p3, e3, a3, m3);
 
-  // Vector3 p4 = Vector3(ffloat(5), ffloat(25), ffzero);
-  // Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  // ffloat m4 = ffloat(10);
-  // initOneBox(p4, e4, m4);
+  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffloat(3));
+  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
+  ffloat m4 = ffloat(10);
+  initOneBox(p4, e4, a4, m4);
 
-  ffloat m5 = 2;
-  Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
-  initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
+  // ffloat m5 = 2;
+  // Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
+  // initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
 
-  ffloat m6 = 2;
-  Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
+  // ffloat m6 = 2;
+  // Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
 
   // p6 = Vector3(ffloat(4), ffloat(15), ffzero);
   // initOnePolyHedron(p6, m6);
