@@ -45,7 +45,9 @@ namespace physics
     //Find closest planar
     ffloat distMax = ffzero;
     Vector3 normal;
-    Vector3 triangleP0, triangleP1, triangleP2;
+    Vector3 triangleP0;
+    Vector3 triangleP1;
+    Vector3 triangleP2;
 
     unsigned triangleCount = poly.indices.size() / 3;
     for(unsigned i=0; i< triangleCount; i++)
@@ -82,7 +84,7 @@ namespace physics
     
     Vector3 v = posSphere - triangleP0;
     ffloat dist = v.dot(normal);
-    Vector3 ptInPlanar = posSphere - normal.scale(dist);
+    Vector3 ptInPlanar = posSphere - normal*dist;
     bool inTriangle = Utils::pointInTriangle(ptInPlanar, triangleP0, triangleP1, triangleP2);
     if(inTriangle)
     {
@@ -104,19 +106,19 @@ namespace physics
     //Find the edge whose distance to the projection point is the smallest 
     Vector3 projectPt, closestPt; 
     Utils::pointProjectionToSegment(ptInPlanar, triangleP0, triangleP1, projectPt, dist);
-    distMax = dist;
+    ffloat distMin = dist;
     closestPt = projectPt;
 
     Utils::pointProjectionToSegment(ptInPlanar, triangleP1, triangleP2, projectPt, dist);
-    if(dist < distMax)
+    if(dist < distMin)
     {
-      distMax = dist;
+      distMin = dist;
       closestPt = projectPt;
     }
     Utils::pointProjectionToSegment(ptInPlanar, triangleP2, triangleP0, projectPt, dist);
-    if(dist < distMax)
+    if(dist < distMin)
     {
-      distMax = dist;
+      distMin = dist;
       closestPt = projectPt;
     }
 
