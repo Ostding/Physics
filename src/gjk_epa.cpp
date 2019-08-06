@@ -31,7 +31,7 @@ namespace physics
     Simplex simplex;
     Vector3 searchDir = Vector3::one;
     SupportPoint sp = SupportPoint::support(cpa, cpb, searchDir);
-    if (searchDir.dot(sp.minkowskiPoint) >= sp.minkowskiPoint.mag() * ffloat(80000000LL)) //0.8
+    if (searchDir.dot(sp.minkowskiPoint) >= sp.minkowskiPoint.mag() * ffloat(0.8f))
     {
       searchDir = Vector3::dy;
       sp = SupportPoint::support(cpa, cpb, searchDir);
@@ -53,7 +53,7 @@ namespace physics
         return false;
       }
 
-      static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
+      static ffloat _MIN_SMAG_DIR = ffloat(0.0001f);
       if (searchDir.squareMag() <= _MIN_SMAG_DIR)
       {
         // printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
@@ -89,7 +89,7 @@ namespace physics
 
   bool GjkEpa::epaContactDetection(Simplex & aSimplex, Primitive * cpa, Primitive * cpb, CollisionData * cData)
   {
-    const ffloat exitThreshold = ffloat(10000000LL);//0.1f
+    const ffloat exitThreshold = ffloat(0.1f);
     const unsigned iterationMax = 32;
     unsigned iterationCount = 0;
 

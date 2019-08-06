@@ -10,7 +10,8 @@ namespace physics
 	typedef long long 	        int64;
 	typedef unsigned long long 	uint64;
 
-	#define enlarge 100000000LL
+	#define enlarge 	1000000LL
+	#define den001 		1000 //0.001
 	#define ficast(v) 	((int64)v * enlarge)
 	#define ffcast(v)		((int64)((double)v * enlarge))
 	#define fdcast(v)	((double)v / enlarge)
@@ -85,7 +86,7 @@ namespace physics
 			static char ret[32];
 			memset(ret, 0, 32);
 			double v = fdcast(value);
-			sprintf(ret, "%.8f", v);
+			sprintf(ret, "%.6f", v);
 			return ret;
 		}
 
@@ -214,7 +215,7 @@ namespace physics
 			// double f = v.to_d();
 			// return std::sin(f);
 
-			int64 i = std::fmod(v.value/100000, 6283);
+			int64 i = std::fmod(v.value/den001, 6283);
 			if(i < 0) i += 6283;
 			return sin_table[i];
 		}
@@ -225,7 +226,7 @@ namespace physics
 			// double f = v.to_d();
 			// return std::cos(f);
 
-			int64 i = std::fmod(v.value/100000, 6283);
+			int64 i = std::fmod(v.value/den001, 6283);
 			if(i < 0) i += 6283;
 			return cos_table[i];
 		}
@@ -253,11 +254,11 @@ namespace physics
 			if(v > FixedFloat::one || v < -FixedFloat::one)
 				return 0;
 			
-			int64 i = std::fmod(v.value/100000, 2001);
+			int64 i = std::fmod(v.value/den001, 2001);
 			return acos_table[i+1000];
 		}
 
-		static FixedFloat atan(const FixedFloat &v) { return atan2(v, 100000000LL); }
+		static FixedFloat atan(const FixedFloat &v) { return atan2(v, enlarge); }
 
 		static FixedFloat atan2(const FixedFloat &y, const FixedFloat &x)
 		{

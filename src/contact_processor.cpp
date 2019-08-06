@@ -54,9 +54,7 @@ namespace physics
     adjustVelocities(contacts, numContacts, deltaTime);
   }
 
-  void ContactProcessor::prepareContacts(Contact* contacts,
-                                      unsigned numContacts,
-                                      ffloat deltaTime)
+  void ContactProcessor::prepareContacts(Contact* contacts, unsigned numContacts, ffloat deltaTime)
   {
     Contact* lastContact = contacts + numContacts;
     for(Contact* contact=contacts; contact < lastContact; contact++)

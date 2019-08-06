@@ -220,7 +220,7 @@ namespace physics
 
 				Vector3 newPointToOrigin = -a.minkowskiPoint;
 
-				static const ffloat tolerance = ffloat(10000LL); //0.01f
+				static const ffloat tolerance = ffloat(0.05f);
 				//原点在面abc外 simplex设置为三角形[a,b,c]
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{

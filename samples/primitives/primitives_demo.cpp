@@ -255,7 +255,7 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, cons
 	box->body->setAngularDamp(ffloat(0.2f));
 
   Vector3 squares = extents.product(extents);
-  ffloat f3 = ffone / ffloat(enlarge * 12LL);
+  ffloat f3 = ffone / ffloat(12);
   ffloat yz = mass * (squares.y + squares.z);
   ffloat xz = mass * (squares.x + squares.z);
   ffloat xy = mass * (squares.x + squares.y);
@@ -281,7 +281,7 @@ void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mas
   sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.2f));
 
-  ffloat coeff = ffloat(40000LL) * mass * radius * radius;
+  ffloat coeff = ffloat(0.4f) * mass * radius * radius;
   Matrix3 tensor;
   tensor.setDiagonal(coeff, coeff, coeff);
   sphere->body->setInertiaTensor(tensor);

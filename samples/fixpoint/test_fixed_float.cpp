@@ -212,11 +212,11 @@ void TestFixedFloat::doTest()
   //   printf("%lld,\n", sv.value);
   // }
 
-  // for(double r = -1.0; r <= 1.0 ; r += 0.001)
-  // {
-  //    FixedFloat sv = FixedFloat::acos(FixedFloat(r));
-  //    myPrintf("%lld,\n", sv.value);
-  // }
+  for(double r = -1.0; r <= 1.0 ; r += 0.001)
+  {
+     FixedFloat sv = FixedFloat::acos(FixedFloat(r));
+     myPrintf("%lld,\n", sv.value);
+  }
 
 }
 

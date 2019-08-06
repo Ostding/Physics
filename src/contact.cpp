@@ -4,7 +4,7 @@
 namespace physics
 {
 
-  ffloat Contact::minRestituteVelocity = ffloat(25000000LL);
+  ffloat Contact::minRestituteVelocity = ffloat(0.25f);
   ffloat Contact::maxAngularMove = ffloat(100);
 
   void Contact::setBodyData(RigidBody *a, RigidBody *b, ffloat friction, ffloat restitution)

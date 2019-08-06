@@ -30,10 +30,10 @@ namespace physics
                                             Vector3 &massCenter, Matrix3 &inertiaTensor)
     {
       //{1/6,1/24,1/24,1/24,1/60,1/60,1/60,1/120,1/120,1/120}
-      const ffloat mult[10] = {ffloat(16666667LL),
-                              ffloat(4166666LL),ffloat(4166666LL),ffloat(4166666LL),
-                              ffloat(1666666LL),ffloat(1666666LL),ffloat(1666666LL),
-                              ffloat(833333LL),ffloat(833333LL),ffloat(833333LL)};
+      const ffloat mult[10] = {ffloat(166667LL),
+                              ffloat(41667LL),ffloat(41667LL),ffloat(41667LL),
+                              ffloat(16667LL),ffloat(16667LL),ffloat(16667LL),
+                              ffloat(8333LL),ffloat(8333LL),ffloat(8333LL)};
       // order: 1, x, y, z, x^2, y^2, z^2, xy, yz, zx
       ffloat intg[10] = {ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero, ffzero} ; 
       unsigned triangleCount = indices.size() / 3;
