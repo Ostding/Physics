@@ -7,7 +7,7 @@ Fixed float based physics
 devices [to check the result, plz move to benchmark.txt]  
 .Basic types build from fixed float, such as vector3 quaternion matrix3x3 matrix4x4 has already been added  
 .An application of physic world framework testing  
-![image](https://github.com/Ostding/Physics/blob/master/images/demo.png)
+![image](https://github.com/Ostding/Physics/blob/master/images/demo.png)  
 .Add basic primitives, such as sphere cube convex polyhedron  
 .Add octree for optimize  
 
