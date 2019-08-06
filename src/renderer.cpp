@@ -6,6 +6,7 @@
 #include "simplex.h"
 namespace physics
 {
+#ifdef DEBUG_GJKEPA
   extern std::vector<SupportPoint> minkowskiPoints;
   extern std::vector<Vector3> allMinkowskiPoints;
   static void renderMinkowskiPoints()
@@ -25,6 +26,14 @@ namespace physics
         glColor3f(c, 0, 0);
         Vector3 pta = minkowskiPoints[i-1].minkowskiPoint;
         Vector3 ptb = minkowskiPoints[i].minkowskiPoint;
+        glVertex3f(pta.x.to_d(), pta.y.to_d(), pta.z.to_d());
+        glVertex3f(ptb.x.to_d(), ptb.y.to_d(), ptb.z.to_d());
+      }
+
+      if(count > 3)
+      {
+        Vector3 pta = minkowskiPoints[count-2].minkowskiPoint;
+        Vector3 ptb = minkowskiPoints[count-4].minkowskiPoint;
         glVertex3f(pta.x.to_d(), pta.y.to_d(), pta.z.to_d());
         glVertex3f(ptb.x.to_d(), ptb.y.to_d(), ptb.z.to_d());
       }
@@ -87,6 +96,7 @@ namespace physics
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 
   }
+#endif
 
   void Renderer::setColor(float r, float g, float b)
   {
@@ -154,10 +164,11 @@ namespace physics
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 
 
-    glEnable(GL_BLEND); 
-    glDisable(GL_DEPTH_TEST); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glColor4f(0.6f, 0.6f, 0.6f, 0.6); 
+    // glEnable(GL_BLEND); 
+    // glDisable(GL_DEPTH_TEST); 
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    // glColor4f(0.6f, 0.6f, 0.6f, 0.6); 
+    glColor3f(0.6f, 0.6f, 0.6f); 
 
     Vector3 _lb = Vector3(-p->extents.x, 0, -p->extents.z);
     Vector3 _lt = Vector3(-p->extents.x, 0, p->extents.z);
@@ -178,8 +189,8 @@ namespace physics
 
 		glEnd();
 
-    glEnable(GL_DEPTH_TEST); 
-    glDisable(GL_BLEND); 
+    // glEnable(GL_DEPTH_TEST); 
+    // glDisable(GL_BLEND); 
 
     glDisable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHTING);
@@ -341,8 +352,9 @@ namespace physics
 
   void Renderer::renderContact(Contact *p)
   { 
+#ifdef DEBUG_GJKEPA
     renderMinkowskiPoints();
-
+#endif
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 
@@ -361,7 +373,7 @@ namespace physics
     glEnable(GL_DEPTH_TEST);
 
     //Contact normal
-    Vector3 n = p->contactNormal * ffabs(p->penetration);
+    Vector3 n = p->contactNormal;// * ffabs(p->penetration);
     glColor3f(1, 1, 0);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_LINES);

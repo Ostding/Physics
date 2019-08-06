@@ -3,11 +3,15 @@
 using namespace std;
 namespace physics
 {
+#ifdef DEBUG_GJKEPA
   std::vector<SupportPoint> minkowskiPoints;
   std::vector<Vector3> allMinkowskiPoints;
+#endif
 
   bool GjkEpa::generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData)
   {
+
+#ifdef DEBUG_GJKEPA
     minkowskiPoints.clear();
     allMinkowskiPoints.clear();
     std::vector<Vector3> pointsA, pointsB;
@@ -21,7 +25,7 @@ namespace physics
         allMinkowskiPoints.push_back(p);
       }
     }
-
+#endif
 
 
     Simplex simplex;
@@ -32,9 +36,9 @@ namespace physics
       searchDir = Vector3::dy;
       sp = SupportPoint::support(cpa, cpb, searchDir);
     }
-    
+#ifdef DEBUG_GJKEPA
     minkowskiPoints.push_back(sp);
-
+#endif
     simplex.push(sp);
 
     searchDir = -searchDir;
@@ -45,35 +49,37 @@ namespace physics
     {
       if (iterationCount++ >= iterationMax)
       {
-        printf(">>>>>>Gjk max count:%d \n", iterationCount);
+        // printf(">>>>>>Gjk max count:%d \n", iterationCount);
         return false;
       }
 
-      // static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
-      // if (searchDir.squareMag() <= _MIN_SMAG_DIR)
-      // {
-      //   printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
-      //   return false;
-      // }
+      static ffloat _MIN_SMAG_DIR = ffloat(10000LL); //0.0001f
+      if (searchDir.squareMag() <= _MIN_SMAG_DIR)
+      {
+        // printf(">>>>>>Gjk exit 2 iterationCount:%d\n", iterationCount);
+        return false;
+      }
 
       SupportPoint newSp = SupportPoint::support(cpa, cpb, searchDir);
       simplex.push(newSp);
 
+#ifdef DEBUG_GJKEPA
       minkowskiPoints.push_back(newSp);
+#endif
 
       ffloat x = newSp.minkowskiPoint.dot(searchDir);
-      if (x < ffzero)
+      if (x < ffzero )
       {
-        printf(">>>>>>Gjk exit 1 x:%.5f iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
-                x.to_d(), iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
-                newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
+        // printf(">>>>>>Gjk exit 1 x:%.5f iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
+        //       x.to_d(), iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
+        //       newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
         return false;
       }
       else
       {
         if (simplex.isContainOrigin(searchDir))
         {
-          printf(">>>>>>Gjk iteration count:%d \n", iterationCount);
+          // printf(">>>>>>Gjk iteration count:%d \n", iterationCount);
           // Run contact detection when collision is detected
           return epaContactDetection(simplex, cpa, cpb, cData);
         }

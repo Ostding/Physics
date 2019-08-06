@@ -110,37 +110,12 @@ namespace physics
 
   void Box::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
   {
-    // int i = 0;
-    // ffloat maxValue;
-    // for (int j = 0; j < pointsWorld.size(); j++)
-    // {
-    //   ffloat value = pointsWorld[j].dot(direction) * pointsWorld[j].squareMag();
-    //   if (value != ffzero)
-    //   {
-    //     i = j;
-    //     maxValue = value;
-    //     break;
-    //   }
-    // }
-
-    // for (int j = i + 1; j < pointsWorld.size(); j++)
-    // {
-    //   ffloat value = pointsWorld[j].dot(direction) * pointsWorld[j].squareMag();
-    //   if (maxValue < value && value != ffzero)
-    //   {
-    //     i = j;
-    //     maxValue = value;
-    //   }
-    // }
-    // pointLocal = pointsLocal[i];
-    // pointWorld = pointsWorld[i];
-
     int i = 0;
-    ffloat maxValue = pointsWorld[0].dot(direction) * pointsWorld[0].squareMag();
+    ffloat maxValue = pointsWorld[0].dot(direction);
     
     for (int j = 1; j < pointsWorld.size(); j++)
     {
-      ffloat value = pointsWorld[j].dot(direction) * pointsWorld[j].squareMag();
+      ffloat value = pointsWorld[j].dot(direction);
       if (maxValue < value)
       {
         i = j;
@@ -149,7 +124,6 @@ namespace physics
     }
     pointLocal = pointsLocal[i];
     pointWorld = pointsWorld[i];
-    printf("find:%d \n", i);
   }
 
   void Box::render()

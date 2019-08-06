@@ -4,6 +4,7 @@
 #include "types.h"
 #include "matrix4.h"
 #include "aabb.h"
+#include <vector>
 
 namespace physics
 {
