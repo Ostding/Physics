@@ -47,6 +47,12 @@ namespace physics
 
       void generateContacts(CollisionData *cData);
 
+      Vector3 _triangleP0;
+      Vector3 _triangleP1;
+      Vector3 _triangleP2;
+      Vector3 _contactPoint;
+      Vector3 _contactNormal;
+      
     private:
       void generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
       void fillContactCeofficient(Primitive *cpa, Primitive *cpb, CollisionData *cData);
@@ -65,6 +71,7 @@ namespace physics
       unsigned genPolyhedronAndSphere( Polyhedron &poly, Sphere &sphere, CollisionData *cData);
       unsigned genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData);
       unsigned genPolyhedronAndPolyhedron( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData);
+
 
       //capsule
       // unsigned genCapsuleAndPlane( Capsule &capsule, Plane &plane, CollisionData *cData);

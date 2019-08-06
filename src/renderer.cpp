@@ -278,14 +278,41 @@ namespace physics
   void Renderer::renderContactGenerator(ContactGenerator *p)
   {
     return;
+
     glDisable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL); 
     glColorMaterial(GL_FRONT,GL_DIFFUSE); 
 
-    glEnable(GL_BLEND); 
-    glDisable(GL_DEPTH_TEST); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-    glColor4f(1.0f, 0.0f, 0.0f, 0.1); 
+    //Contact normal
+    // Vector3 n = p->_contactNormal;
+    // glColor3f(1, 1, 0);
+    // glDisable(GL_DEPTH_TEST);
+    // glBegin(GL_LINES);
+    //   glVertex3f(p->_triangleP0.x.to_d(), p->_triangleP0.y.to_d(), p->_triangleP0.z.to_d());
+    //   glVertex3f(p->_triangleP0.x.to_d() + n.x.to_d(), 
+    //               p->_triangleP0.y.to_d() + n.y.to_d(), 
+    //               p->_triangleP0.z.to_d() + n.z.to_d());
+    // glEnd();
+    // glEnable(GL_DEPTH_TEST);
+
+    // glDisable(GL_COLOR_MATERIAL);
+    // glEnable(GL_LIGHTING);
+
+    // glDisable(GL_LIGHTING);
+    // glEnable(GL_COLOR_MATERIAL); 
+    // glColorMaterial(GL_FRONT,GL_DIFFUSE); 
+
+    // glEnable(GL_BLEND); 
+    // glDisable(GL_DEPTH_TEST); 
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    // glColor4f(1.0f, 0.0f, 0.0f, 0.1); 
+
+    //  glBegin(GL_TRIANGLES);
+    //   glVertex3f(p->_triangleP0.x.to_d(), p->_triangleP0.y.to_d(), p->_triangleP0.z.to_d());
+    //   glVertex3f(p->_triangleP1.x.to_d(), p->_triangleP1.y.to_d(), p->_triangleP1.z.to_d());
+    //   glVertex3f(p->_triangleP2.x.to_d(), p->_triangleP2.y.to_d(), p->_triangleP2.z.to_d());
+    //  glEnd();
+
 
     OCTreeNode::PotentialContacts::iterator it = p->curPotentialContacts.begin();
     for( ; it < p->curPotentialContacts.end(); it++)

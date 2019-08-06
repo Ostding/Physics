@@ -210,12 +210,12 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   indices.emplace_back(10); indices.emplace_back(0); indices.emplace_back(11);
   indices.emplace_back(11); indices.emplace_back(0); indices.emplace_back(1);
 
-  indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(13);
-  indices.emplace_back(2); indices.emplace_back(4); indices.emplace_back(13);
-  indices.emplace_back(4); indices.emplace_back(6); indices.emplace_back(13);
-  indices.emplace_back(6); indices.emplace_back(8); indices.emplace_back(13);
-  indices.emplace_back(8); indices.emplace_back(10); indices.emplace_back(13);
-  indices.emplace_back(10); indices.emplace_back(0); indices.emplace_back(13);
+  indices.emplace_back(0); indices.emplace_back(13); indices.emplace_back(2);
+  indices.emplace_back(2); indices.emplace_back(13); indices.emplace_back(4);
+  indices.emplace_back(4); indices.emplace_back(13); indices.emplace_back(6);
+  indices.emplace_back(6); indices.emplace_back(13); indices.emplace_back(8);
+  indices.emplace_back(8); indices.emplace_back(13); indices.emplace_back(10);
+  indices.emplace_back(10); indices.emplace_back(13); indices.emplace_back(0);
   indices.emplace_back(1); indices.emplace_back(3); indices.emplace_back(12);
   indices.emplace_back(3); indices.emplace_back(5); indices.emplace_back(12);
   indices.emplace_back(5); indices.emplace_back(7); indices.emplace_back(12);
@@ -307,44 +307,44 @@ void PrimitivesDemo::initTest()
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
 
-  // Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
-  // ffloat r1 = ffloat(3);
-  // ffloat m1 = ffloat(10);
-  // initOneSphere(r1, p1, m1);
+  Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
+  ffloat r1 = ffloat(3);
+  ffloat m1 = ffloat(10);
+  initOneSphere(r1, p1, m1);
 
   Vector3 p2 = Vector3(ffzero, ffloat(20), ffzero);
   ffloat r2 = ffloat(5);
   ffloat m2 = ffloat(10);
   initOneSphere(r2, p2, m2);
 
-  // Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffzero);
-  // Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  // Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
-  // ffloat m3 = ffloat(10);
-  // initOneBox(p3, e3, a3, m3);
+  Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffzero);
+  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
+  ffloat m3 = ffloat(10);
+  initOneBox(p3, e3, a3, m3);
 
-  // Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
-  // Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  // Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
-  // ffloat m4 = ffloat(10);
-  // initOneBox(p4, e4, a4, m4);
+  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
+  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
+  ffloat m4 = ffloat(10);
+  initOneBox(p4, e4, a4, m4);
 
-  // ffloat m5 = 2;
-  // Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
-  // initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
+  ffloat m5 = 2;
+  Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
+  initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
 
   ffloat m6 = 2;
   Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
-  // initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
+  initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
 
-  // p6 = Vector3(ffloat(4), ffloat(15), ffzero);
-  // initOnePolyHedron(p6, m6, Vector3(ffloat(45), ffloat(80), ffloat(45)));
-  // p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
-  // initOnePolyHedron(p6, m6, Vector3(ffloat(-45), ffloat(70), ffloat(45)));
+  p6 = Vector3(ffloat(4), ffloat(15), ffzero);
+  initOnePolyHedron(p6, m6, Vector3(ffloat(45), ffloat(80), ffloat(45)));
+  p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
+  initOnePolyHedron(p6, m6, Vector3(ffloat(-45), ffloat(70), ffloat(45)));
   p6 = Vector3(ffzero, ffloat(10), ffloat(4));
   initOnePolyHedron(p6, m6, Vector3(ffloat(90), ffloat(60), ffloat(30)));
-  // p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
-  // initOnePolyHedron(p6, m6, Vector3(ffloat(60), ffloat(50), ffloat(35)));
+  p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
+  initOnePolyHedron(p6, m6, Vector3(ffloat(60), ffloat(50), ffloat(35)));
 
   world->prepare();
   started = true;
