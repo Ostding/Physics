@@ -3,7 +3,7 @@
 #include "physics.h"
 
 static const double pi = 3.1416;
-static float stepTime = 0.015f;
+static float stepTime = 0.01f;
 static ffloat deltaTime = ffloat(stepTime);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
