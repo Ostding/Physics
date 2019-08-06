@@ -46,6 +46,7 @@ namespace physics
     ffloat distMax = ffzero;
     Vector3 normal;
     
+    //Some triangles in one planar
     std::vector<Vector3> triangleP0;
     std::vector<Vector3> triangleP1;
     std::vector<Vector3> triangleP2;
@@ -66,6 +67,8 @@ namespace physics
       Vector3 n = da.cross(db);
       n.normalise();
       ffloat d = n.dot(dir);
+      //Just calculate face towards sphere
+      if(d < 0) continue;
 
       if(i == 0)
       {
@@ -110,7 +113,7 @@ namespace physics
 
     Vector3 closestPt; 
     ffloat distMin;
-    int index;
+    // int index;
     for(int i=0; i< triangleP0.size(); i ++)
     {
       Vector3 p0 = triangleP0[i];
@@ -143,7 +146,7 @@ namespace physics
       Utils::pointProjectionToSegment(ptInPlanar, p0, p1, projectPt, dist);
       if(i == 0)
       {
-        index = i;
+        // index = i;
         distMin = dist;
         closestPt = projectPt;
       }  
@@ -151,7 +154,7 @@ namespace physics
       {
         if(dist < distMin)
         {
-          index = i;
+          // index = i;
           distMin = dist;
           closestPt = projectPt;
         }
@@ -160,7 +163,7 @@ namespace physics
       Utils::pointProjectionToSegment(ptInPlanar, p1, p2, projectPt, dist);
       if(dist < distMin)
       {
-        index = i;
+        // index = i;
         distMin = dist;
         closestPt = projectPt;
       }
