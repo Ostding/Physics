@@ -3,7 +3,8 @@
 #include "physics.h"
 
 static const double pi = 3.1416;
-static ffloat deltaTime = ffloat(0.01f);
+static float stepTime = 0.015f;
+static ffloat deltaTime = ffloat(stepTime);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
 {
@@ -177,7 +178,7 @@ void PrimitivesDemo::render()
 void PrimitivesDemo::onUpdate()
 {
   double elapse = calcDuration();
-  if(elapse >= 0.01f) 
+  if(elapse >= stepTime) 
   {
     updateTime(elapse);
     if(simulate)
@@ -228,7 +229,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   poly->setPoints(points, indices);
 
   poly->body->setLinearDamp(ffloat(0.95f));
-	poly->body->setAngularDamp(ffloat(0.2f));
+	poly->body->setAngularDamp(ffloat(0.8f));
   
   Matrix3 tensor;
   poly->getInertiaTensor( mass, tensor);
@@ -242,8 +243,8 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   int anglex = std::rand() % 180;
   int angley = std::rand() % 180;
   int anglez = std::rand() % 180;
-  // Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
-  Quaternion q = Quaternion::fromEulerAngles(angles);
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
+  // Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
   world->addPrimitive( poly );
 }
@@ -252,7 +253,7 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, cons
 {
   Box *box = new Box(extents);
   box->body->setLinearDamp(ffloat(0.95f));
-	box->body->setAngularDamp(ffloat(0.2f));
+	box->body->setAngularDamp(ffloat(0.8f));
 
   Vector3 squares = extents.product(extents);
   ffloat f3 = ffone / ffloat(12);
@@ -279,7 +280,7 @@ void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mas
   Sphere * sphere = new Sphere(radius);
 
   sphere->body->setLinearDamp(ffloat(0.95f));
-	sphere->body->setAngularDamp(ffloat(0.2f));
+	sphere->body->setAngularDamp(ffloat(0.8f));
 
   ffloat coeff = ffloat(0.4f) * mass * radius * radius;
   Matrix3 tensor;

@@ -127,7 +127,7 @@ namespace physics
       // assume we have found the closest triangle on the Minkowski Hull to the origin
       if ((closestFace->faceNormal.dot(newPolytopePoint.minkowskiPoint) - minimumDistance) < exitThreshold)
       {
-        printf(">>>>>>Epa iteration count:%d \n", iterationCount);
+        // printf(">>>>>>Epa iteration count:%d \n", iterationCount);
         return extrapolateContactInformation(&(*closestFace), cpa, cpb, cData);
       }
 
@@ -197,7 +197,7 @@ namespace physics
     contact->contactNormal = normal;
     contact->contactPoint = contactPoint;
 
-    printf(">>>pen:%.3f\n", distanceFromOrigin.to_d());
+    // printf(">>>pen:%.3f\n", distanceFromOrigin.to_d());
 
     contact->setBodyData(cpa->body, cpb->body, cData->friction, cData->restitution);
     cData->addContacts(1);
