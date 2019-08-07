@@ -14,13 +14,14 @@ namespace physics
     body = new RigidBody(this);
   }
 
-  Capsule::Capsule(const Vector3 &pointA, const Vector3 &pointB, ffloat radius)
+  Capsule::Capsule(ffloat halfHeight, ffloat radius)
   :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
-  ,pointA(pointA)
-  ,pointB(pointB)
+  ,halfHeight(halfHeight)
   ,radius(radius)
   {
     body = new RigidBody(this);
+    pointLocalUp = Vector3(ffzero, halfHeight, ffzero);
+    pointLocalDown = Vector3(ffzero, -halfHeight, ffzero);
   }
 
   void Capsule::refreshAABB()

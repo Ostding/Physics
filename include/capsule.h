@@ -13,12 +13,16 @@ namespace physics
     public:
       Capsule();
       Capsule(RigidBody *body);
-      Capsule(const Vector3 &pointA, const Vector3 &pointB, ffloat radius);
+      Capsule(ffloat halfHeigh, ffloat radius);
 
     public:
+      ffloat halfHeight;
       ffloat radius;
-      Vector3 pointA;
-      Vector3 pointB;
+      
+      Vector3 pointLocalUp;
+      Vector3 pointLocalDown;
+      Vector3 pointWorldUp;
+      Vector3 pointWorldDown;
 
     public:
       virtual void refreshAABB();
