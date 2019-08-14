@@ -181,20 +181,17 @@ namespace physics
     if (ffabs(bary_u) > ffone || ffabs(bary_v) > ffone || ffabs(bary_w) > ffone)
       return false;
 
-    // distanceFromOrigin = distanceFromOrigin * aClosestFace->points[0].minkowskiPoint.mag();
     // A Contact points
-    Vector3 supportLocal1 = aClosestFace->points[0].localPointA;
-    Vector3 supportLocal2 = aClosestFace->points[1].localPointA;
-    Vector3 supportLocal3 = aClosestFace->points[2].localPointA;
+    Vector3 supportWorld1 = aClosestFace->points[0].worldPointA;
+    Vector3 supportWorld2 = aClosestFace->points[1].worldPointA;
+    Vector3 supportWorld3 = aClosestFace->points[2].worldPointA;
 
     aClosestFace->faceNormal.normalise();
-    Vector3 normal = -aClosestFace->faceNormal;
-    Vector3 ptLocalA = (supportLocal1 * bary_u) + (supportLocal2 * bary_v) + (supportLocal3 * bary_w);
-    Vector3 contactPoint = cpa->getPointInWorldSpace(ptLocalA);
+    Vector3 contactPoint = (supportWorld1 * bary_u) + (supportWorld2 * bary_v) + (supportWorld3 * bary_w);
 
     Contact* contact = cData->nextContact;
     contact->penetration = distanceFromOrigin;
-    contact->contactNormal = normal;
+    contact->contactNormal = -aClosestFace->faceNormal;
     contact->contactPoint = contactPoint;
 
     // printf(">>>pen:%.3f\n", distanceFromOrigin.to_d());

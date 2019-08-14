@@ -50,8 +50,9 @@ namespace physics
     virtual void render();
     virtual void updateTransform();
     virtual void getAllPoints(std::vector<Vector3> &points);
-    virtual void findFarthestPointInDirection(const Vector3 &dir, Vector3 &pointLocal, Vector3 &pointWorld);
+    virtual void findFarthestPointInDirection(const Vector3 &dir, Vector3 &pointWorld);
     virtual Vector3 getPointInWorldSpace(const Vector3 &point);
+    virtual Vector3 getPointInBodySpace(const Vector3 &point);
     
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;

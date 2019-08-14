@@ -73,17 +73,21 @@ namespace physics
 
   }
 
-  void Capsule::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
+  void Capsule::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld)
   {
-    if(pointWorldUp.squareMag() > pointWorldDown.squareMag())
+    Vector3 dir = direction;
+    dir.normalise();
+    Vector3 offset = dir * radius;
+    Vector3 ptA = pointWorldUp + offset;
+    Vector3 ptB = pointWorldDown + offset;
+    if(ptA.squareMag() > ptB.squareMag())
     {
-
+      pointWorld = ptA;
     }
     else
     {
-      
+      pointWorld = ptB;
     }
-    
     
   }
   

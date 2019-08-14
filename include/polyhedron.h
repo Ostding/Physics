@@ -28,7 +28,7 @@ namespace physics
     public:
       virtual void refreshAABB();
       virtual void render();
-      virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld);
+      virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld);
       
       void setPosition(const Vector3 &position);
       void setOrientation(const Quaternion &direction);

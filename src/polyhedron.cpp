@@ -202,7 +202,7 @@ namespace physics
       updateTransform();
     }
 
-    void Polyhedron::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
+    void Polyhedron::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld)
     {
       int i = 0;
       ffloat maxValue = pointsWorld[0].dot(direction);
@@ -216,7 +216,6 @@ namespace physics
           maxValue = value;
         }
       }
-      pointLocal = pointsLocal[i];
       pointWorld = pointsWorld[i];
     }
 

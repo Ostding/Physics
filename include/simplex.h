@@ -16,17 +16,14 @@ namespace physics
     Vector3 worldPointA;
     Vector3 worldPointB;
 
-    Vector3 localPointA;
-    Vector3 localPointB;
-
     bool operator == (const SupportPoint & other) { return minkowskiPoint == other.minkowskiPoint; }
   
     static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
     {
       direction.normalise();
       SupportPoint newSupportPoint;
-			pri1->findFarthestPointInDirection(direction, newSupportPoint.localPointA, newSupportPoint.worldPointA);
-      pri2->findFarthestPointInDirection(-direction, newSupportPoint.localPointB, newSupportPoint.worldPointB);
+			pri1->findFarthestPointInDirection(direction, newSupportPoint.worldPointA);
+      pri2->findFarthestPointInDirection(-direction, newSupportPoint.worldPointB);
 			
       newSupportPoint.minkowskiPoint = newSupportPoint.worldPointA - newSupportPoint.worldPointB;
 
