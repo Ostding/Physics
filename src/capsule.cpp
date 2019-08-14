@@ -26,7 +26,46 @@ namespace physics
 
   void Capsule::refreshAABB()
   {
+    Vector3 pos = getColumnVector(3);
+    pointWorldUp = getPointInWorldSpace(pointLocalUp);
+    pointWorldDown = getPointInWorldSpace(pointLocalDown);
+
+    ffloat maxX, maxY, maxZ;
+    ffloat minX, minY, minZ;
+    if(pointWorldUp.x > pointWorldDown.x)
+    {
+      maxX = pointWorldUp.x + radius;
+      minX = pointWorldDown.x - radius;
+    }
+    else
+    {
+      maxX = pointWorldDown.x + radius;
+      minX = pointWorldUp.x - radius;
+    }
     
+    if(pointWorldUp.y > pointWorldDown.y)
+    {
+      maxY = pointWorldUp.y + radius;
+      minY = pointWorldDown.y - radius;
+    }
+    else
+    {
+      maxY = pointWorldDown.y + radius;
+      minY = pointWorldUp.y - radius;
+    }
+
+    if(pointWorldUp.z > pointWorldDown.z)
+    {
+      maxZ = pointWorldUp.z + radius;
+      minZ = pointWorldDown.z - radius;
+    }
+    else
+    {
+      maxZ = pointWorldDown.z + radius;
+      minZ = pointWorldUp.z - radius;
+    }
+
+    aabb.set(Vector3(minX, minY, minZ), Vector3(maxX, maxY, maxZ));
   }
 
   void Capsule::render()
@@ -36,17 +75,34 @@ namespace physics
 
   void Capsule::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointLocal, Vector3 &pointWorld)
   {
+    if(pointWorldUp.squareMag() > pointWorldDown.squareMag())
+    {
 
+    }
+    else
+    {
+      
+    }
+    
+    
   }
   
   void Capsule::setPosition(const Vector3 &position)
   {
+    body->setPosition(position);
+		body->updateDerivedData();
 
+    refreshAABB();
+    updateTransform();
   }
 
   void Capsule::setOrientation(const Quaternion &direction)
   {
+    body->setOrientation(direction);
+    body->updateDerivedData();
 
+    refreshAABB();
+    updateTransform();
   }
 
 }
