@@ -21,6 +21,7 @@
 #include "sphere.h"
 #include "box.h"
 #include "polyhedron.h"
+#include "capsule.h"
 #include "gjk_epa.h"
 #include "world.h"
 #include "utils.h"

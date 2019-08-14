@@ -230,13 +230,85 @@ namespace physics
 		  fillContactCeofficient(poly, box, cData);
       genPolyhedronAndBox(*poly, *box, cData);
     }
-     else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
             cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON)
     {
       Polyhedron *polyA = dynamic_cast<Polyhedron *>(cpa);
 			Polyhedron *polyB = dynamic_cast<Polyhedron *>(cpb);
 		  fillContactCeofficient(polyA, polyB, cData);
       genPolyhedronAndPolyhedron(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpa);
+			Plane   *polyB = dynamic_cast<Plane *>(cpb);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndPlane(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_PLANE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpb);
+			Plane   *polyB = dynamic_cast<Plane *>(cpa);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndPlane(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpa);
+			Sphere   *polyB = dynamic_cast<Sphere *>(cpb);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndSphere(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_SPHERE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpb);
+			Sphere   *polyB = dynamic_cast<Sphere *>(cpa);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndSphere(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpa);
+			Box   *polyB = dynamic_cast<Box *>(cpb);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndBox(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_BOX &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpb);
+			Box   *polyB = dynamic_cast<Box *>(cpa);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndBox(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON)
+    {
+      Capsule      *polyA = dynamic_cast<Capsule *>(cpa);
+			Polyhedron   *polyB = dynamic_cast<Polyhedron *>(cpb);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndPolyhedron(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_POLYHEDRON &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE)
+    {
+      Capsule     *polyA = dynamic_cast<Capsule *>(cpb);
+			Polyhedron  *polyB = dynamic_cast<Polyhedron *>(cpa);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndPolyhedron(*polyA, *polyB, cData);
+    }
+    else if(cpa->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE &&
+            cpb->tPrimitive == PRIMITIVE_TYPE::PRIT_CAPSULE)
+    {
+      Capsule *polyA = dynamic_cast<Capsule *>(cpb);
+			Capsule *polyB = dynamic_cast<Capsule *>(cpa);
+      fillContactCeofficient(polyA, polyB, cData);
+      genCapsuleAndCapsule(*polyA, *polyB, cData);
     }
   }
 

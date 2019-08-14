@@ -11,6 +11,8 @@ using namespace std;
 #include "sphere.h"
 #include "plane.h"
 #include "box.h"
+#include "polyhedron.h"
+#include "capsule.h"
 #include "vector3.h"
 
 namespace physics
@@ -72,13 +74,12 @@ namespace physics
       unsigned genPolyhedronAndBox( Polyhedron &poly, Box &box, CollisionData *cData);
       unsigned genPolyhedronAndPolyhedron( Polyhedron &polyA, Polyhedron &polyB, CollisionData *cData);
 
-
       //capsule
-      // unsigned genCapsuleAndPlane( Capsule &capsule, Plane &plane, CollisionData *cData);
-      // unsigned genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData);
-      // unsigned genCapsuleAndBox( Capsule &capsule, Box &box, CollisionData *cData);
-      // unsigned genCapsuleAndPolyhedron( Capsule &capsule, Polyhedron &poly, CollisionData *cData);
-      // unsigned genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData);
+      unsigned genCapsuleAndPlane( Capsule &capsule, Plane &plane, CollisionData *cData);
+      unsigned genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData);
+      unsigned genCapsuleAndBox( Capsule &capsule, Box &box, CollisionData *cData);
+      unsigned genCapsuleAndPolyhedron( Capsule &capsule, Polyhedron &poly, CollisionData *cData);
+      unsigned genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData);
   };
 }
 

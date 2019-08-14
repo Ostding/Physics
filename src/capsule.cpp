@@ -81,14 +81,9 @@ namespace physics
     Vector3 ptA = pointWorldUp + offset;
     Vector3 ptB = pointWorldDown + offset;
     if(ptA.squareMag() > ptB.squareMag())
-    {
       pointWorld = ptA;
-    }
     else
-    {
       pointWorld = ptB;
-    }
-    
   }
   
   void Capsule::setPosition(const Vector3 &position)
