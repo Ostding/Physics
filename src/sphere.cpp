@@ -8,7 +8,7 @@ namespace physics
   :Primitive(PRIMITIVE_TYPE::PRIT_SPHERE)
   {}
 
-  Sphere::Sphere(ffloat radius)
+  Sphere::Sphere(const ffloat &radius)
   :Primitive(PRIMITIVE_TYPE::PRIT_SPHERE)
   ,radius(radius)
   ,squareRadius(radius * radius)
@@ -28,5 +28,13 @@ namespace physics
   void Sphere::render()
   {
     Renderer::renderSphere(this);
+  }
+
+  void Sphere::initInertiaTensor(const ffloat &mass)
+  {
+    ffloat coeff = ffloat(0.4f) * mass * radius * radius;
+    Matrix3 tensor;
+    tensor.setDiagonal(coeff, coeff, coeff);
+    body->setInertiaTensor(tensor);
   }
 }

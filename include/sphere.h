@@ -14,10 +14,12 @@ namespace physics
 
     public:
       Sphere();
-      Sphere(ffloat radius);
+      Sphere(const ffloat &radius);
 
       virtual void refreshAABB();
       virtual void render();
+
+      void initInertiaTensor(const ffloat &mass);
   };
 }
 

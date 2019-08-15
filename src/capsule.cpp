@@ -1,4 +1,5 @@
 #include "capsule.h"
+#include "renderer.h"
 
 namespace physics
 {
@@ -14,7 +15,7 @@ namespace physics
     body = new RigidBody(this);
   }
 
-  Capsule::Capsule(ffloat halfHeight, ffloat radius)
+  Capsule::Capsule(const ffloat &halfHeight, const ffloat &radius)
   :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
   ,halfHeight(halfHeight)
   ,radius(radius)
@@ -26,7 +27,6 @@ namespace physics
 
   void Capsule::refreshAABB()
   {
-    Vector3 pos = getColumnVector(3);
     pointWorldUp = getPointInWorldSpace(pointLocalUp);
     pointWorldDown = getPointInWorldSpace(pointLocalDown);
 
@@ -68,9 +68,43 @@ namespace physics
     aabb.set(Vector3(minX, minY, minZ), Vector3(maxX, maxY, maxZ));
   }
 
+  void Capsule::initInertiaTensor(const ffloat &mass)
+  {
+    Matrix3 tensor;
+    const ffloat one_div3  = ffone / ffloat(3);
+    const ffloat one_div8  = ffone / ffloat(8);
+    const ffloat one_div12 = ffone / ffloat(12);
+
+    ffloat height = halfHeight * fftwo;
+
+    ffloat cm; // cylinder mass
+    ffloat sm; // mass of two hemispheres
+    ffloat r2 = radius * radius;
+    ffloat vc = ffpi * height * r2;
+    ffloat vs = fftwo_pi * one_div3 * r2 * radius;
+    ffloat va = vc + vs;
+    cm = vc/va * mass;
+    sm = vs/va * mass;
+    
+    // from cylinder
+    tensor.data[4] = r2 * cm * ffhalf;
+    tensor.data[0] = tensor.data[8] = tensor.data[4] * ffhalf + cm * height * height * one_div12;
+    // from hemispheres
+    ffloat temp0 = sm * fftwo * r2 / ffloat(5);
+    tensor.data[4] += temp0 * fftwo;
+    ffloat temp1 = height * ffhalf;
+    ffloat temp2 = temp0 + sm * (temp1 * temp1 + ffloat(3) * one_div8 * height * radius);
+    tensor.data[0] += temp2 * fftwo;
+    tensor.data[8] += temp2 * fftwo;
+
+    tensor.data[1] = tensor.data[2] = tensor.data[3] = tensor.data[5] = tensor.data[6] = tensor.data[7] = ffzero;
+
+    body->setInertiaTensor(tensor);
+  }
+
   void Capsule::render()
   {
-
+    Renderer::renderCapsule(this);
   }
 
   void Capsule::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld)

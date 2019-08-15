@@ -13,7 +13,7 @@ namespace physics
     public:
       Capsule();
       Capsule(RigidBody *body);
-      Capsule(ffloat halfHeigh, ffloat radius);
+      Capsule(const ffloat &halfHeigh, const ffloat &radius);
 
     public:
       ffloat halfHeight;
@@ -29,6 +29,7 @@ namespace physics
       virtual void render();
       virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld);
 
+      void initInertiaTensor(const ffloat &mass);
       void setPosition(const Vector3 &position);
       void setOrientation(const Quaternion &direction);
   };

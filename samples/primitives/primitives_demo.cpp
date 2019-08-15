@@ -186,7 +186,28 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
-void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Vector3 &angles)
+void PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
+{
+  Capsule *cap = new Capsule(halfHeight, radius);
+
+  cap->initInertiaTensor(mass);
+  cap->body->setLinearDamp(ffloat(0.95f));
+	cap->body->setAngularDamp(ffloat(0.8f));
+  cap->body->setMass(mass);
+  cap->body->enableSleep(true);
+  cap->body->setAwake();
+
+  cap->setPosition(pos);
+
+  int anglex = std::rand() % 180;
+  int angley = std::rand() % 180;
+  int anglez = std::rand() % 180;
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
+  cap->setOrientation(q);
+  world->addPrimitive(cap);
+}
+
+void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
 {
   Polyhedron::Points points;
   points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(-2)));
@@ -231,10 +252,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   poly->body->setLinearDamp(ffloat(0.95f));
 	poly->body->setAngularDamp(ffloat(0.8f));
   
-  Matrix3 tensor;
-  poly->getInertiaTensor( mass, tensor);
-
-  poly->body->setInertiaTensor(tensor);
+  poly->initInertiaTensor( mass);
   poly->body->setMass(mass);
   poly->body->enableSleep(true);
   poly->body->setAwake();
@@ -249,22 +267,12 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, ffloat mass, const Ve
   world->addPrimitive( poly );
 }
 
-void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, ffloat mass)
+void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass)
 {
   Box *box = new Box(extents);
+  box->initInertiaTensor(mass);
   box->body->setLinearDamp(ffloat(0.95f));
 	box->body->setAngularDamp(ffloat(0.8f));
-
-  Vector3 squares = extents.product(extents);
-  ffloat f3 = ffone / ffloat(12);
-  ffloat yz = mass * (squares.y + squares.z);
-  ffloat xz = mass * (squares.x + squares.z);
-  ffloat xy = mass * (squares.x + squares.y);
-
-  Matrix3 tensor;
-  tensor.setDiagonal(f3 * yz, f3 * xz, f3 * xy);
-  box->body->setInertiaTensor(tensor);
-
   box->body->setMass(mass);
   box->body->enableSleep(true);
   box->body->setAwake();
@@ -275,18 +283,12 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, cons
   world->addPrimitive( box );
 }
 
-void PrimitivesDemo::initOneSphere(ffloat radius, const Vector3 &pos, ffloat mass)
+void PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass)
 {
   Sphere * sphere = new Sphere(radius);
-
+  sphere->initInertiaTensor(mass);
   sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.8f));
-
-  ffloat coeff = ffloat(0.4f) * mass * radius * radius;
-  Matrix3 tensor;
-  tensor.setDiagonal(coeff, coeff, coeff);
-  sphere->body->setInertiaTensor(tensor);
-
   sphere->body->setMass(mass);
   sphere->body->enableSleep(true);
   sphere->body->setAwake();
@@ -308,44 +310,51 @@ void PrimitivesDemo::initTest()
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
 
-  Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
-  ffloat r1 = ffloat(3);
-  ffloat m1 = ffloat(10);
-  initOneSphere(r1, p1, m1);
+  // Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
+  // ffloat r1 = ffloat(3);
+  // ffloat m1 = ffloat(10);
+  // initOneSphere(r1, p1, m1);
 
-  Vector3 p2 = Vector3(ffzero, ffloat(20), ffzero);
-  ffloat r2 = ffloat(5);
-  ffloat m2 = ffloat(10);
-  initOneSphere(r2, p2, m2);
+  // Vector3 p2 = Vector3(ffzero, ffloat(20), ffzero);
+  // ffloat r2 = ffloat(5);
+  // ffloat m2 = ffloat(10);
+  // initOneSphere(r2, p2, m2);
 
-  Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffzero);
-  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
-  ffloat m3 = ffloat(10);
-  initOneBox(p3, e3, a3, m3);
+  // Vector3 p3 = Vector3(ffloat(3), ffloat(5), ffzero);
+  // Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
+  // ffloat m3 = ffloat(10);
+  // initOneBox(p3, e3, a3, m3);
 
-  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
-  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
-  Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
-  ffloat m4 = ffloat(10);
-  initOneBox(p4, e4, a4, m4);
+  // Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
+  // Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  // Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
+  // ffloat m4 = ffloat(10);
+  // initOneBox(p4, e4, a4, m4);
 
-  ffloat m5 = 2;
-  Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
-  initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
+  // ffloat m5 = ffloat(2);
+  // Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
+  // initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
 
-  ffloat m6 = 2;
-  Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
+  // ffloat m6 = ffloat(2);
+  // Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
 
-  p6 = Vector3(ffloat(4), ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6, Vector3(ffloat(45), ffloat(80), ffloat(45)));
-  p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
-  initOnePolyHedron(p6, m6, Vector3(ffloat(-45), ffloat(70), ffloat(45)));
-  p6 = Vector3(ffzero, ffloat(10), ffloat(4));
-  initOnePolyHedron(p6, m6, Vector3(ffloat(90), ffloat(60), ffloat(30)));
-  p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
-  initOnePolyHedron(p6, m6, Vector3(ffloat(60), ffloat(50), ffloat(35)));
+  // p6 = Vector3(ffloat(4), ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6, Vector3(ffloat(45), ffloat(80), ffloat(45)));
+  // p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
+  // initOnePolyHedron(p6, m6, Vector3(ffloat(-45), ffloat(70), ffloat(45)));
+  // p6 = Vector3(ffzero, ffloat(10), ffloat(4));
+  // initOnePolyHedron(p6, m6, Vector3(ffloat(90), ffloat(60), ffloat(30)));
+  // p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
+  // initOnePolyHedron(p6, m6, Vector3(ffloat(60), ffloat(50), ffloat(35)));
+
+  Vector3 p7 = Vector3(ffzero, ffloat(15), ffzero);
+  Vector3 a7 = Vector3(ffloat(10), ffloat(30), ffloat(60));
+  ffloat m7 = ffloat(10);
+  ffloat r7 = ffloat(2);
+  ffloat hh = ffloat(2);
+  initOneCapsule(p7, r7, hh, m7, a7);
 
   world->prepare();
   started = true;

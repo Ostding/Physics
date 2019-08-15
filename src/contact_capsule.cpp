@@ -34,7 +34,14 @@ namespace physics
     }
 
     Vector3 contactPoint = ptSeg - plane.direction * distMin;
-    return 0;
+    Contact* contact = cData->nextContact;
+    contact->contactNormal = plane.direction;
+    contact->contactPoint = contactPoint;
+		contact->penetration = capsule.radius - distMin;
+
+    contact->setBodyData(capsule.body, 0, cData->friction, cData->restitution);
+    cData->addContacts(1);
+    return 1;
   }
 
   unsigned ContactGenerator::genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData)

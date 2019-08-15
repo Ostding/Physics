@@ -32,6 +32,7 @@ namespace physics
       void setExtents(const Vector3 &extents);
       void setPosition(const Vector3 &position);
       void setOrientation(const Quaternion &direction);
+      void initInertiaTensor(const ffloat &mass);
 
     private:
       void updateCorners();

@@ -209,7 +209,7 @@ namespace physics
 		glPushMatrix();
 		glMultMatrixf(mat);
 
-		glutSolidSphere(p->radius.to_d(), 100, 100);
+		glutSolidSphere(p->radius.to_d(), 50, 50);
 
 		glPopMatrix();
 
@@ -234,6 +234,64 @@ namespace physics
 		glutSolidCube(1.0f);
 		glPopMatrix();
 
+    Renderer::renderAABB(p->aabb);
+  }
+
+  void Renderer::renderCapsule(Capsule *p)
+  {
+    GLfloat mat[16];
+		p->transform.fillArray(mat);
+
+		if (p->body->isAwake) 
+      setColor(0.6, 0.4, 0.2);
+		else
+      setColor(0.2, 0.6, 0.4);
+
+    glPushMatrix();
+    glMultMatrixf(mat);
+
+      glPushMatrix();
+        glTranslatef(p->pointLocalUp.x.to_d(), p->pointLocalUp.y.to_d(), p->pointLocalUp.z.to_d());
+        glutSolidSphere(p->radius.to_d(), 50, 50);
+      glPopMatrix();
+
+      // Draw the tube 
+      glPushMatrix();
+      glTranslatef(0.0f, 0.0f, 0.0f);
+
+      GLfloat x       = 0.0f;
+      GLfloat z       = 0.0f;
+      GLfloat angle   = 0.0f;
+      GLfloat step    = 0.1f;
+      GLfloat pi      = 3.1416f;
+      GLfloat radius  = p->radius.to_d();
+      GLfloat halfHeight  = p->halfHeight.to_d();
+
+      glBegin(GL_QUAD_STRIP);
+        angle = 0.0;
+        while( angle < 2 * pi )
+        {
+          float c = cos(angle);
+          float s = sin(angle);
+          x = radius * c;
+          z = radius * s;
+          glNormal3f(c, 0, s);
+          glVertex3f(x, halfHeight, z);
+          glVertex3f(x, -halfHeight, z);
+          angle = angle + step;
+        }
+        glNormal3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(radius, halfHeight, 0.0f);
+        glVertex3f(radius, -halfHeight, 0.0f);
+      glEnd();
+      glPopMatrix();
+
+      glPushMatrix();
+      glTranslatef(p->pointLocalDown.x.to_d(), p->pointLocalDown.y.to_d(), p->pointLocalDown.z.to_d());
+      glutSolidSphere(p->radius.to_d(), 50, 50);
+      glPopMatrix();
+
+    glPopMatrix();
     Renderer::renderAABB(p->aabb);
   }
 

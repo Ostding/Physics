@@ -34,7 +34,7 @@ namespace physics
       void setOrientation(const Quaternion &direction);
 
       void setPoints(Points &points, Indices &indices);
-      void getInertiaTensor(ffloat mass, Matrix3 &inertiaTensor);
+      void initInertiaTensor(const ffloat &mass);
 
     private:
       //Refer to Polyhedral Mass Properties (Revisited) 

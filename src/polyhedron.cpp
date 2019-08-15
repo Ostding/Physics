@@ -15,6 +15,19 @@ namespace physics
       body = new RigidBody(this);
     }
 
+    void Polyhedron::initInertiaTensor(const ffloat &mass)
+    {
+      ffloat unitMass;
+      Vector3 massCenter;
+      Matrix3 tensor;
+
+      calculateInertiaTensor(pointsLocal, indices, unitMass, massCenter, tensor);
+      ffloat idensity = mass / unitMass;
+      tensor *= idensity;
+      
+      body->setInertiaTensor(tensor);
+    }
+
 #define Subexpressions(w0,w1,w2,f1,f2,f3,g0,g1,g2) \
         tmp0 = w0+w1; \
         ffloat f1 = tmp0+w2; \
@@ -123,19 +136,6 @@ namespace physics
       inertiaTensor.data[6] = -ixz;
       inertiaTensor.data[7] = -iyz;
       inertiaTensor.data[8] = izz;
-    }
-
-    void Polyhedron::getInertiaTensor(ffloat mass, Matrix3 &inertiaTensor)
-    {
-      ffloat unitMass;
-      Vector3 massCenter;
-      Matrix3 tensor;
-
-      calculateInertiaTensor(pointsLocal, indices, unitMass, massCenter, tensor);
-      ffloat idensity = mass / unitMass;
-      tensor *= idensity;
-      
-      inertiaTensor = tensor;
     }
 
     void Polyhedron::setPoints(Points &points, Indices &indices)

@@ -50,6 +50,20 @@ namespace physics
     updateTransform();
   }
 
+  void Box::initInertiaTensor(const ffloat &mass)
+  {
+    Vector3 squares = extents.product(extents);
+    ffloat f3 = ffone / ffloat(12);
+    ffloat yz = mass * (squares.y + squares.z);
+    ffloat xz = mass * (squares.x + squares.z);
+    ffloat xy = mass * (squares.x + squares.y);
+
+    Matrix3 tensor;
+    tensor.setDiagonal(f3 * yz, f3 * xz, f3 * xy);
+
+    body->setInertiaTensor(tensor);
+  }
+
   void Box::refreshAABB()
   {
     Vector3 pt = body->getPosInWorldSpace(pointsLocal[0]);
