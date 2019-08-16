@@ -202,8 +202,8 @@ void PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, co
   int anglex = std::rand() % 180;
   int angley = std::rand() % 180;
   int anglez = std::rand() % 180;
-  Quaternion q = Quaternion::fromEulerAngles(angles);
-  // Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
+  // Quaternion q = Quaternion::fromEulerAngles(angles);
+  Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   cap->setOrientation(q);
   world->addPrimitive(cap);
 }
@@ -354,8 +354,15 @@ void PrimitivesDemo::initTest()
   Vector3 a7 = Vector3(ffloat(10), ffloat(30), ffloat(60));
   ffloat m7 = ffloat(10);
   ffloat r7 = ffloat(2);
-  ffloat hh = ffloat(2);
-  initOneCapsule(p7, r7, hh, m7, a7);
+  ffloat h7 = ffloat(2);
+  initOneCapsule(p7, r7, h7, m7, a7);
+
+  Vector3 p8 = Vector3(ffzero, ffloat(25), ffzero);
+  Vector3 a8 = Vector3(ffloat(10), ffloat(30), ffloat(60));
+  ffloat m8 = ffloat(10);
+  ffloat r8 = ffloat(2);
+  ffloat h8 = ffloat(2);
+  initOneCapsule(p8, r8, h8, m8, a8);
 
   world->prepare();
   started = true;

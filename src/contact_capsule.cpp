@@ -46,6 +46,7 @@ namespace physics
 
   unsigned ContactGenerator::genCapsuleAndSphere( Capsule &capsule, Sphere &sphere, CollisionData *cData)
   {
+    
     return 0;
   }
 
@@ -61,7 +62,25 @@ namespace physics
 
   unsigned ContactGenerator::genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData)
   {
-    return 0;
+    Vector3 pa, pb;
+    ffloat squareDist = Utils::smallestSquareDistanceOfTwoSegments( capsuleA.pointWorldUp, capsuleA.pointWorldDown, 
+                                                                    capsuleB.pointWorldUp, capsuleB.pointWorldDown,
+                                                                    pa, pb);
+    ffloat dist = capsuleA.radius + capsuleB.radius;
+    if((dist * dist) <= squareDist) 
+      return 0;
+
+    ffloat len = ffsqrt(squareDist);
+    Contact* contact = cData->nextContact;
+    Vector3 normal = pb - pa;
+    normal.normalise();
+    contact->contactNormal = normal;
+		contact->penetration = (dist - len) * ffhalf;
+    contact->contactPoint = pa + normal * (capsuleA.radius - contact->penetration);
+
+    contact->setBodyData(capsuleA.body, capsuleB.body, cData->friction, cData->restitution);
+    cData->addContacts(1);
+    return 1;
   }
 
 }
