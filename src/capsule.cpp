@@ -114,8 +114,13 @@ namespace physics
     Vector3 offset = dir * radius;
     Vector3 ptA = pointWorldUp + offset;
     Vector3 ptB = pointWorldDown + offset;
-    if(ptA.squareMag() > ptB.squareMag())
+
+    ffloat sma = ptA.squareMag();
+    ffloat smb = ptB.squareMag();
+    if(sma > smb)
       pointWorld = ptA;
+    else if(sma == smb)
+      pointWorld = (ptA + ptB) * ffhalf;
     else
       pointWorld = ptB;
   }

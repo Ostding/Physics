@@ -76,11 +76,17 @@ namespace physics
 
   unsigned ContactGenerator::genCapsuleAndBox( Capsule &capsule, Box &box, CollisionData *cData)
   {
-    return 0;
+    if (cData->contactsLeft <= 0) return 0;
+    if (!capsule.body->isAwake && !box.body->isAwake) return 0;
+
+    bool suc = GjkEpa::generateContacts (&capsule, &box, cData);
+    return suc ? 1 : 0;
   }
 
   unsigned ContactGenerator::genCapsuleAndPolyhedron( Capsule &capsule, Polyhedron &poly, CollisionData *cData)
   {
+    if (cData->contactsLeft <= 0) return 0;
+    if (!capsule.body->isAwake && !poly.body->isAwake) return 0;
     return 0;
   }
 
