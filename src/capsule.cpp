@@ -118,14 +118,9 @@ namespace physics
     ffloat sma = ptA.squareMag();
     ffloat smb = ptB.squareMag();
     if(sma > smb)
-      pointWorld = ptB;
-    else if(sma == smb)
-    {
-      Vector3 pos = getColumnVector(3);
-      pointWorld = pos + offset;
-    }
-    else
       pointWorld = ptA;
+    else
+      pointWorld = ptB;
   }
   
   void Capsule::setPosition(const Vector3 &position)
