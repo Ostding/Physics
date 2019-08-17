@@ -22,12 +22,12 @@ namespace physics
       //Calculate smallest square distance between point and segement
       static ffloat squareDistPointToSeg(const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB);
       
-      //Simply calculate the closest project point of the given point
+      //Simply calculate the closest project point on the given segment
       static Vector3 closestPointOnSegment(const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB);
 
       //Calculate point's projection position on a sgement
-      //If there is no projection(which means the projection is outside the segment) the function return false, and distance holds the smallest distance 
-      //If the projection exists, the funciton willl return true, ptProjection holds the projection point, and distance holds the smallest distance
+      //If there is no projection(which means the projection is outside the segment) the function return false, and distance holds the smallest square distance 
+      //If the projection exists, the funciton willl return true, ptProjection holds the projection point, and distance holds the smallest square distance
       static bool pointProjectionToSegment(const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB, 
                                             Vector3 &ptProjection, ffloat &distance);
 

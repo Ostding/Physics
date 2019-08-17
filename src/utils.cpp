@@ -56,7 +56,7 @@ namespace physics
   }
 
   bool Utils::pointProjectionToSegment( const Vector3 &pt, const Vector3 &ptSegA, const Vector3 &ptSegB, 
-                              Vector3 &ptProjection, ffloat &distance)
+                              Vector3 &ptProjection, ffloat &squareDist)
   {
     Vector3 va = pt - ptSegA;
     Vector3 vb = ptSegB - ptSegA;
@@ -64,19 +64,19 @@ namespace physics
     ffloat projLen = va.dot(vb)/magB;
     if(projLen <= ffzero)
     {
-      distance = va.mag();
+      squareDist = va.squareMag();
       ptProjection = ptSegA;
       return false;
     }
 
     if( projLen >= magB)
     {
-      distance = (pt - ptSegB).mag();
+      squareDist = (pt - ptSegB).squareMag();
       ptProjection = ptSegB;
       return false;
     }
 
-    distance = ffsqrt(va.squareMag() - projLen * projLen);
+    squareDist = va.squareMag() - projLen * projLen;
     ptProjection = ptSegA + vb.scale(projLen/magB);
     return true;
   }

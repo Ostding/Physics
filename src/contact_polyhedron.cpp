@@ -112,7 +112,6 @@ namespace physics
     }
 
     Vector3 closestPt; 
-    ffloat distMin;
     // int index;
     for(int i=0; i< triangleP0.size(); i ++)
     {
@@ -141,36 +140,38 @@ namespace physics
         return 1;
       }
 
+      ffloat squareDist;
+      ffloat squareDistMin;
       //Find the edge whose distance to the projection point is the smallest 
       Vector3 projectPt;
-      Utils::pointProjectionToSegment(ptInPlanar, p0, p1, projectPt, dist);
+      Utils::pointProjectionToSegment(ptInPlanar, p0, p1, projectPt, squareDist);
       if(i == 0)
       {
         // index = i;
-        distMin = dist;
+        squareDistMin = squareDist;
         closestPt = projectPt;
       }  
       else
       {
-        if(dist < distMin)
+        if(squareDist < squareDistMin)
         {
           // index = i;
-          distMin = dist;
+          squareDistMin = squareDist;
           closestPt = projectPt;
         }
       }
       
-      Utils::pointProjectionToSegment(ptInPlanar, p1, p2, projectPt, dist);
-      if(dist < distMin)
+      Utils::pointProjectionToSegment(ptInPlanar, p1, p2, projectPt, squareDist);
+      if(squareDist < squareDistMin)
       {
         // index = i;
-        distMin = dist;
+        squareDistMin = squareDist;
         closestPt = projectPt;
       }
-      Utils::pointProjectionToSegment(ptInPlanar, p2, p0, projectPt, dist);
-      if(dist < distMin)
+      Utils::pointProjectionToSegment(ptInPlanar, p2, p0, projectPt, squareDist);
+      if(squareDist < squareDistMin)
       {
-        distMin = dist;
+        squareDistMin = squareDist;
         closestPt = projectPt;
       }
     }
