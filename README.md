@@ -14,7 +14,7 @@ devices [to check the result, plz move to benchmark.txt]
 # Todo:
 .Add various kinds of force, such as move force, spring force etc  
 .Add BVHTree support  
-.Add joint support
+.Add joint support  
 .Exam the physic library's precision and synchornization between android and osx devices    
 
 
