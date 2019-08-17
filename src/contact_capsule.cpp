@@ -72,7 +72,7 @@ namespace physics
 
     ffloat len = ffsqrt(squareDist);
     Contact* contact = cData->nextContact;
-    Vector3 normal = pb - pa;
+    Vector3 normal = pa - pb;
     normal.normalise();
     contact->contactNormal = normal;
 		contact->penetration = (dist - len) * ffhalf;
