@@ -4,7 +4,7 @@
 #include "simplex.h"
 #include "primitive.h"
 #include "collision_data.h"
-#define DEBUG_GJKEPA
+// #define DEBUG_GJKEPA
 namespace physics
 {
   class GjkEpa

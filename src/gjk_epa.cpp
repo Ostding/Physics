@@ -71,9 +71,9 @@ namespace physics
       ffloat x = newSp.minkowskiPoint.dot(searchDir);
       if (x < ffzero )
       {
-        printf(">>>>>>Gjk exit 1 x:%.5f iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
-              x.to_d(), iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
-              newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
+        // printf(">>>>>>Gjk exit 1 x:%.5f iterationCount:%d dir(%.3f %.3f %.3f) pt(%.3f %.3f %.3f) \n", 
+        //       x.to_d(), iterationCount, searchDir.x.to_d(), searchDir.y.to_d(), searchDir.z.to_d(),
+        //       newSp.minkowskiPoint.x.to_d(), newSp.minkowskiPoint.y.to_d(), newSp.minkowskiPoint.z.to_d());
         return false;
       }
       else

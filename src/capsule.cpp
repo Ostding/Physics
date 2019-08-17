@@ -112,15 +112,13 @@ namespace physics
     Vector3 dir = direction;
     dir.normalise();
     Vector3 offset = dir * radius;
-    Vector3 ptA = pointWorldUp + offset;
-    Vector3 ptB = pointWorldDown + offset;
 
-    ffloat sma = ptA.squareMag();
-    ffloat smb = ptB.squareMag();
+    ffloat sma = pointWorldUp.dot(dir);
+    ffloat smb = pointWorldDown.dot(dir);
     if(sma > smb)
-      pointWorld = ptA;
+      pointWorld = pointWorldUp + offset;
     else
-      pointWorld = ptB;
+      pointWorld = pointWorldDown + offset;
   }
   
   void Capsule::setPosition(const Vector3 &position)

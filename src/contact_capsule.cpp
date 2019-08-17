@@ -87,7 +87,9 @@ namespace physics
   {
     if (cData->contactsLeft <= 0) return 0;
     if (!capsule.body->isAwake && !poly.body->isAwake) return 0;
-    return 0;
+    
+    bool suc = GjkEpa::generateContacts (&capsule, &poly, cData);
+    return suc ? 1 : 0;
   }
 
   unsigned ContactGenerator::genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData)
