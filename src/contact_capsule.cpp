@@ -63,9 +63,9 @@ namespace physics
   unsigned ContactGenerator::genCapsuleAndCapsule( Capsule &capsuleA, Capsule &capsuleB, CollisionData *cData)
   {
     Vector3 pa, pb;
-    ffloat squareDist = Utils::squareDistanceOfTwoSegments( capsuleA.pointWorldUp, capsuleA.pointWorldDown, 
-                                                            capsuleB.pointWorldUp, capsuleB.pointWorldDown,
-                                                            pa, pb);
+    ffloat squareDist = Utils::squareDistanceSegment2Segments( capsuleA.pointWorldUp, capsuleA.pointWorldDown, 
+                                                               capsuleB.pointWorldUp, capsuleB.pointWorldDown,
+                                                               pa, pb);
     ffloat dist = capsuleA.radius + capsuleB.radius;
     if((dist * dist) <= squareDist) 
       return 0;

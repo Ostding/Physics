@@ -129,7 +129,38 @@ namespace physics
             extents.z * ffabs(axis.dot(transform.getColumnVector(2)));
   }
 
-  ffloat Utils::squareDistanceOfTwoSegments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
+  ffloat Utils::squareDistanceLine2Line(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
+                                        Vector3 &pa, Vector3 &pb)
+  {
+    Vector3   u = pa1 - pa0;
+    Vector3   v = pb1 - pb0;
+    Vector3   w = pa0 - pb0;
+    ffloat    a = Vector3::dot(u,u); // always >= 0
+    ffloat    b = Vector3::dot(u,v);
+    ffloat    c = Vector3::dot(v,v); // always >= 0
+    ffloat    d = Vector3::dot(u,w);
+    ffloat    e = Vector3::dot(v,w);
+    ffloat    D = a*c - b*b;          // always >= 0
+    ffloat    sc, tc;
+
+    // compute the line parameters of the two closest points
+    if (D < SMALL_NUM) {          // the lines are almost parallel
+        sc = ffzero;
+        tc = (b>c ? d/b : e/c);    // use the largest denominator
+    }
+    else {
+        sc = (b*e - c*d) / D;
+        tc = (a*e - b*d) / D;
+    }
+
+    // get the the two closest points
+    pa = pa0 + (u * sc);
+    pb = pb0 + (v * tc);
+
+    return (pa - pb).squareMag(); 
+  }
+
+  ffloat Utils::squareDistanceSegment2Segments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
                                                         Vector3 &pa, Vector3 &pb)
   {
     Vector3   u = pa1 - pa0;
