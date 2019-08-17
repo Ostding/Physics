@@ -2,6 +2,8 @@
 
 namespace physics
 {
+  const ffloat Utils::SMALL_NUM = ffloat(0.00001);
+
   ffloat Utils::distPointToPlane(const Vector3 &pt, const Vector3 &ptOnPlane,  const Vector3 &planeNormal)
   {
     Vector3 v = (pt - ptOnPlane);
@@ -127,147 +129,80 @@ namespace physics
             extents.z * ffabs(axis.dot(transform.getColumnVector(2)));
   }
 
-  // This ia a geometry solution, we can find the position of the point, judge whether the point is on the line segment
-  // Algorithm：
-  // There are two lines s、t, s0、t0 is the start points, direction is u、v
-  // The two closest points：on line s it is s0+sc*u，on line t it is t0+tc*v
-  // w = (s0+sc*u)-(t0+tc*v), set w0 = s0-t0
-  // a=u*u，b=u*v，c=v*v，d=u*w0，e=v*w0   (fa)
-  // as 
-  // u*w=0 v*w=0，w=-tc*v+w0+sc*u
-  // so
-  // (u*u)*sc - (u*v)*tc = -u*w0  (f1)
-  // (v*u)*sc - (v*v)*tc = -v*w0  (f2)
-  // as 
-  // (fa) 
-  // so 
-  //  sc=(be-cd)/(ac-b2)、tc=(ae-bd)/(ac-b2) （fb）
-  // We could found ac-b2=|u|2|v|2-(|u||v|cosq)2=(|u||v|sinq)2 is always positive
-  // so according to（fb）, we could judge the colsest points whether on segments or not by sc、tc and sc、tc
-  // ac-b2=0 means two lins are parallel, set sc=0 could get tc
-  // Finally closest distance d(L1、L2)=|（P0-Q0)+[(be-cd)*u-(ae-bd)v]/(ac-b2)|
-  ffloat Utils::smallestSquareDistanceOfTwoSegments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
+  ffloat Utils::squareDistanceOfTwoSegments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
                                                         Vector3 &pa, Vector3 &pb)
   {
-    ffloat ux = pa1.x - pa0.x;
-    ffloat uy = pa1.y - pa0.y;
-    ffloat uz = pa1.z - pa0.z;
-
-    ffloat vx = pb1.x - pb0.x;;
-    ffloat vy = pb1.y - pb0.y;;
-    ffloat vz = pb1.z - pb0.z;;
-
-    ffloat wx = pa1.x - pb1.x;
-    ffloat wy = pa1.y - pb1.y;
-    ffloat wz = pa1.z - pb1.z;
-
-    ffloat a = (ux * ux + uy * uy + uz * uz); //u*u
-    ffloat b = (ux * vx + uy * vy + uz * vz); //u*v
-    ffloat c = (vx * vx + vy * vy + vz * vz); //v*v
-    ffloat d = (ux * wx + uy * wy + uz * wz); //u*w 
-    ffloat e = (vx * wx + vy * wy + vz * wz); //v*w
-    ffloat dt = a * c - b * b;
-
-    ffloat sd = dt;
-    ffloat td = dt;
-
-    ffloat sn = ffzero;  //sn = be-cd
-    ffloat tn = ffzero;  //tn = ae-bd
-
-    //Two lines are parallel
-    if (dt == ffzero)
-    {
-      sn = ffzero;    //Get point s0 on line s
-      sd = ffone;   //Avoid divide 0
-
-      tn = e;      //Accroding (f2) to calculate tc
-      td = c;
+    Vector3   u = pa1 - pa0;
+    Vector3   v = pb1 - pb0;
+    Vector3   w = pa0 - pb0;
+    ffloat    a = Vector3::dot(u,u);    // always >= 0
+    ffloat    b = Vector3::dot(u,v);
+    ffloat    c = Vector3::dot(v,v);    // always >= 0
+    ffloat    d = Vector3::dot(u,w);
+    ffloat    e = Vector3::dot(v,w);
+    ffloat    D = a*c - b*b;            // always >= 0
+    ffloat    sc, sN, sD = D;           // sc = sN / sD, default sD = D >= 0
+    ffloat    tc, tN, tD = D;           // tc = tN / tD, default tD = D >= 0
+    
+    // compute the line parameters of the two closest points
+    if (D < SMALL_NUM) {    // the lines are almost parallel
+        sN = ffzero;        // force using point P0 on segment S1
+        sD = ffone;         // to prevent possible division by 0.0 later
+        tN = e;
+        tD = c;
     }
-    else
-    {
-      sn = (b * e - c * d);
-      tn = (a * e - b * d);
-      //The closest point is out of start point of line s
-      if (sn < ffzero)
-      {
-        sn = ffzero;
-        tn = e; //Accroding (f2) to calculate tc
-        td = c;
-      }
-      //The closest point is out of end point of line s (as sc>1, so make sc=1)
-      else if (sn > sd)
-      {
-        sn = sd;
-        tn = e + b; //Accroding (f2) to calculate tc
-        td = c;
-      }
-    }
-    if (tn < ffzero)
-    {
-        //The closest point is out of start point of line t
-        tn = ffzero;
-        //According (f1)，if right of (f1) is nagetive，sc is nagetive too，so sc=0
-        if (-d < ffzero) 
-          sn = ffzero;
-        //According (f1)，if sc is greater than 1，so sc=1
-        else if (-d > a) 
-          sn = sd;
-        else
-        {
-          sn = -d;
-          sd = a;
+     // get the closest points on the infinite lines
+    else {                
+        sN = (b*e - c*d);
+        tN = (a*e - b*d);
+        // sc < 0 => the s=0 edge is visible
+        if (sN < ffzero) {        
+            sN = ffzero;
+            tN = e;
+            tD = c;
+        }
+        // sc > 1  => the s=1 edge is visible
+        else if (sN > sD) {  
+            sN = sD;
+            tN = e + b;
+            tD = c;
         }
     }
-    else if (tn > td)
-    {
-      tn = td;
-      if ((-d + b) < ffzero)
-        sn = ffzero;
-      else if ((-d + b) > a)
-        sn = sd;
-      else
-      {
-        sn = (-d + b);
-        sd = a;
-      }
-    }
 
-    ffloat sc;
-    ffloat tc;
+    // tc < 0 => the t=0 edge is visible
+    if (tN < ffzero) {            
+        tN = ffzero;
+        // recompute sc for this edge
+        if (-d < ffzero)
+            sN = ffzero;
+        else if (-d > a)
+            sN = sD;
+        else {
+            sN = -d;
+            sD = a;
+        }
+    }
+    // tc > 1  => the t=1 edge is visible
+    else if (tN > tD) {      
+        tN = tD;
+        // recompute sc for this edge
+        if ((-d + b) < ffzero)
+            sN = ffzero;
+        else if ((-d + b) > a)
+            sN = sD;
+        else {
+            sN = (-d +  b);
+            sD = a;
+        }
+    }
+    // finally do the division to get sc and tc
+    sc = (ffabs(sN) < SMALL_NUM ? ffzero : sN / sD);
+    tc = (ffabs(tN) < SMALL_NUM ? ffzero : tN / tD);
 
-    if (sn == ffzero)
-    {
-      sc = ffzero;
-      pa = pa1;
-    }
-    else
-    {
-      sc = sn / sd;
-      //p = so + sc * u
-      ffloat da = ffsqrt(a);
-      pa.x = pa1.x + sc * ux / da;
-      pa.y = pa1.y + sc * uy / da;
-      pa.z = pa1.z + sc * uz / da;
-    }
+    // get the the two closest points
+    pa = pa0 + (u * sc);
+    pb = pb0 + (v * tc);
 
-    if (tn == ffzero)
-    {
-      tc = ffzero;
-      pb = pb1;
-    }
-    else
-    {
-      tc = tn / td;
-      //p = to + tc * v
-      ffloat db = ffsqrt(c);
-      pb.x = pb1.x + tc * vx / db;
-      pb.y = pb1.y + tc * vy / db;
-      pb.z = pb1.z + tc * vz / db;
-    }
-
-    ffloat dx = wx + (sc * ux) - (tc * vx);
-    ffloat dy = wy + (sc * uy) - (tc * vy);
-    ffloat dz = wz + (sc * uz) - (tc * vz);
-    return dx * dx + dy * dy + dz * dz;
+    return (pa - pb).squareMag(); 
   }
 }

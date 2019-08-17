@@ -11,6 +11,7 @@ namespace physics
   class Utils
   {
     public:
+      static const ffloat SMALL_NUM;
       //Calculate smallest distance between point and plane
       //Note: normal must be normalised vector
       static ffloat distPointToPlane(const Vector3 &pt, const Vector3 &ptOnPlane,  const Vector3 &planeNormal);
@@ -39,9 +40,9 @@ namespace physics
       //param extents is box bounding size, transform is box transform matrix
       static ffloat calcProjectionLengthOnAxis(const Vector3 &extents, const Matrix4 &transform, const Vector3 &axis);
 
-      //Calculate small square distance between two segments
+      //This ia a geometry solution, we can find the position of the point, judge whether the point is on the line segment
       //return value is the smallest distance, out params pa and pb are used to receive closest points on segment A and B
-      static ffloat smallestSquareDistanceOfTwoSegments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
+      static ffloat squareDistanceOfTwoSegments(const Vector3 &pa0, const Vector3 &pa1, const Vector3 &pb0, const Vector3 &pb1,
                                                         Vector3 &pa, Vector3 &pb);
   };
 }
