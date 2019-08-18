@@ -13,7 +13,7 @@ namespace physics
   ,extents(extents)
   ,offset(offset)
   {
-    this->direction.normalise();
+    Plane::direction.normalise();
     refreshAABB();
   }
 

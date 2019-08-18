@@ -2,7 +2,7 @@
 
 namespace physics
 {
-  SpringForce::SpringForce(const Vector3 &connectPoint, RigidBody *ohter, const Vector3 &otherConnectPoint,
+  SpringForce::SpringForce(const Vector3 &connectPoint, RigidBody *other, const Vector3 &otherConnectPoint,
                   const ffloat &ceofficient, const ffloat &length, const ffloat &maxForce)
   :connectPoint(connectPoint)
   ,other(other)
@@ -21,14 +21,17 @@ namespace physics
     Vector3 dir = ows - lws;
     
     ffloat mag = dir.mag();
+    dir *= ffone / mag;
+
+    if((mag - length) <= ffzero)
+      return;
+
 	  ffloat f = mag * ceofficient;
 	  if (maxForce != ffzero && f > maxForce)
-		{
       f = maxForce;
-    }
 		
     //Below is equal with [ force = dir.normalise() * f ]
-    Vector3 force = dir * (f / mag);
+    Vector3 force = dir * f;
 
     body->addForceAtBodyPos(force, lws);
   }

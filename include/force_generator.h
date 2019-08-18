@@ -11,6 +11,8 @@ namespace physics
   public:
     ForceGenerator()
     :id(0) {}
+    virtual ~ForceGenerator()
+    {};
 
   public:
     int id;

@@ -56,7 +56,7 @@ namespace physics
 
   ForceGenerator * World::removeForceGenerator(Primitive *pri, unsigned int id)
   {
-    fManager.remove(rb, id);
+    return fManager.remove(pri->body, id);
   }
 
   void World::addContactCeofficient(unsigned int a, unsigned int b, ffloat  friction, ffloat restitution)

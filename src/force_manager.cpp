@@ -20,7 +20,6 @@ namespace physics
   {
     for (MapBodies::iterator it = registrations.begin(); it != registrations.end(); it++)
     {
-      RigidBody *body = it->first;
       for (MapGenerators::iterator itor = it->second.begin(); itor != it->second.end(); itor++)
       {
         ForceGenerator *f = itor->second;

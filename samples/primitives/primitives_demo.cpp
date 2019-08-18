@@ -402,7 +402,7 @@ Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radi
   Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   cap->setOrientation(q);
   world->addPrimitive(cap);
-  world->addForceGenerator(cap->body, genGravityForce());
+  world->addForceGenerator(cap, genGravityForce());
   return cap;
 }
 
@@ -465,7 +465,7 @@ Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat 
   // Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
   world->addPrimitive( poly );
-  world->addForceGenerator(poly->body, genGravityForce());
+  world->addForceGenerator(poly, genGravityForce());
   return poly;
 }
 
@@ -484,7 +484,7 @@ Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, con
   Quaternion q = Quaternion::fromEulerAngles(Vector3(angles.x, angles.y, angles.z));
   box->setOrientation(q);
   world->addPrimitive( box );
-  world->addForceGenerator(box->body, genGravityForce());
+  world->addForceGenerator(box, genGravityForce());
   return box;
 }
 
@@ -501,7 +501,7 @@ Sphere *  PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos
 
   sphere->setPosition(pos);
   world->addPrimitive( sphere );
-  world->addForceGenerator(sphere->body, genGravityForce());
+  world->addForceGenerator(sphere, genGravityForce());
   return sphere;
 }
 
@@ -578,11 +578,11 @@ void PrimitivesDemo::initTest()
   // initOneCapsule(p8, r8, h8, m8, a8);
 
   //Test spring 
-  Vector3 connectPt0 = Vector3(ffzero, ffzero, -ffloat(2));
-  Vector3 connectPt1 = Vector3(ffzero, cap->halfHeight + cap->radius, ffzero);
-  ffloat springCeof = ffloat(10);
-  ffloat maxForce = ffloat(100);
-  ffloat springLength = ffloat(4);
+  Vector3 connectPt0 = Vector3(ffzero, ffzero, ffzero);
+  Vector3 connectPt1 = Vector3(ffzero, ffzero, ffzero);
+  ffloat springCeof = ffloat(100);
+  ffloat maxForce = ffloat(500);
+  ffloat springLength = ffloat(6);
   SpringForce *spA = new SpringForce(connectPt0, cap->body, connectPt1, springCeof, springLength, maxForce );
   SpringForce *spB = new SpringForce(connectPt1, moveSphere->body, connectPt0, springCeof, springLength, maxForce );
   world->addForceGenerator(moveSphere, spA);

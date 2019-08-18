@@ -177,12 +177,12 @@ namespace physics
 
     void RigidBody::setPosition(const Vector3 &position)
 		{
-			this->position = position;
+			RigidBody::position = position;
 		}
 
-    void RigidBody::setVelocity(const Vector3 &veloctiy)
+    void RigidBody::setVelocity(const Vector3 &velocity)
 		{
-			this->velocity = veloctiy;
+			RigidBody::velocity = velocity;
 		}
 
     void RigidBody::addVelocity(const Vector3 &deltaVelocity)
@@ -192,7 +192,7 @@ namespace physics
 
     void RigidBody::setRotation(const Vector3 &rotation)
 		{
-			this->rotation = rotation;
+			RigidBody::rotation = rotation;
 		}
 
     void RigidBody::addRotation(const Vector3 & deltaRotation)
@@ -202,8 +202,8 @@ namespace physics
 
     void RigidBody::setOrientation(const Quaternion &orientation)
 		{
-			this->orientation = orientation;
-    	this->orientation.normalise();
+			RigidBody::orientation = orientation;
+    	RigidBody::orientation.normalise();
 		}
     
     Vector3 RigidBody::getPosInBodySpace(const Vector3 &pos) const
@@ -240,7 +240,7 @@ namespace physics
 
     void RigidBody::enableSleep(const bool canSleep)
 		{
-			this->canSleep = canSleep;
+			RigidBody::canSleep = canSleep;
 
     	if (!canSleep && !isAwake) 
 			{

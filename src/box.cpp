@@ -13,7 +13,7 @@ namespace physics
   :Primitive(PRIMITIVE_TYPE::PRIT_BOX)
   {
 
-    this->body = body;
+    Box::body = body;
     initWorldCorners();
   }
 
@@ -28,7 +28,7 @@ namespace physics
 
   void Box::setExtents(const Vector3 &extents)
   {
-    this->extents = extents;
+    Box::extents = extents;
     updateCorners();
   }
 
