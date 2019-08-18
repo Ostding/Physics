@@ -53,7 +53,7 @@ namespace physics
     return fManager.add(rb, fg);
   }
 
-  void World::removeForceGenerator(RigidBody *rb, unsigned int id)
+  ForceGenerator * World::removeForceGenerator(RigidBody *rb, unsigned int id)
   {
     fManager.remove(rb, id);
   }

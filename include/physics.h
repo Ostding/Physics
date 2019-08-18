@@ -28,6 +28,7 @@
 
 #include "gravity_force.h"
 #include "move_force.h"
+#include "spring_force.h"
 
 #include "renderer.h"
 

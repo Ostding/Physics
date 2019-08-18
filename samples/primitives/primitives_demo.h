@@ -31,6 +31,8 @@ private:
   void setMoveAcc(unsigned char key);
   void setCameraPos(unsigned char key);
   void setMoveVelocity(unsigned char key);
+  GravityForce * genGravityForce();
+
 private:
   bool simulate;
   bool started;
@@ -60,8 +62,6 @@ private:
   WASD_MODE wasdMode;
 
   Sphere *moveSphere;
-  GravityForce *gravityAcc;
-  MoveForce *moveAcc;
   unsigned int moveID;
   ffloat acc;
 

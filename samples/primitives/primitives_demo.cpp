@@ -28,10 +28,8 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   wasdMode = WASD_MODE::CAMERA;
 
   moveID = 0;
-  moveAcc = new MoveForce(Vector3::zero, Vector3::zero);
-  gravityAcc = new GravityForce(Vector3(ffzero, ffloat(-9.8), ffzero));
   acc = 10;
-  velocity = 100;
+  velocity = 50;
   
 }
 
@@ -41,18 +39,6 @@ PrimitivesDemo::~PrimitivesDemo()
   {
     delete world;
     world = 0;
-  }
-
-  if(gravityAcc)
-  {
-    delete gravityAcc;
-    gravityAcc = 0;
-  }
-
-  if(moveAcc)
-  {
-    delete moveAcc;
-    moveAcc = 0;
   }
 }
 
@@ -79,7 +65,7 @@ void PrimitivesDemo::onDisplay()
 
   glColor3f(0.0f, 0.0f, 0.0f);
 
-  textOut(10.0f, 100.0f, "Physic Demo: Test Fraction \n \
+  textOut(10.0f, 100.0f, "Physic Demo: Test primitives and force generators \n \
     Press 'g' to run; \n \
     Press 'space' to simulate one step; \n \
     Press mouse left button and drag to adjust camera angle; \n \
@@ -177,14 +163,18 @@ void PrimitivesDemo::setMoveAcc(unsigned char key)
       break;
     }
   }
-
-  Vector3 a = Vector3(x, ffzero, z);
-  moveAcc->setForceAcceleration(a);
+  
   if(moveID != 0)
   {
-    world->removeForceGenerator(moveSphere->body, moveID);
+    ForceGenerator *f = world->removeForceGenerator(moveSphere->body, moveID);
+    if(f != 0)
+      delete f;
     moveID = 0;
   }
+
+  Vector3 a = Vector3(x, ffzero, z);
+  MoveForce *moveAcc = new MoveForce(Vector3::zero, Vector3::zero);
+  moveAcc->setForceAcceleration(a);
   
   moveSphere->body->setAwake(true);
   moveID = world->addForceGenerator(moveSphere->body, moveAcc);
@@ -387,6 +377,10 @@ void PrimitivesDemo::onUpdate()
       world->update(deltaTime);
   }
 }
+GravityForce * PrimitivesDemo::genGravityForce()
+{
+  return new GravityForce(Vector3(ffzero, ffloat(-9.8), ffzero));
+}
 
 Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
 {
@@ -408,7 +402,7 @@ Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radi
   Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   cap->setOrientation(q);
   world->addPrimitive(cap);
-  world->addForceGenerator(cap->body, gravityAcc);
+  world->addForceGenerator(cap->body, genGravityForce());
   return cap;
 }
 
@@ -471,7 +465,7 @@ Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat 
   // Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
   world->addPrimitive( poly );
-  world->addForceGenerator(poly->body, gravityAcc);
+  world->addForceGenerator(poly->body, genGravityForce());
   return poly;
 }
 
@@ -490,7 +484,7 @@ Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, con
   Quaternion q = Quaternion::fromEulerAngles(Vector3(angles.x, angles.y, angles.z));
   box->setOrientation(q);
   world->addPrimitive( box );
-  world->addForceGenerator(box->body, gravityAcc);
+  world->addForceGenerator(box->body, genGravityForce());
   return box;
 }
 
@@ -507,7 +501,7 @@ Sphere *  PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos
 
   sphere->setPosition(pos);
   world->addPrimitive( sphere );
-  world->addForceGenerator(sphere->body, gravityAcc);
+  world->addForceGenerator(sphere->body, genGravityForce());
   return sphere;
 }
 
@@ -574,7 +568,7 @@ void PrimitivesDemo::initTest()
   ffloat m7 = ffloat(10);
   ffloat r7 = ffloat(2);
   ffloat h7 = ffloat(2);
-  initOneCapsule(p7, r7, h7, m7, a7);
+  Capsule *cap = initOneCapsule(p7, r7, h7, m7, a7);
 
   Vector3 p8 = Vector3(ffzero, ffloat(25), ffzero);
   Vector3 a8 = Vector3(ffloat(10), ffloat(30), ffloat(60));
@@ -583,7 +577,10 @@ void PrimitivesDemo::initTest()
   ffloat h8 = ffloat(2);
   initOneCapsule(p8, r8, h8, m8, a8);
 
-  world->prepare();
+  //Test spring 
+  // SpringForce *spA = new SpringForce();
+
+  // world->prepare();
   started = true;
 }
 

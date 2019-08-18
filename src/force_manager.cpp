@@ -16,6 +16,22 @@ namespace physics
     return ++__force_id;
   }
 
+  ForceManager::~ForceManager()
+  {
+    for (MapBodies::iterator it = registrations.begin(); it != registrations.end(); it++)
+    {
+      RigidBody *body = it->first;
+      for (MapGenerators::iterator itor = it->second.begin(); itor != it->second.end(); itor++)
+      {
+        ForceGenerator *f = itor->second;
+        if(f != 0)
+          delete f;
+      }
+      it->second.clear();
+    }
+    registrations.clear();
+  }
+
   unsigned int ForceManager::add(RigidBody* body,  ForceGenerator *fg)
   {
     MapBodies::iterator it = registrations.find(body);
@@ -30,8 +46,9 @@ namespace physics
     return id;
   }
 
-  void ForceManager::remove(RigidBody* body, unsigned int id)
+  ForceGenerator * ForceManager::remove(RigidBody* body, unsigned int id)
   {
+    ForceGenerator *f = 0;
     MapBodies::iterator it = registrations.find(body);
     if (it != registrations.end())
     {
@@ -41,10 +58,12 @@ namespace physics
         it->second.erase(itgen);
         if (it->second.empty())
         {
+          f = itgen->second;
           registrations.erase(it);
         }
       }
     }
+    return f;
   }
 
   void ForceManager::clear()

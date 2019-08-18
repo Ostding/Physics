@@ -11,6 +11,8 @@ namespace physics
   class ForceManager
   {
     public:
+      ~ForceManager();
+      
       typedef map<int, ForceGenerator *> MapGenerators;
 
       //This compare method is used to make sure that 
@@ -31,7 +33,7 @@ namespace physics
 		  unsigned int genID();
 
       unsigned int add(RigidBody* body, ForceGenerator *fg);
-      void remove(RigidBody* body, unsigned int id);
+      ForceGenerator * remove(RigidBody* body, unsigned int id);
       void clear();
       void updateForces(ffloat duration);
 

@@ -18,7 +18,7 @@ namespace physics
      * Overload this in implementations of the interface to calculate
      * and update the force applied to the given rigid body.
      */
-    virtual void updateForce(RigidBody *body, ffloat deltaTime) = 0;
+    virtual void updateForce(RigidBody *body, const ffloat &deltaTime) = 0;
   };
 
 }

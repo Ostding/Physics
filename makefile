@@ -17,7 +17,7 @@ PHYSIC_O= build/timer.o build/fixed_float.o build/vector3.o build/quaternion.o b
 					build/primitive.o build/plane.o build/sphere.o build/box.o build/polyhedron.o build/capsule.o \
 					build/contact.o build/collision_data.o build/contact_generator.o build/contact_processor.o \
 					build/contact_sphere.o build/contact_box.o build/contact_polyhedron.o build/contact_capsule.o\
-					build/force_manager.o build/gravity_force.o build/move_force.o\
+					build/force_manager.o build/gravity_force.o build/move_force.o build/spring_force.o \
 					build/octree.o build/world.o build/renderer.o \
 					build/gjk_epa.o build/utils.o
 
@@ -53,6 +53,7 @@ ${PHYSIC_O}:
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/force_manager.cpp -o build/force_manager.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/gravity_force.cpp -o build/gravity_force.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/move_force.cpp -o build/move_force.o
+	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/spring_force.cpp -o build/spring_force.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/world.cpp -o build/world.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/renderer.cpp -o build/renderer.o
 	${CXX} -c ${INC_FLAGS} ${CPP_FLAGS} src/utils.cpp -o build/utils.o

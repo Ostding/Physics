@@ -8,7 +8,7 @@ namespace physics
   {
   }
 
-  void MoveForce::updateForce(RigidBody *body, ffloat deltaTime)
+  void MoveForce::updateForce(RigidBody *body, const ffloat & deltaTime)
   {
     if (!body->hasFiniteMass()) return;
     body->addForceAtBodyPos(moveAcc * body->getMass(), point);

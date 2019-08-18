@@ -7,10 +7,10 @@ namespace physics
   {
   }
 
-  void GravityForce::updateForce(RigidBody *body, ffloat deltaTime)
+  void GravityForce::updateForce(RigidBody *body, const ffloat &deltaTime)
   {
     if (!body->hasFiniteMass()) return;
-    
+
     body->addForce(gravity * body->getMass());
   }
 }

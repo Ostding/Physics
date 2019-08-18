@@ -34,7 +34,7 @@ namespace physics
 			void removePrimitive(unsigned int id);
 
       unsigned int  addForceGenerator(RigidBody *rb, ForceGenerator *fg);
-			void removeForceGenerator(RigidBody *rb, unsigned int id);
+			ForceGenerator * removeForceGenerator(RigidBody *rb, unsigned int id);
 
       void addContactCeofficient(unsigned int a, unsigned int b, ffloat  friction, ffloat restitution);
 			void setContactDefaultCeofficient(ffloat friction, ffloat restitution);

@@ -10,7 +10,7 @@ namespace physics
     public:
       MoveForce(const Vector3 &acc, const Vector3 &point);
       virtual ~MoveForce(){}
-      virtual void updateForce(RigidBody *body, ffloat deltaTime);
+      virtual void updateForce(RigidBody *body, const ffloat &deltaTime);
 
     public:
       void setForceAcceleration(const Vector3 &acc);
