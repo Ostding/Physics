@@ -37,4 +37,13 @@ namespace physics
     tensor.setDiagonal(coeff, coeff, coeff);
     body->setInertiaTensor(tensor);
   }
+
+  void Sphere::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld)
+  {
+    Vector3 dir = direction;
+    dir.normalise();
+    Vector3 offset = dir * radius;
+    Vector3 pos = getColumnVector(3);
+    pointWorld =  pos + offset;
+  }
 }

@@ -18,6 +18,7 @@ namespace physics
 
       virtual void refreshAABB();
       virtual void render();
+      virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld);
 
       void initInertiaTensor(const ffloat &mass);
   };
