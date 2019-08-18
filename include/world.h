@@ -26,15 +26,15 @@ namespace physics
       ~World();
 
     public:
-      static int __pri_id;  
+      static unsigned int __pri_id;  
       void resetPriIDGen();
-			int genPrimitiveID();
+			unsigned int genPrimitiveID();
 
-      int addPrimitive( Primitive *pri );
-			void removePrimitive(int id);
+      unsigned int addPrimitive( Primitive *pri );
+			void removePrimitive(unsigned int id);
 
-      int  addForceGenerator(RigidBody *rb, ForceGenerator *fg);
-			void removeForceGenerator(RigidBody *rb, int id);
+      unsigned int  addForceGenerator(RigidBody *rb, ForceGenerator *fg);
+			void removeForceGenerator(RigidBody *rb, unsigned int id);
 
       void addContactCeofficient(unsigned int a, unsigned int b, ffloat  friction, ffloat restitution);
 			void setContactDefaultCeofficient(ffloat friction, ffloat restitution);

@@ -2,27 +2,27 @@
 
 namespace physics
 { 
-  int ForceManager::__force_id = 0;
+  unsigned int ForceManager::__force_id = 1;
 
   void ForceManager::resetID()
   {
-    __force_id = 0;
+    __force_id = 1;
   }
 
-  int ForceManager::genID()
+  unsigned int ForceManager::genID()
   {
     if (__force_id > 10000000)
-      __force_id = 0;
+      __force_id = 1;
     return ++__force_id;
   }
 
-  int ForceManager::add(RigidBody* body,  ForceGenerator *fg)
+  unsigned int ForceManager::add(RigidBody* body,  ForceGenerator *fg)
   {
     MapBodies::iterator it = registrations.find(body);
     MapGenerators gens;
     if (it != registrations.end())
       gens = it->second;
-    int id = genID();
+    unsigned int id = genID();
     fg->id = id;
     gens[id] = fg;
 
@@ -30,7 +30,7 @@ namespace physics
     return id;
   }
 
-  void ForceManager::remove(RigidBody* body, int id)
+  void ForceManager::remove(RigidBody* body, unsigned int id)
   {
     MapBodies::iterator it = registrations.find(body);
     if (it != registrations.end())

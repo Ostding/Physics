@@ -24,6 +24,14 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 
   lookDist = 50;
   started = false;
+
+  wasdMode = WASD_MODE::CAMERA;
+
+  moveID = 0;
+  moveAcc = new MoveForce(Vector3::zero, Vector3::zero);
+  gravityAcc = new GravityForce(Vector3(ffzero, ffloat(-9.8), ffzero));
+  acc = 10;
+  velocity = 100;
   
 }
 
@@ -33,6 +41,18 @@ PrimitivesDemo::~PrimitivesDemo()
   {
     delete world;
     world = 0;
+  }
+
+  if(gravityAcc)
+  {
+    delete gravityAcc;
+    gravityAcc = 0;
+  }
+
+  if(moveAcc)
+  {
+    delete moveAcc;
+    moveAcc = 0;
   }
 }
 
@@ -58,6 +78,7 @@ void PrimitivesDemo::onDisplay()
   render();
 
   glColor3f(0.0f, 0.0f, 0.0f);
+
   textOut(10.0f, 100.0f, "Physic Demo: Test Fraction \n \
     Press 'g' to run; \n \
     Press 'space' to simulate one step; \n \
@@ -66,8 +87,25 @@ void PrimitivesDemo::onDisplay()
     Press 'a' to move camera left; \n \
     Press 's' to move camera back; \n \
     Press 'd' to move camera right; \n \
+    Press 'm' to switch wasd key mode; \n \
     Press 'q' to quite sample application;");
   
+  char psz[64] = {0};
+  switch(wasdMode)
+  {
+    case WASD_MODE::CAMERA:
+      sprintf(psz, "wasd mode:%s", "camera");
+      break;
+    case WASD_MODE::MOVE:
+      sprintf(psz, "wasd mode:%s", "force");
+      break;
+    case WASD_MODE::VELOCITY:
+      sprintf(psz, "wasd mode:%s", "velocity");
+      break;
+  }
+ 
+  textOut(10, height - 20, psz);
+
   Application::onDisplay();
 }
 
@@ -109,18 +147,89 @@ void PrimitivesDemo::onMouseMove(int x, int y)
   }
 }
 
-void PrimitivesDemo::onKeyboardPress(unsigned char key)
+void PrimitivesDemo::setMoveAcc(unsigned char key)
 {
-  switch( key ) 
+  ffloat x, z;
+  switch(key)
   {
-    case 'g': case 'G':
-      simulate = true;
-      initTest();
+    case 'w': case 'W':
+    {
+      x = ffloat(std::sin(radP)) * acc;
+      z = ffloat(std::cos(radP)) * acc;
       break;
-    case ' ':
-      simulate = false;
-      world->update(deltaTime);
+    }
+    case 's': case 'S':
+    {
+      x = -ffloat(std::sin(radP)) * acc;
+      z = -ffloat(std::cos(radP)) * acc;
       break;
+    }
+    case 'a': case 'A':
+    {
+      x = ffloat(std::sin(radP + pi/2)) * acc;
+      z = ffloat(std::cos(radP + pi/2)) * acc;
+      break;
+    }
+    case 'd': case 'D':
+    {
+      x = ffloat(std::sin(radP - pi/2)) * acc;
+      z = ffloat(std::cos(radP - pi/2)) * acc;
+      break;
+    }
+  }
+
+  Vector3 a = Vector3(x, ffzero, z);
+  moveAcc->setForceAcceleration(a);
+  if(moveID != 0)
+  {
+    world->removeForceGenerator(moveSphere->body, moveID);
+    moveID = 0;
+  }
+  
+  moveSphere->body->setAwake(true);
+  moveID = world->addForceGenerator(moveSphere->body, moveAcc);
+}
+
+void PrimitivesDemo::setMoveVelocity(unsigned char key)
+{
+  ffloat x, z;
+  switch(key)
+  {
+    case 'w': case 'W':
+    {
+      x = ffloat(std::sin(radP));
+      z = ffloat(std::cos(radP));
+      break;
+    }
+    case 's': case 'S':
+    {
+      x = -ffloat(std::sin(radP));
+      z = -ffloat(std::cos(radP));
+      break;
+    }
+    case 'a': case 'A':
+    {
+      x = ffloat(std::sin(radP + pi/2));
+      z = ffloat(std::cos(radP + pi/2));
+      break;
+    }
+    case 'd': case 'D':
+    {
+      x = ffloat(std::sin(radP - pi/2));
+      z = ffloat(std::cos(radP - pi/2));
+      break;
+    }
+  }
+
+  moveSphere->body->setAwake();
+  Vector3 v = Vector3(x, ffzero, z) * velocity;
+  moveSphere->body->setVelocity(v);
+}
+
+void PrimitivesDemo::setCameraPos(unsigned char key)
+{
+  switch(key)
+  {
     case 'w': case 'W':
     {
       float step = 1;
@@ -166,8 +275,101 @@ void PrimitivesDemo::onKeyboardPress(unsigned char key)
       break;
     }
   }
+}
 
-  Application::onKeyboardPress(key);
+void PrimitivesDemo::onKeyboardUp(unsigned char key)
+{
+  if(moveID != 0)
+  {
+    world->removeForceGenerator(moveSphere->body, moveID);
+    moveID = 0;
+  }
+
+  Application::onKeyboardUp(key);
+}
+
+void PrimitivesDemo::onKeyboardDown(unsigned char key)
+{
+  switch( key ) 
+  {
+    case 'g': case 'G':
+      simulate = true;
+      initTest();
+      break;
+    case ' ':
+      simulate = false;
+      world->update(deltaTime);
+      break;
+    case 'w': case 'W':
+    {
+      if(wasdMode == WASD_MODE::CAMERA)
+        setCameraPos(key);
+      else
+      if(wasdMode == WASD_MODE::MOVE)
+        setMoveAcc(key);
+      else
+      if(wasdMode == WASD_MODE::VELOCITY)
+        setMoveVelocity(key);
+      break;
+    }
+    case 's': case 'S':
+    {
+      if(wasdMode == WASD_MODE::CAMERA)
+        setCameraPos(key);
+      else
+      if(wasdMode == WASD_MODE::MOVE)
+        setMoveAcc(key);
+      else
+      if(wasdMode == WASD_MODE::VELOCITY)
+        setMoveVelocity(key);
+      break;
+    }
+    case 'a': case 'A':
+    {
+      if(wasdMode == WASD_MODE::CAMERA)
+        setCameraPos(key);
+      else
+      if(wasdMode == WASD_MODE::MOVE)
+        setMoveAcc(key);
+      else
+      if(wasdMode == WASD_MODE::VELOCITY)
+        setMoveVelocity(key);
+      break;
+    }
+    case 'd': case 'D':
+    {
+      if(wasdMode == WASD_MODE::CAMERA)
+        setCameraPos(key);
+      else
+      if(wasdMode == WASD_MODE::MOVE)
+        setMoveAcc(key);
+      else
+      if(wasdMode == WASD_MODE::VELOCITY)
+        setMoveVelocity(key);
+      break;
+    }
+    case 'm': case 'M':
+    {
+      if(wasdMode == WASD_MODE::CAMERA)
+      {
+        wasdMode = WASD_MODE::MOVE;
+        glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+      }  
+      else 
+      if(wasdMode == WASD_MODE::MOVE)
+      {
+        wasdMode = WASD_MODE::VELOCITY;
+        glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+      }else
+      if(wasdMode == WASD_MODE::VELOCITY)
+      {
+        wasdMode = WASD_MODE::CAMERA;
+        glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+      }
+    }
+  }
+
+  Application::onKeyboardDown(key);
 }
 
 void PrimitivesDemo::render()
@@ -186,10 +388,10 @@ void PrimitivesDemo::onUpdate()
   }
 }
 
-void PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
+Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
 {
   Capsule *cap = new Capsule(halfHeight, radius);
-
+  cap->body->setConstAccumulator(Vector3::zero);
   cap->initInertiaTensor(mass);
   cap->body->setLinearDamp(ffloat(0.95f));
 	cap->body->setAngularDamp(ffloat(0.8f));
@@ -206,9 +408,11 @@ void PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, co
   Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   cap->setOrientation(q);
   world->addPrimitive(cap);
+  world->addForceGenerator(cap->body, gravityAcc);
+  return cap;
 }
 
-void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
+Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
 {
   Polyhedron::Points points;
   points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(-2)));
@@ -250,6 +454,7 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, c
   Polyhedron *poly = new Polyhedron();
   poly->setPoints(points, indices);
 
+  poly->body->setConstAccumulator(Vector3::zero);
   poly->body->setLinearDamp(ffloat(0.95f));
 	poly->body->setAngularDamp(ffloat(0.8f));
   
@@ -266,12 +471,15 @@ void PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, c
   // Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
   world->addPrimitive( poly );
+  world->addForceGenerator(poly->body, gravityAcc);
+  return poly;
 }
 
-void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass)
+Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass)
 {
   Box *box = new Box(extents);
   box->initInertiaTensor(mass);
+  box->body->setConstAccumulator(Vector3::zero);
   box->body->setLinearDamp(ffloat(0.95f));
 	box->body->setAngularDamp(ffloat(0.8f));
   box->body->setMass(mass);
@@ -282,11 +490,14 @@ void PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, cons
   Quaternion q = Quaternion::fromEulerAngles(Vector3(angles.x, angles.y, angles.z));
   box->setOrientation(q);
   world->addPrimitive( box );
+  world->addForceGenerator(box->body, gravityAcc);
+  return box;
 }
 
-void PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass)
+Sphere *  PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass)
 {
   Sphere * sphere = new Sphere(radius);
+  sphere->body->setConstAccumulator(Vector3::zero);
   sphere->initInertiaTensor(mass);
   sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.8f));
@@ -296,12 +507,15 @@ void PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, con
 
   sphere->setPosition(pos);
   world->addPrimitive( sphere );
+  world->addForceGenerator(sphere->body, gravityAcc);
+  return sphere;
 }
 
-void PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset)
+Plane * PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset)
 {
   Plane *plane = new Plane(dir, extents, offset);
   world->addPrimitive( plane );
+  return plane;
 }
 
 void PrimitivesDemo::initTest()
@@ -310,6 +524,11 @@ void PrimitivesDemo::initTest()
 
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
+
+  Vector3 p0 = Vector3(ffzero, ffloat(1), ffzero);
+  ffloat r0= ffloat(2);
+  ffloat m0 = ffloat(10);
+  moveSphere = initOneSphere(r0, p0, m0);
 
   Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
   ffloat r1 = ffloat(3);

@@ -11,9 +11,14 @@ extern Application *getApp();
 Application *app = 0;
 
 
-void keyboardFunc( unsigned char key, int x, int y )
+void keyboardDownFunc( unsigned char key, int x, int y )
 {
-  app -> onKeyboardPress(key);
+  app -> onKeyboardDown(key);
+}
+
+void keyboardUpFunc(unsigned char key, int x, int y )
+{
+  app -> onKeyboardUp(key);
 }
 
 void mousePressFunc( int button, int state, int x, int y )
@@ -74,7 +79,8 @@ void setupCallBacks()
 {
   glutDisplayFunc( displayFunc );
   glutReshapeFunc( reshapeFunc );
-  glutKeyboardFunc( keyboardFunc );
+  glutKeyboardFunc( keyboardDownFunc );
+  glutKeyboardUpFunc(keyboardUpFunc);
   glutMouseFunc( mousePressFunc );
   glutMotionFunc( mouseMoveFunc );
   glutIdleFunc( updateFunc );

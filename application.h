@@ -28,7 +28,8 @@ public:
 	virtual void onUpdate();
 	virtual void onResize(int width, int height);
 
-	virtual void onKeyboardPress(unsigned char key);
+	virtual void onKeyboardDown(unsigned char key);
+	virtual void onKeyboardUp(unsigned char key);
 	virtual void onMousePress(int button, int state, int x, int y);
 	virtual void onMouseMove(int x, int y);
 	virtual void onExit();
@@ -37,6 +38,7 @@ public:
 	double calcDuration();
 	void updateTime(double elapse);
 	void initLight();
+	
 protected:
 	int width;
 	int height;

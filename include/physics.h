@@ -25,6 +25,10 @@
 #include "gjk_epa.h"
 #include "world.h"
 #include "utils.h"
+
+#include "gravity_force.h"
+#include "move_force.h"
+
 #include "renderer.h"
 
 #endif

@@ -20,8 +20,8 @@ namespace physics
 
     AABB(const Vector3 &min, const Vector3 &max) 
     {
-      AABB::min = min;
-      AABB::max = max;
+      this->min = min;
+      this->max = max;
     }
 
     ~AABB(){}
@@ -35,8 +35,8 @@ namespace physics
 
     void set(const Vector3 &min, const Vector3 &max)
     {
-      AABB::min = min;
-      AABB::max = max;
+      this->min = min;
+      this->max = max;
     }
 
     void set2(const Vector3 &center, const Vector3 &extents)

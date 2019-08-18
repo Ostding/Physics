@@ -108,15 +108,20 @@ void Application::onResize(int width, int height)
 	setupView();
 }
 
-void Application::onKeyboardPress(unsigned char key)
+void Application::onKeyboardDown(unsigned char key)
 {
-  printf("key pressed %c\n", key);
+  printf("key down %c\n", key);
   switch( key ) {
   case 033: // Escape Key
   case 'q': case 'Q':
       exit( EXIT_SUCCESS );
       break;
   }
+}
+
+void Application::onKeyboardUp(unsigned char key)
+{
+  printf("key up %c\n", key);
 }
 
 //if ( state == GLUT_DOWN ) {

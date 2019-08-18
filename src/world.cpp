@@ -2,7 +2,7 @@
 
 namespace physics
 {
-  int World::__pri_id = 0;
+  unsigned int World::__pri_id = 1;
 
   World::World(const Vector3 &min, const Vector3 &max, unsigned maxContacts, unsigned iterations/* =0 */)
   :cProcessor(iterations)
@@ -15,19 +15,19 @@ namespace physics
 
   void World::resetPriIDGen()
   {
-    __pri_id = 0;
+    __pri_id = 1;
   }
 
-  int World::genPrimitiveID()
+  unsigned int World::genPrimitiveID()
   {
     if (__pri_id >= 10000000)
-      __pri_id = 0;
+      __pri_id = 1;
     return ++__pri_id;
   }
 
-  int World::addPrimitive( Primitive *pri)
+  unsigned int World::addPrimitive( Primitive *pri)
   {
-    int id = genPrimitiveID();
+    unsigned int id = genPrimitiveID();
     pri->id = id;
     primitives[id] = pri;
     pri->refreshAABB();
@@ -36,7 +36,7 @@ namespace physics
     return id;
   }
 
-  void World::removePrimitive(int id)
+  void World::removePrimitive(unsigned int id)
   {
     MapPrimitives::iterator it = primitives.find(id);
     if (it != primitives.end())
@@ -48,12 +48,12 @@ namespace physics
     }
   }
 
-  int World::addForceGenerator(RigidBody *rb, ForceGenerator *fg)
+  unsigned int World::addForceGenerator(RigidBody *rb, ForceGenerator *fg)
   {
     return fManager.add(rb, fg);
   }
 
-  void World::removeForceGenerator(RigidBody *rb, int id)
+  void World::removeForceGenerator(RigidBody *rb, unsigned int id)
   {
     fManager.remove(rb, id);
   }

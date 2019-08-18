@@ -12,7 +12,7 @@ public:
 
 public:
   virtual void onDisplay();
-  void onKeyboardPress(unsigned char key);
+  virtual void onKeyboardDown(unsigned char key);
 
 private:
   void doTestFixedFloat();

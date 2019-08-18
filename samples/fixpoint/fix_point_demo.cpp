@@ -21,7 +21,7 @@ void FixPointDemo::onDisplay()
       Press 'q' to quite sample application;");
 }
 
-void FixPointDemo::onKeyboardPress(unsigned char key)
+void FixPointDemo::onKeyboardDown(unsigned char key)
 {
   switch( key ) {
   case 'g': case 'G':
@@ -35,7 +35,7 @@ void FixPointDemo::onKeyboardPress(unsigned char key)
     break;
   }
 
-  Application::onKeyboardPress(key);
+  Application::onKeyboardDown(key);
 }
 
 

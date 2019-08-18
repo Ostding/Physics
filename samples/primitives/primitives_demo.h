@@ -13,7 +13,8 @@ public:
 
 public:
   virtual void onDisplay();
-  virtual void onKeyboardPress(unsigned char key);
+  virtual void onKeyboardDown(unsigned char key);
+  virtual void onKeyboardUp(unsigned char key);
   virtual void onUpdate();
   virtual void onMousePress(int button, int state, int x, int y);
   virtual void onMouseMove(int x, int y);
@@ -21,12 +22,15 @@ public:
 private:
   void render();
   void initTest();
-  void initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass);
-  void initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset);
-  void initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass);
-  void initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles);
-  void initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles);
+  Sphere * initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass);
+  Plane * initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset);
+  Box * initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass);
+  Polyhedron * initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles);
+  Capsule * initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles);
 
+  void setMoveAcc(unsigned char key);
+  void setCameraPos(unsigned char key);
+  void setMoveVelocity(unsigned char key);
 private:
   bool simulate;
   bool started;
@@ -46,6 +50,23 @@ private:
   float lookDist;
   float eX, eY, eZ;
   float dX, dY, dZ;
+
+  enum WASD_MODE
+  {
+    CAMERA = 0,
+    MOVE = 1,
+    VELOCITY = 2,
+  };
+  WASD_MODE wasdMode;
+
+  Sphere *moveSphere;
+  GravityForce *gravityAcc;
+  MoveForce *moveAcc;
+  unsigned int moveID;
+  ffloat acc;
+
+  ffloat velocity;
+
 };
 
 #endif

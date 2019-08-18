@@ -6,7 +6,7 @@ namespace physics
     Polyhedron::Polyhedron(RigidBody *body)
     :Primitive(PRIMITIVE_TYPE::PRIT_POLYHEDRON)
     {
-      Polyhedron::body = body;
+      this->body = body;
     }
     
     Polyhedron::Polyhedron()

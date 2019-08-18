@@ -26,12 +26,12 @@ namespace physics
 		  MapBodies registrations;
 
     public:
-      static int __force_id;
+      static unsigned int __force_id;
       void resetID();
-		  int genID();
+		  unsigned int genID();
 
-      int add(RigidBody* body, ForceGenerator *fg);
-      void remove(RigidBody* body, int id);
+      unsigned int add(RigidBody* body, ForceGenerator *fg);
+      void remove(RigidBody* body, unsigned int id);
       void clear();
       void updateForces(ffloat duration);
 

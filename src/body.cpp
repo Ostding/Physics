@@ -99,7 +99,7 @@ namespace physics
     , canSleep( true )
     , primitive( primitive )
     {
-      constantAcc = Vector3(ffzero, ffloat(-9.8), ffzero);
+      constantAcc = Vector3(ffzero, ffzero, ffzero);
     }
 
 	 	void RigidBody::update(ffloat deltaTime)
@@ -177,12 +177,12 @@ namespace physics
 
     void RigidBody::setPosition(const Vector3 &position)
 		{
-			RigidBody::position = position;
+			this->position = position;
 		}
 
     void RigidBody::setVelocity(const Vector3 &veloctiy)
 		{
-			RigidBody::velocity = velocity;
+			this->velocity = veloctiy;
 		}
 
     void RigidBody::addVelocity(const Vector3 &deltaVelocity)
@@ -192,7 +192,7 @@ namespace physics
 
     void RigidBody::setRotation(const Vector3 &rotation)
 		{
-			RigidBody::rotation = rotation;
+			this->rotation = rotation;
 		}
 
     void RigidBody::addRotation(const Vector3 & deltaRotation)
@@ -202,8 +202,8 @@ namespace physics
 
     void RigidBody::setOrientation(const Quaternion &orientation)
 		{
-			RigidBody::orientation = orientation;
-    	RigidBody::orientation.normalise();
+			this->orientation = orientation;
+    	this->orientation.normalise();
 		}
     
     Vector3 RigidBody::getPosInBodySpace(const Vector3 &pos) const
@@ -240,7 +240,7 @@ namespace physics
 
     void RigidBody::enableSleep(const bool canSleep)
 		{
-			RigidBody::canSleep = canSleep;
+			this->canSleep = canSleep;
 
     	if (!canSleep && !isAwake) 
 			{
@@ -264,7 +264,6 @@ namespace physics
     void RigidBody::addForce(const Vector3 &force)
 		{
 			forceAcc += force;
-			isAwake = true;
 		}
 
     void RigidBody::addForceAtWorldPos(const Vector3 &force, const Vector3 &pos)
@@ -276,7 +275,6 @@ namespace physics
       //扭矩，是力跟力臂的叉积
       //t = r x f
 			torqueAcc += pt.cross(force);
-			isAwake = true;
 		}
 
     void RigidBody::addForceAtBodyPos(const Vector3 &force, const Vector3 &pos)
@@ -288,7 +286,6 @@ namespace physics
     void RigidBody::addTorque(const Vector3 &torque)
 		{
 			torqueAcc += torque;
-    	isAwake = true;
 		}
 
     void RigidBody::setConstAccumulator(const Vector3 &accumulator)

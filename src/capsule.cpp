@@ -6,7 +6,7 @@ namespace physics
   Capsule::Capsule(RigidBody *body)
   :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
   {
-    Capsule::body = body;
+    this->body = body;
   }
   
   Capsule::Capsule()
