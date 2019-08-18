@@ -48,12 +48,13 @@ namespace physics
     }
   }
 
-  unsigned int World::addForceGenerator(RigidBody *rb, ForceGenerator *fg)
+  unsigned int World::addForceGenerator(Primitive *pri, ForceGenerator *fg)
   {
+    RigidBody *rb = pri -> body;
     return fManager.add(rb, fg);
   }
 
-  ForceGenerator * World::removeForceGenerator(RigidBody *rb, unsigned int id)
+  ForceGenerator * World::removeForceGenerator(Primitive *pri, unsigned int id)
   {
     fManager.remove(rb, id);
   }
