@@ -20,13 +20,13 @@ namespace physics
     
     public:
       ContactProcessor( unsigned iterations, 
-                        ffloat velocityEpsilon = ffloat(0.01f),
-                        ffloat positionEpsilon = ffloat(0.01f));
+                        ffloat velocityEpsilon = ffloat(0.001f),
+                        ffloat positionEpsilon = ffloat(0.001f));
 
       ContactProcessor( unsigned velocityIterations, 
                         unsigned positionIterations, 
-                        ffloat velocityEpsilon = ffloat(0.01f),
-                        ffloat positionEpsilon = ffloat(0.01f));
+                        ffloat velocityEpsilon = ffloat(0.001f),
+                        ffloat positionEpsilon = ffloat(0.001f));
 
       bool isValid();
 

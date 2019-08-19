@@ -11,7 +11,7 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   Vector3 spaceMin = Vector3(ffloat(-200.0f), ffzero, ffloat(-200.0f));
   Vector3 spaceMax = Vector3(ffloat(200.0f), ffloat(200.0f), ffloat(200.0f));
   unsigned maxContacts = 255;
-  unsigned iterations = 16;
+  unsigned iterations = 128;
   world = new World(spaceMin, spaceMax, maxContacts, iterations);
   simulate = false;
   lBtnDown = false;
