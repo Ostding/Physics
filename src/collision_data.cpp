@@ -3,8 +3,8 @@
 
 namespace physics
 {
-  ffloat CollisionData::defFriction = ffloat(0.2f);
-  ffloat CollisionData::defRestitution = ffloat(0.4f);
+  ffloat CollisionData::defFriction = ffloat(0.4f);
+  ffloat CollisionData::defRestitution = ffloat(0.2f);
 
   CollisionData::CollisionData(unsigned maxContacts)
   { 

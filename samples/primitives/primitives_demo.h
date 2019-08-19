@@ -15,7 +15,7 @@ public:
   virtual void onDisplay();
   virtual void onKeyboardDown(unsigned char key);
   virtual void onKeyboardUp(unsigned char key);
-  virtual void onUpdate();
+  virtual void onFixedUpdate(double duration);
   virtual void onMousePress(int button, int state, int x, int y);
   virtual void onMouseMove(int x, int y);
 
@@ -46,6 +46,8 @@ private:
   
   Point lastPoint;
   bool lBtnDown;
+  
+  float cameraStep;
   float radY;
   float radP;
 
@@ -66,7 +68,8 @@ private:
   ffloat acc;
 
   ffloat velocity;
-
+  
+  ffloat deltaTime;
 };
 
 #endif

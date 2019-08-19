@@ -10,6 +10,7 @@ namespace physics
   void GravityForce::updateForce(RigidBody *body, const ffloat &deltaTime)
   {
     if (!body->hasFiniteMass()) return;
+    if (!body->isAwake) return;
 
     body->addForce(gravity * body->getMass());
   }

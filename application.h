@@ -26,6 +26,7 @@ public:
 
 	virtual void onDisplay();
 	virtual void onUpdate();
+	virtual void onFixedUpdate(double druation);
 	virtual void onResize(int width, int height);
 
 	virtual void onKeyboardDown(unsigned char key);
@@ -46,8 +47,11 @@ protected:
 	unsigned fps;
 	double elapse;
 	unsigned frames;
-	
 	system_clock::time_point lastUpdateTime;
+
+	double fixedElapseTime;
+	double fixedUpdateDuration;
+
 };
 
 

@@ -1,13 +1,25 @@
 #include "application.h"
 
 Application::Application()
-:width(0),height(0),title(0),fps(0),elapse(0.0f),frames(0)
+:width(0)
+,height(0)
+,title(0)
+,fps(0)
+,elapse(0.0f)
+,frames(0)
+,fixedElapseTime(0.0f)
+,fixedUpdateDuration(0.01f)
 {
   lastUpdateTime = system_clock::now();
 }
 
 Application::Application(const char *title, int width, int height)
-:width(width),height(height),title(title),fps(0),elapse(0.0f),frames(0)
+:width(width)
+,height(height)
+,title(title)
+,fps(0)
+,elapse(0.0f)
+,frames(0)
 {
   lastUpdateTime = system_clock::now();
 }
@@ -76,28 +88,40 @@ void Application::onDisplay()
 
 void Application::onUpdate()
 {
+  double duration = calcDuration();
+  updateTime(duration);
 }
+
+void Application::onFixedUpdate(double druation)
+{}
 
 double Application::calcDuration()
 {
   auto now = system_clock::now();
   auto duration = duration_cast<microseconds>(now - lastUpdateTime);
   double t = double(duration.count()) * microseconds::period::num / microseconds::period::den;
+  lastUpdateTime = system_clock::now();
   return t;
 }
 
 void Application::updateTime(double duration)
 {
-  Application::elapse += duration;
+  elapse += duration;
+  fixedElapseTime += duration;
+  while(fixedElapseTime >= fixedUpdateDuration)
+  {
+    frames += 1;
+    onFixedUpdate(fixedUpdateDuration);
+    fixedElapseTime -= fixedUpdateDuration;
+  }
+  
   if(Application::elapse >= 1.0f)
   {
     fps = frames;
     frames = 0;
-    Application::elapse = 0.0f;
+    elapse = 0.0f;
   }
-  
-  frames += 1;
-  lastUpdateTime = system_clock::now();
+
 }
 
 void Application::onResize(int width, int height)

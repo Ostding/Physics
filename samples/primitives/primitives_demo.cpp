@@ -3,33 +3,35 @@
 #include "physics.h"
 
 static const double pi = 3.1416;
-static float stepTime = 0.017f;
-static ffloat deltaTime = ffloat(stepTime);
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
 :Application(title, width, height)
 {
+  fixedUpdateDuration = 0.015f;
+  deltaTime = ffloat(fixedUpdateDuration);
   Vector3 spaceMin = Vector3(ffloat(-200.0f), ffzero, ffloat(-200.0f));
   Vector3 spaceMax = Vector3(ffloat(200.0f), ffloat(200.0f), ffloat(200.0f));
   unsigned maxContacts = 255;
-  unsigned iterations = 4;
+  unsigned iterations = 16;
   world = new World(spaceMin, spaceMax, maxContacts, iterations);
   simulate = false;
   lBtnDown = false;
+
+  cameraStep = 0.05f;
   radY = (-1.0f/6)*pi;
   radP = pi;
 
   eX = 0.0f;
-  eY = 25.0f;
-  eZ = 50.0f;
+  eY = 2.5f;
+  eZ = 5.0f;
 
-  lookDist = 50;
+  lookDist = 5;
   started = false;
 
   wasdMode = WASD_MODE::CAMERA;
 
   moveID = 0;
   acc = 10;
-  velocity = 50;
+  velocity = 5.0;
   
 }
 
@@ -222,11 +224,10 @@ void PrimitivesDemo::setCameraPos(unsigned char key)
   {
     case 'w': case 'W':
     {
-      float step = 1;
-      float rp = std::abs(step * std::cos(radY));
+      float rp = std::abs(cameraStep * std::cos(radY));
       float dx = std::sin(radP) * rp;
       float dz = std::cos(radP) * rp;
-      float dy = step * std::sin(radY);
+      float dy = cameraStep * std::sin(radY);
       eX += dx;
       eY += dy;
       eZ += dz;
@@ -234,11 +235,10 @@ void PrimitivesDemo::setCameraPos(unsigned char key)
     }
     case 's': case 'S':
     {
-      float step = 1;
-      float rp = std::abs(step * std::cos(radY));
+      float rp = std::abs(cameraStep * std::cos(radY));
       float dx = std::sin(radP) * rp;
       float dz = std::cos(radP) * rp;
-      float dy = step * std::sin(radY);
+      float dy = cameraStep * std::sin(radY);
       eX -= dx;
       eY -= dy;
       eZ -= dz;
@@ -246,8 +246,7 @@ void PrimitivesDemo::setCameraPos(unsigned char key)
     }
     case 'a': case 'A':
     {
-      float step = 1;
-      float rp = std::abs(step * std::cos(radY));
+      float rp = std::abs(cameraStep * std::cos(radY));
       float dx = std::sin(radP + pi/2) * rp;
       float dz = std::cos(radP + pi/2) * rp;
       eX += dx;
@@ -256,8 +255,7 @@ void PrimitivesDemo::setCameraPos(unsigned char key)
     }
     case 'd': case 'D':
     {
-      float step = 1;
-      float rp = std::abs(step * std::cos(radY));
+      float rp = std::abs(cameraStep * std::cos(radY));
       float dx = std::sin(radP - pi/2) * rp;
       float dz = std::cos(radP - pi/2) * rp;
       eX += dx;
@@ -343,18 +341,15 @@ void PrimitivesDemo::onKeyboardDown(unsigned char key)
       if(wasdMode == WASD_MODE::CAMERA)
       {
         wasdMode = WASD_MODE::MOVE;
-        glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
       }  
       else 
       if(wasdMode == WASD_MODE::MOVE)
       {
         wasdMode = WASD_MODE::VELOCITY;
-        glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
       }else
       if(wasdMode == WASD_MODE::VELOCITY)
       {
         wasdMode = WASD_MODE::CAMERA;
-        glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
       }
     }
   }
@@ -367,15 +362,10 @@ void PrimitivesDemo::render()
   world->render();
 }
 
-void PrimitivesDemo::onUpdate()
+void PrimitivesDemo::onFixedUpdate(double duration)
 {
-  double elapse = calcDuration();
-  if(elapse >= stepTime) 
-  {
-    updateTime(elapse);
-    if(simulate)
-      world->update(deltaTime);
-  }
+  if(simulate)
+    world->update(deltaTime);
 }
 GravityForce * PrimitivesDemo::genGravityForce()
 {
@@ -387,7 +377,7 @@ Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radi
   Capsule *cap = new Capsule(halfHeight, radius);
   cap->body->setConstAccumulator(Vector3::zero);
   cap->initInertiaTensor(mass);
-  cap->body->setLinearDamp(ffloat(0.1f));
+  cap->body->setLinearDamp(ffloat(0.95f));
 	cap->body->setAngularDamp(ffloat(0.8f));
   cap->body->setMass(mass);
   cap->body->enableSleep(true);
@@ -409,13 +399,13 @@ Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radi
 Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
 {
   Polyhedron::Points points;
-  points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(-4), ffloat(0), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(-2), ffloat(2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(2), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(2), ffloat(2), ffloat(2))); points.emplace_back(Vector3(ffloat(2), ffloat(2), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(2))); points.emplace_back(Vector3(ffloat(4), ffloat(0), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(2), ffloat(-2), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(2))); points.emplace_back(Vector3(ffloat(-2), ffloat(-2), ffloat(-2)));
-  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-2))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(2)));
+  points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-0.2))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(0.2)));
 
   Polyhedron::Indices indices;
   indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(1);
@@ -449,7 +439,7 @@ Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat 
   poly->setPoints(points, indices);
 
   poly->body->setConstAccumulator(Vector3::zero);
-  poly->body->setLinearDamp(ffloat(0.1f));
+  poly->body->setLinearDamp(ffloat(0.95f));
 	poly->body->setAngularDamp(ffloat(0.8f));
   
   poly->initInertiaTensor( mass);
@@ -474,7 +464,7 @@ Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, con
   Box *box = new Box(extents);
   box->initInertiaTensor(mass);
   box->body->setConstAccumulator(Vector3::zero);
-  box->body->setLinearDamp(ffloat(0.1f));
+  box->body->setLinearDamp(ffloat(0.95f));
 	box->body->setAngularDamp(ffloat(0.8f));
   box->body->setMass(mass);
   box->body->enableSleep(true);
@@ -493,7 +483,7 @@ Sphere *  PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos
   Sphere * sphere = new Sphere(radius);
   sphere->body->setConstAccumulator(Vector3::zero);
   sphere->initInertiaTensor(mass);
-  sphere->body->setLinearDamp(ffloat(0.1f));
+  sphere->body->setLinearDamp(ffloat(0.95f));
 	sphere->body->setAngularDamp(ffloat(0.8f));
   sphere->body->setMass(mass);
   sphere->body->enableSleep(true);
@@ -514,79 +504,80 @@ Plane * PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents,
 
 void PrimitivesDemo::initTest()
 {
+  lastUpdateTime = system_clock::now();
   if(started) return;
 
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
   initOnePlane( Vector3::up, e1, ffzero);
 
   Vector3 p0 = Vector3(ffzero, ffloat(1), ffzero);
-  ffloat r0 = ffloat(2);
+  ffloat r0 = ffloat(0.2);
   ffloat m0 = ffloat(10);
   moveSphere = initOneSphere(r0, p0, m0);
 
-  Vector3 p1 = Vector3(ffzero, ffloat(35), ffzero);
-  ffloat r1 = ffloat(3);
+  Vector3 p1 = Vector3(ffzero, ffloat(3.5), ffzero);
+  ffloat r1 = ffloat(0.3);
   ffloat m1 = ffloat(10);
   initOneSphere(r1, p1, m1);
 
-  Vector3 p2 = Vector3(ffzero, ffloat(20), ffzero);
-  ffloat r2 = ffloat(5);
+  Vector3 p2 = Vector3(ffzero, ffloat(2.0), ffzero);
+  ffloat r2 = ffloat(0.5);
   ffloat m2 = ffloat(10);
   initOneSphere(r2, p2, m2);
 
-  Vector3 p3 = Vector3(ffzero, ffloat(5), ffzero);
-  Vector3 e3 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 p3 = Vector3(ffzero, ffloat(0.5), ffzero);
+  Vector3 e3 = Vector3(ffloat(0.2), ffloat(0.2), ffloat(0.2));
   Vector3 a3 = Vector3(ffzero, ffloat(90), ffzero);
   ffloat m3 = ffloat(10);
   initOneBox(p3, e3, a3, m3);
 
-  Vector3 p4 = Vector3(ffloat(3), ffloat(10), ffzero);
-  Vector3 e4 = Vector3(ffloat(2), ffloat(2), ffloat(2));
+  Vector3 p4 = Vector3(ffloat(0.3), ffloat(1.0), ffzero);
+  Vector3 e4 = Vector3(ffloat(0.2), ffloat(0.2), ffloat(0.2));
   Vector3 a4 = Vector3(ffzero, ffloat(90), ffloat(45));
   ffloat m4 = ffloat(10);
   initOneBox(p4, e4, a4, m4);
 
   ffloat m5 = ffloat(2);
-  Vector3 p5 = Vector3(ffzero, ffloat(5), ffzero);
+  Vector3 p5 = Vector3(ffzero, ffloat(0.5), ffzero);
   initOnePolyHedron(p5, m5, Vector3(ffzero, ffloat(90), ffloat(45)));
 
   ffloat m6 = ffloat(2);
-  Vector3 p6 = Vector3(ffzero, ffloat(15), ffzero);
+  Vector3 p6 = Vector3(ffzero, ffloat(1.5), ffzero);
   initOnePolyHedron(p6, m6, Vector3(ffzero, ffloat(90), ffzero));
 
-  p6 = Vector3(ffloat(4), ffloat(15), ffzero);
+  p6 = Vector3(ffloat(0.4), ffloat(1.5), ffzero);
   initOnePolyHedron(p6, m6, Vector3(ffloat(45), ffloat(80), ffloat(45)));
-  p6 = Vector3(ffloat(-4), ffloat(15), ffzero);
+  p6 = Vector3(ffloat(-0.4), ffloat(1.5), ffzero);
   initOnePolyHedron(p6, m6, Vector3(ffloat(-45), ffloat(70), ffloat(45)));
-  p6 = Vector3(ffzero, ffloat(10), ffloat(4));
+  p6 = Vector3(ffzero, ffloat(1.0), ffloat(0.4));
   initOnePolyHedron(p6, m6, Vector3(ffloat(90), ffloat(60), ffloat(30)));
-  p6 = Vector3(ffzero, ffloat(15), ffloat(-4));
+  p6 = Vector3(ffzero, ffloat(1.5), ffloat(-0.4));
   initOnePolyHedron(p6, m6, Vector3(ffloat(60), ffloat(50), ffloat(35)));
 
-  Vector3 p7 = Vector3(ffzero, ffloat(15), ffzero);
+  Vector3 p7 = Vector3(ffzero, ffloat(1.5), ffzero);
   Vector3 a7 = Vector3(ffloat(10), ffloat(30), ffloat(60));
   ffloat m7 = ffloat(10);
-  ffloat r7 = ffloat(2);
-  ffloat h7 = ffloat(2);
+  ffloat r7 = ffloat(0.2);
+  ffloat h7 = ffloat(0.2);
   Capsule *cap = initOneCapsule(p7, r7, h7, m7, a7);
 
-  // Vector3 p8 = Vector3(ffzero, ffloat(25), ffzero);
-  // Vector3 a8 = Vector3(ffloat(10), ffloat(30), ffloat(60));
-  // ffloat m8 = ffloat(10);
-  // ffloat r8 = ffloat(2);
-  // ffloat h8 = ffloat(2);
-  // initOneCapsule(p8, r8, h8, m8, a8);
+  Vector3 p8 = Vector3(ffzero, ffloat(2.5), ffzero);
+  Vector3 a8 = Vector3(ffloat(10), ffloat(30), ffloat(60));
+  ffloat m8 = ffloat(10);
+  ffloat r8 = ffloat(0.2);
+  ffloat h8 = ffloat(0.2);
+  initOneCapsule(p8, r8, h8, m8, a8);
 
   //Test spring 
-  Vector3 connectPt0 = Vector3(ffzero, ffzero, ffzero);
-  Vector3 connectPt1 = Vector3(ffzero, ffzero, ffzero);
-  ffloat springCeof = ffloat(100);
-  ffloat maxForce = ffloat(500);
-  ffloat springLength = ffloat(6);
-  SpringForce *spA = new SpringForce(connectPt0, cap->body, connectPt1, springCeof, springLength, maxForce );
-  SpringForce *spB = new SpringForce(connectPt1, moveSphere->body, connectPt0, springCeof, springLength, maxForce );
-  world->addForceGenerator(moveSphere, spA);
-  world->addForceGenerator(cap, spB);
+  // Vector3 connectPt0 = Vector3(ffzero, ffzero, ffzero);
+  // Vector3 connectPt1 = Vector3(ffzero, ffzero, ffzero);
+  // ffloat springCeof = ffloat(10);
+  // ffloat maxForce = ffloat(50);
+  // ffloat springLength = ffloat(0.6);
+  // SpringForce *spA = new SpringForce(connectPt0, cap->body, connectPt1, springCeof, springLength, maxForce );
+  // SpringForce *spB = new SpringForce(connectPt1, moveSphere->body, connectPt0, springCeof, springLength, maxForce );
+  // world->addForceGenerator(moveSphere, spA);
+  // world->addForceGenerator(cap, spB);
   
   world->prepare();
   started = true;

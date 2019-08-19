@@ -104,7 +104,7 @@ namespace physics
     GLfloat mat_diffuse[]   = {r,g,b,1.0f};
     GLfloat mat_specular[]  = {0.7f,0.7f,0.7f,1.0f};
     GLfloat mat_emission[]  = {0.0f,0.0f,0.0f,1.f};
-    GLfloat mat_shininess   = 60.0f;
+    GLfloat mat_shininess   = 30.0f;
 
     glMaterialfv(GL_FRONT,GL_AMBIENT,mat_ambient);
     glMaterialfv(GL_FRONT,GL_DIFFUSE,mat_diffuse);
@@ -230,7 +230,7 @@ namespace physics
 		glMultMatrixf(mat);
 
 		glScalef(p->extents.x.to_d() * 2, p->extents.y.to_d() * 2, p->extents.z.to_d() * 2);
-
+    glEnable(GL_NORMALIZE);
 		glutSolidCube(1.0f);
 		glPopMatrix();
 
@@ -458,7 +458,7 @@ namespace physics
     glEnable(GL_DEPTH_TEST);
 
     //Contact normal
-    Vector3 n = p->contactNormal;// * ffabs(p->penetration);
+    Vector3 n = p->contactNormal * ffabs(p->penetration);
     glColor3f(1, 1, 0);
     glDisable(GL_DEPTH_TEST);
     glBegin(GL_LINES);
