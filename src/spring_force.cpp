@@ -33,7 +33,7 @@ namespace physics
     //Below is equal with [ force = dir.normalise() * f ]
     Vector3 force = dir * f;
 
-    body->addForceAtBodyPos(force, lws);
+    body->addForceAtWorldPos(force, lws);
   }
 
 }
