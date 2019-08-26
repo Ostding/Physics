@@ -272,7 +272,7 @@ namespace physics
 			pt -= position;
 
       forceAcc += force;
-      //扭矩，是力跟力臂的叉积
+      //转矩，是力跟力臂的叉积
       //t = r x f
 			torqueAcc += pt.cross(force);
 		}

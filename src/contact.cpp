@@ -151,10 +151,10 @@ namespace physics
     Matrix3 *iitWorld0 = &(bodies[0]->iitWorld);
     if(friction == ffzero)
     {
-      //Calculate velcity's change in world space along contact normal direction
+      //Calculate velcity's change in world space along contact tangential direction
       Vector3 deltaVelocityWorld = relativeContactPosition[0].cross(contactNormal);
       deltaVelocityWorld = iitWorld0->transform(deltaVelocityWorld);
-      //角动量，是动量跟距离的叉积
+  
       deltaVelocityWorld = deltaVelocityWorld.cross(relativeContactPosition[0]);
 
       //Get component in contact normal direction
