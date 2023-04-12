@@ -30,6 +30,8 @@
 #include "move_force.h"
 #include "spring_force.h"
 
+#ifndef DISABLE_RENDER
 #include "renderer.h"
+#endif
 
 #endif

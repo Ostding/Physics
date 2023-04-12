@@ -7,7 +7,7 @@ namespace physics
   ffloat CollisionData::defRestitution = ffloat(0.02f);
 
   CollisionData::CollisionData(unsigned maxContacts)
-  { 
+  {
     CollisionData::maxContacts = maxContacts;
     contactArray = new Contact[maxContacts];
     reset();
@@ -15,7 +15,7 @@ namespace physics
 
   CollisionData::~CollisionData()
   {
-    if(contactArray != 0)
+    if (contactArray != 0)
     {
       delete contactArray;
       contactArray = 0;
@@ -28,7 +28,7 @@ namespace physics
   }
 
   void CollisionData::reset()
-  {	
+  {
     contactsLeft = maxContacts;
     contactCount = 0;
     nextContact = contactArray;
@@ -43,10 +43,12 @@ namespace physics
 
   void CollisionData::render()
   {
-    //to do show contact point normal and penetration
-    for(Contact *p = contactArray; p < nextContact; p ++)
+#ifndef DISABLE_RENDER
+    // to do show contact point normal and penetration
+    for (Contact *p = contactArray; p < nextContact; p++)
     {
       Renderer::renderContact(p);
     }
+#endif
   }
 }

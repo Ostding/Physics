@@ -9,41 +9,43 @@ using namespace std;
 
 namespace physics
 {
-  struct SupportPoint
-  {
-    Vector3 minkowskiPoint;
+	struct SupportPoint
+	{
+		Vector3 minkowskiPoint;
 
-    Vector3 worldPointA;
-    Vector3 worldPointB;
+		Vector3 worldPointA;
+		Vector3 worldPointB;
 
-    bool operator == (const SupportPoint & other) { return minkowskiPoint == other.minkowskiPoint; }
-  
-    static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
-    {
-      direction.normalise();
-      SupportPoint newSupportPoint;
+		bool operator==(const SupportPoint &other) { return minkowskiPoint == other.minkowskiPoint; }
+
+		static SupportPoint support(Primitive *pri1, Primitive *pri2, Vector3 direction)
+		{
+			direction.normalise();
+			SupportPoint newSupportPoint;
 			pri1->findFarthestPointInDirection(direction, newSupportPoint.worldPointA);
-      pri2->findFarthestPointInDirection(-direction, newSupportPoint.worldPointB);
-			
-      newSupportPoint.minkowskiPoint = newSupportPoint.worldPointA - newSupportPoint.worldPointB;
+			pri2->findFarthestPointInDirection(-direction, newSupportPoint.worldPointB);
 
-      return newSupportPoint;
-    };
-  };
+			newSupportPoint.minkowskiPoint = newSupportPoint.worldPointA - newSupportPoint.worldPointB;
 
-  struct Point
+			return newSupportPoint;
+		};
+	};
+
+	struct Point
 	{
 		Vector3 position;
 		Point(const Vector3 &p) : position(p)
-		{}
+		{
+		}
 	};
 
-  struct LineSegment
+	struct LineSegment
 	{
 		Point A;
 		Point B;
 		LineSegment(const Vector3 &a, const Vector3 &b) : A(a), B(b)
-		{}
+		{
+		}
 
 		inline Point closestPointOnLineFromPoint(const Point &pt, ffloat &u, ffloat &v)
 		{
@@ -70,7 +72,7 @@ namespace physics
 		}
 	};
 
-  struct Simplex
+	struct Simplex
 	{
 		SupportPoint points[4];
 		int size = 0;
@@ -82,17 +84,31 @@ namespace physics
 
 		inline void clear() { size = 0; }
 
-		Simplex() :
-			a(points[0]),
-			b(points[1]),
-			c(points[2]),
-			d(points[3])
-		{}
+		Simplex() : a(points[0]),
+					b(points[1]),
+					c(points[2]),
+					d(points[3])
+		{
+		}
 
-
-		inline void set(SupportPoint a, SupportPoint b, SupportPoint c, SupportPoint d) { size = 4, this->a = a; this->b = b; this->c = c; this->d = d; }
-		inline void set(SupportPoint a, SupportPoint b, SupportPoint c) { size = 3, this->a = a; this->b = b; this->c = c; }
-		inline void set(SupportPoint a, SupportPoint b) { size = 2, this->a = a; this->b = b; }
+		inline void set(SupportPoint a, SupportPoint b, SupportPoint c, SupportPoint d)
+		{
+			size = 4, this->a = a;
+			this->b = b;
+			this->c = c;
+			this->d = d;
+		}
+		inline void set(SupportPoint a, SupportPoint b, SupportPoint c)
+		{
+			size = 3, this->a = a;
+			this->b = b;
+			this->c = c;
+		}
+		inline void set(SupportPoint a, SupportPoint b)
+		{
+			size = 2, this->a = a;
+			this->b = b;
+		}
 		inline void set(SupportPoint a) { size = 1, this->a = a; }
 
 		// Most recently added point is always added to the start of the list.
@@ -116,17 +132,17 @@ namespace physics
 				ffloat u = ffzero;
 				ffloat v = ffzero;
 
-				//找到原点到直线最近的点
+				// 找到原点到直线最近的点
 				Vector3 origin = Vector3::zero;
 				Point closestPoint = line.closestPointOnLineFromPoint(origin, u, v);
-				
-				//该点在a点外
+
+				// 该点在a点外
 				if (v < ffzero)
 					set(a);
-				//该点在b点外
+				// 该点在b点外
 				else if (u < ffzero)
 					set(b);
-				//该点在ab线段上
+				// 该点在ab线段上
 
 				searchDir = -closestPoint.position;
 				return false;
@@ -141,37 +157,36 @@ namespace physics
 				Vector3 edge1Normal = edge1.cross(triangleNormal);
 				Vector3 edge2Normal = triangleNormal.cross(edge2);
 
-				
-				//原点在三角形外ac边外侧
+				// 原点在三角形外ac边外侧
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
 				{
-					//原点在ac对面
+					// 原点在ac对面
 					if (edge2.dot(newPointToOrigin) > ffzero)
 					{
-						//垂直ac的方向重新搜索
+						// 垂直ac的方向重新搜索
 						searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 						clear();
-						set(a, c); //return as [A,C]
+						set(a, c); // return as [A,C]
 						return false;
 					}
 					else
 					{
-						//原点在bc边对面且在三角形外
+						// 原点在bc边对面且在三角形外
 						searchDir = newPointToOrigin;
 						clear();
-						set(a); //return a point A
+						set(a); // return a point A
 						return false;
 					}
 				}
 				else
 				{
-					//原点在三角形外ab边外侧
+					// 原点在三角形外ab边外侧
 					if (edge1Normal.dot(newPointToOrigin) > ffzero)
 					{
-						//原点在靠近ab边外
+						// 原点在靠近ab边外
 						if (edge1.dot(newPointToOrigin) > ffzero)
 						{
-							//垂直ab边重新搜索
+							// 垂直ab边重新搜索
 							searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 							clear();
 							set(a, b); // Return it as [A, B]
@@ -179,7 +194,7 @@ namespace physics
 						}
 						else
 						{
-							//原点在bc边对面且在三角形外
+							// 原点在bc边对面且在三角形外
 							searchDir = newPointToOrigin;
 							clear();
 							set(a);
@@ -188,15 +203,15 @@ namespace physics
 					}
 					else
 					{
-						//a点是沿垂直bc边搜索到的，现在原点在三角形空间内
-						//所以现在看原点是否在三角形上方还是下面
+						// a点是沿垂直bc边搜索到的，现在原点在三角形空间内
+						// 所以现在看原点是否在三角形上方还是下面
 						if (triangleNormal.dot(newPointToOrigin) > ffzero)
 						{
 							searchDir = triangleNormal;
 							return false;
 						}
 						else
-						{ //原点在三角形下面
+						{ // 原点在三角形下面
 							searchDir = -triangleNormal;
 							set(a, c, b);
 
@@ -218,32 +233,32 @@ namespace physics
 				Vector3 newPointToOrigin = -a.minkowskiPoint;
 
 				static const ffloat tolerance = ffloat(0.05f);
-				//原点在面abc外 simplex设置为三角形[a,b,c]
+				// 原点在面abc外 simplex设置为三角形[a,b,c]
 				if (face1Normal.dot(newPointToOrigin) > tolerance)
 				{
 					goto proc;
 				}
-				//原点在面acd外 simplex设置为三角形[a,c,d]
+				// 原点在面acd外 simplex设置为三角形[a,c,d]
 				if (face2Normal.dot(newPointToOrigin) > tolerance)
 				{
 					clear();
 					set(a, c, d);
 					goto proc;
 				}
-				//原点在面adb外 simplex设置为三角形[a,d,b]
+				// 原点在面adb外 simplex设置为三角形[a,d,b]
 				if (face3Normal.dot(newPointToOrigin) > tolerance)
 				{
 					clear();
 					set(a, d, b);
 					goto proc;
 				}
-				
-				//原点在锥体内部
+
+				// 原点在锥体内部
 				return true;
 
 			proc:
-				//注意这里simplex已经退化为三角形了
-				//下面要做的是判断原点是否在三角形正上方
+				// 注意这里simplex已经退化为三角形了
+				// 下面要做的是判断原点是否在三角形正上方
 				edge1 = b.minkowskiPoint - a.minkowskiPoint;
 				edge2 = c.minkowskiPoint - a.minkowskiPoint;
 				face1Normal = edge1.cross(edge2);
@@ -251,7 +266,7 @@ namespace physics
 
 				Vector3 edge1Normal = edge1.cross(face1Normal);
 				if (edge1Normal.dot(newPointToOrigin) > ffzero)
-				{//原点不在三角形abc正上方，在ab边外侧，则设置simplex为 边[a,b]
+				{ // 原点不在三角形abc正上方，在ab边外侧，则设置simplex为 边[a,b]
 					searchDir = Vector3::tripleCross(edge1, newPointToOrigin, edge1);
 					clear();
 					set(a, b);
@@ -260,7 +275,7 @@ namespace physics
 
 				Vector3 edge2Normal = face1Normal.cross(edge2);
 				if (edge2Normal.dot(newPointToOrigin) > ffzero)
-				{//原点不在三角形acd正上方，在ac边外侧，则设置simplex为 边[a,c]
+				{ // 原点不在三角形acd正上方，在ac边外侧，则设置simplex为 边[a,c]
 					searchDir = Vector3::tripleCross(edge2, newPointToOrigin, edge2);
 					clear();
 					set(a, c);
@@ -281,7 +296,7 @@ namespace physics
 	{
 		SupportPoint points[3];
 		Vector3 faceNormal;
-		PolytopeFace(const SupportPoint & supportA, const SupportPoint & supportB, const SupportPoint & supportC)
+		PolytopeFace(const SupportPoint &supportA, const SupportPoint &supportB, const SupportPoint &supportC)
 		{
 			points[0] = supportA;
 			points[1] = supportB;
@@ -293,12 +308,11 @@ namespace physics
 		}
 	};
 
-
 	struct PolytopeEdge
 	{
 		SupportPoint points[2];
 
-		PolytopeEdge(const SupportPoint & supportA, const SupportPoint & supportB)
+		PolytopeEdge(const SupportPoint &supportA, const SupportPoint &supportB)
 		{
 			points[0] = supportA;
 			points[1] = supportB;
@@ -307,9 +321,9 @@ namespace physics
 
 	// Process the specified edge, if another edge with the same points in the
 	// opposite order exists then it is removed and the new point is also not added
-	// "The trick is that if two triangles that are removed share an edge then that edge is gone for good, 
+	// "The trick is that if two triangles that are removed share an edge then that edge is gone for good,
 	// but if an edge is used by only one removed triangle then it will form part of the hole."
-	inline void polytopeAddEdge(std::list<PolytopeEdge> & aEdgeList, const SupportPoint & a, const SupportPoint & b)
+	inline void polytopeAddEdge(std::list<PolytopeEdge> &aEdgeList, const SupportPoint &a, const SupportPoint &b)
 	{
 		for (auto iterator = aEdgeList.begin(); iterator != aEdgeList.end(); ++iterator)
 		{
@@ -326,7 +340,7 @@ namespace physics
 	// Code from Christer Ericson's Real-Time Collision Detection
 	// Compute barycentric coordinates (u, v, w) for
 	// point p with respect to triangle (a, b, c)
-	inline bool barycentricProjection(Vector3 & aPoint, Vector3 & a, Vector3 & b, Vector3 & c, ffloat & u, ffloat & v, ffloat & w)
+	inline bool barycentricProjection(Vector3 &aPoint, Vector3 &a, Vector3 &b, Vector3 &c, ffloat &u, ffloat &v, ffloat &w)
 	{
 		Vector3 v0 = b - a, v1 = c - a, v2 = aPoint - a;
 		ffloat d00 = v0.dot(v0);

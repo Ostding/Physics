@@ -1,16 +1,18 @@
 #include "box.h"
+#ifndef DISABLE_RENDER
 #include "renderer.h"
+#endif
 
 namespace physics
 {
   Box::Box()
-  :Primitive(PRIMITIVE_TYPE::PRIT_BOX)
+      : Primitive(PRIMITIVE_TYPE::PRIT_BOX)
   {
     body = new RigidBody(this);
   }
 
   Box::Box(RigidBody *body)
-  :Primitive(PRIMITIVE_TYPE::PRIT_BOX)
+      : Primitive(PRIMITIVE_TYPE::PRIT_BOX)
   {
 
     Box::body = body;
@@ -18,8 +20,7 @@ namespace physics
   }
 
   Box::Box(const Vector3 &extents)
-  :Primitive(PRIMITIVE_TYPE::PRIT_BOX)
-  ,extents(extents)
+      : Primitive(PRIMITIVE_TYPE::PRIT_BOX), extents(extents)
   {
     body = new RigidBody(this);
     initWorldCorners();
@@ -35,7 +36,7 @@ namespace physics
   void Box::setPosition(const Vector3 &position)
   {
     body->setPosition(position);
-		body->updateDerivedData();
+    body->updateDerivedData();
 
     refreshAABB();
     updateTransform();
@@ -99,14 +100,14 @@ namespace physics
   void Box::updateCorners()
   {
     pointsLocal.clear();
-    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y,	-extents.z));
-    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y,	extents.z));
-    pointsLocal.emplace_back(Vector3(extents.x,	-extents.y,	-extents.z));
-    pointsLocal.emplace_back(Vector3(extents.x,	-extents.y,	extents.z));
-    pointsLocal.emplace_back(Vector3(-extents.x, extents.y,	-extents.z));
-    pointsLocal.emplace_back(Vector3(-extents.x, extents.y,	extents.z));
-    pointsLocal.emplace_back(Vector3(extents.x,	extents.y,	-extents.z));
-    pointsLocal.emplace_back(Vector3(extents.x,	extents.y,	extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y, -extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, -extents.y, extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x, -extents.y, -extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x, -extents.y, extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, extents.y, -extents.z));
+    pointsLocal.emplace_back(Vector3(-extents.x, extents.y, extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x, extents.y, -extents.z));
+    pointsLocal.emplace_back(Vector3(extents.x, extents.y, extents.z));
     refreshAABB();
   }
 
@@ -126,7 +127,7 @@ namespace physics
   {
     int i = 0;
     ffloat maxValue = pointsWorld[0].dot(direction);
-    
+
     for (int j = 1; j < pointsWorld.size(); j++)
     {
       ffloat value = pointsWorld[j].dot(direction);
@@ -141,15 +142,17 @@ namespace physics
 
   void Box::render()
   {
+#ifndef DISABLE_RENDER
     Renderer::renderBox(this);
+#endif
   }
 
   void Box::getAllPoints(std::vector<Vector3> &points)
   {
-    for(int i=0; i<pointsWorld.size(); i++)
+    for (int i = 0; i < pointsWorld.size(); i++)
     {
       points.push_back(pointsWorld[i]);
     }
   }
-  
+
 }

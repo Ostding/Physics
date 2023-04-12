@@ -4,7 +4,7 @@
 
 static const double pi = 3.1416;
 PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
-:Application(title, width, height)
+    : Application(title, width, height)
 {
   fixedUpdateDuration = 0.015f;
   deltaTime = ffloat(fixedUpdateDuration);
@@ -17,7 +17,7 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   lBtnDown = false;
 
   cameraStep = 0.05f;
-  radY = (-1.0f/6)*pi;
+  radY = (-1.0f / 6) * pi;
   radP = pi;
 
   eX = 0.0f;
@@ -32,12 +32,11 @@ PrimitivesDemo::PrimitivesDemo(const char *title, int width, int height)
   moveID = 0;
   acc = 10;
   velocity = 5.0;
-  
 }
 
 PrimitivesDemo::~PrimitivesDemo()
 {
-  if(world)
+  if (world)
   {
     delete world;
     world = 0;
@@ -47,21 +46,21 @@ PrimitivesDemo::~PrimitivesDemo()
 void PrimitivesDemo::onDisplay()
 {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-  
-	glLoadIdentity();    
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  glLoadIdentity();
   glEnable(GL_DEPTH_TEST);
 
   float rp = std::abs(lookDist * std::cos(radY));
   float dx = std::sin(radP) * rp;
   float dz = std::cos(radP) * rp;
   float dy = lookDist * std::sin(radY);
-  
+
   dX = eX + dx;
   dY = eY + dy;
   dZ = eZ + dz;
 
-  gluLookAt(eX, eY, eZ,  dX, dY, dZ,  0.0f, 1.0f, 0.0f);
+  gluLookAt(eX, eY, eZ, dX, dY, dZ, 0.0f, 1.0f, 0.0f);
 
   render();
 
@@ -77,21 +76,21 @@ void PrimitivesDemo::onDisplay()
     Press 'd' to move camera right; \n \
     Press 'm' to switch wasd key mode; \n \
     Press 'q' to quite sample application;");
-  
+
   char psz[64] = {0};
-  switch(wasdMode)
+  switch (wasdMode)
   {
-    case WASD_MODE::CAMERA:
-      sprintf(psz, "wasd mode:%s", "camera");
-      break;
-    case WASD_MODE::MOVE:
-      sprintf(psz, "wasd mode:%s", "force");
-      break;
-    case WASD_MODE::VELOCITY:
-      sprintf(psz, "wasd mode:%s", "velocity");
-      break;
+  case WASD_MODE::CAMERA:
+    sprintf(psz, "wasd mode:%s", "camera");
+    break;
+  case WASD_MODE::MOVE:
+    sprintf(psz, "wasd mode:%s", "force");
+    break;
+  case WASD_MODE::VELOCITY:
+    sprintf(psz, "wasd mode:%s", "velocity");
+    break;
   }
- 
+
   textOut(10, height - 20, psz);
 
   Application::onDisplay();
@@ -99,9 +98,9 @@ void PrimitivesDemo::onDisplay()
 
 void PrimitivesDemo::onMousePress(int button, int state, int x, int y)
 {
-  if(button == GLUT_LEFT_BUTTON)
+  if (button == GLUT_LEFT_BUTTON)
   {
-    if(state == GLUT_DOWN)
+    if (state == GLUT_DOWN)
     {
       lastPoint.x = x;
       lastPoint.y = y;
@@ -125,51 +124,56 @@ void PrimitivesDemo::onMouseMove(int x, int y)
   lastPoint.x = x;
   lastPoint.y = y;
 
-  if(lBtnDown)
-  {  
+  if (lBtnDown)
+  {
     radY += dtY;
     radP += dtP;
-    if(radY < (-pi/2)) radY = -pi/2;
-    if(radY > (pi/2)) radY = pi/2;
-
+    if (radY < (-pi / 2))
+      radY = -pi / 2;
+    if (radY > (pi / 2))
+      radY = pi / 2;
   }
 }
 
 void PrimitivesDemo::setMoveAcc(unsigned char key)
 {
   ffloat x, z;
-  switch(key)
+  switch (key)
   {
-    case 'w': case 'W':
-    {
-      x = ffloat(std::sin(radP)) * acc;
-      z = ffloat(std::cos(radP)) * acc;
-      break;
-    }
-    case 's': case 'S':
-    {
-      x = -ffloat(std::sin(radP)) * acc;
-      z = -ffloat(std::cos(radP)) * acc;
-      break;
-    }
-    case 'a': case 'A':
-    {
-      x = ffloat(std::sin(radP + pi/2)) * acc;
-      z = ffloat(std::cos(radP + pi/2)) * acc;
-      break;
-    }
-    case 'd': case 'D':
-    {
-      x = ffloat(std::sin(radP - pi/2)) * acc;
-      z = ffloat(std::cos(radP - pi/2)) * acc;
-      break;
-    }
+  case 'w':
+  case 'W':
+  {
+    x = ffloat(std::sin(radP)) * acc;
+    z = ffloat(std::cos(radP)) * acc;
+    break;
   }
-  
-  if(moveID != 0)
+  case 's':
+  case 'S':
+  {
+    x = -ffloat(std::sin(radP)) * acc;
+    z = -ffloat(std::cos(radP)) * acc;
+    break;
+  }
+  case 'a':
+  case 'A':
+  {
+    x = ffloat(std::sin(radP + pi / 2)) * acc;
+    z = ffloat(std::cos(radP + pi / 2)) * acc;
+    break;
+  }
+  case 'd':
+  case 'D':
+  {
+    x = ffloat(std::sin(radP - pi / 2)) * acc;
+    z = ffloat(std::cos(radP - pi / 2)) * acc;
+    break;
+  }
+  }
+
+  if (moveID != 0)
   {
     ForceGenerator *f = world->removeForceGenerator(moveSphere, moveID);
-    if(f != 0)
+    if (f != 0)
       delete f;
     moveID = 0;
   }
@@ -177,7 +181,7 @@ void PrimitivesDemo::setMoveAcc(unsigned char key)
   Vector3 a = Vector3(x, ffzero, z);
   MoveForce *moveAcc = new MoveForce(Vector3::zero, Vector3::zero);
   moveAcc->setForceAcceleration(a);
-  
+
   moveSphere->body->setAwake(true);
   moveID = world->addForceGenerator(moveSphere, moveAcc);
 }
@@ -185,32 +189,36 @@ void PrimitivesDemo::setMoveAcc(unsigned char key)
 void PrimitivesDemo::setMoveVelocity(unsigned char key)
 {
   ffloat x, z;
-  switch(key)
+  switch (key)
   {
-    case 'w': case 'W':
-    {
-      x = ffloat(std::sin(radP));
-      z = ffloat(std::cos(radP));
-      break;
-    }
-    case 's': case 'S':
-    {
-      x = -ffloat(std::sin(radP));
-      z = -ffloat(std::cos(radP));
-      break;
-    }
-    case 'a': case 'A':
-    {
-      x = ffloat(std::sin(radP + pi/2));
-      z = ffloat(std::cos(radP + pi/2));
-      break;
-    }
-    case 'd': case 'D':
-    {
-      x = ffloat(std::sin(radP - pi/2));
-      z = ffloat(std::cos(radP - pi/2));
-      break;
-    }
+  case 'w':
+  case 'W':
+  {
+    x = ffloat(std::sin(radP));
+    z = ffloat(std::cos(radP));
+    break;
+  }
+  case 's':
+  case 'S':
+  {
+    x = -ffloat(std::sin(radP));
+    z = -ffloat(std::cos(radP));
+    break;
+  }
+  case 'a':
+  case 'A':
+  {
+    x = ffloat(std::sin(radP + pi / 2));
+    z = ffloat(std::cos(radP + pi / 2));
+    break;
+  }
+  case 'd':
+  case 'D':
+  {
+    x = ffloat(std::sin(radP - pi / 2));
+    z = ffloat(std::cos(radP - pi / 2));
+    break;
+  }
   }
 
   moveSphere->body->setAwake();
@@ -220,54 +228,58 @@ void PrimitivesDemo::setMoveVelocity(unsigned char key)
 
 void PrimitivesDemo::setCameraPos(unsigned char key)
 {
-  switch(key)
+  switch (key)
   {
-    case 'w': case 'W':
-    {
-      float rp = std::abs(cameraStep * std::cos(radY));
-      float dx = std::sin(radP) * rp;
-      float dz = std::cos(radP) * rp;
-      float dy = cameraStep * std::sin(radY);
-      eX += dx;
-      eY += dy;
-      eZ += dz;
-      break;
-    }
-    case 's': case 'S':
-    {
-      float rp = std::abs(cameraStep * std::cos(radY));
-      float dx = std::sin(radP) * rp;
-      float dz = std::cos(radP) * rp;
-      float dy = cameraStep * std::sin(radY);
-      eX -= dx;
-      eY -= dy;
-      eZ -= dz;
-      break;
-    }
-    case 'a': case 'A':
-    {
-      float rp = std::abs(cameraStep * std::cos(radY));
-      float dx = std::sin(radP + pi/2) * rp;
-      float dz = std::cos(radP + pi/2) * rp;
-      eX += dx;
-      eZ += dz;
-      break;
-    }
-    case 'd': case 'D':
-    {
-      float rp = std::abs(cameraStep * std::cos(radY));
-      float dx = std::sin(radP - pi/2) * rp;
-      float dz = std::cos(radP - pi/2) * rp;
-      eX += dx;
-      eZ += dz;
-      break;
-    }
+  case 'w':
+  case 'W':
+  {
+    float rp = std::abs(cameraStep * std::cos(radY));
+    float dx = std::sin(radP) * rp;
+    float dz = std::cos(radP) * rp;
+    float dy = cameraStep * std::sin(radY);
+    eX += dx;
+    eY += dy;
+    eZ += dz;
+    break;
+  }
+  case 's':
+  case 'S':
+  {
+    float rp = std::abs(cameraStep * std::cos(radY));
+    float dx = std::sin(radP) * rp;
+    float dz = std::cos(radP) * rp;
+    float dy = cameraStep * std::sin(radY);
+    eX -= dx;
+    eY -= dy;
+    eZ -= dz;
+    break;
+  }
+  case 'a':
+  case 'A':
+  {
+    float rp = std::abs(cameraStep * std::cos(radY));
+    float dx = std::sin(radP + pi / 2) * rp;
+    float dz = std::cos(radP + pi / 2) * rp;
+    eX += dx;
+    eZ += dz;
+    break;
+  }
+  case 'd':
+  case 'D':
+  {
+    float rp = std::abs(cameraStep * std::cos(radY));
+    float dx = std::sin(radP - pi / 2) * rp;
+    float dz = std::cos(radP - pi / 2) * rp;
+    eX += dx;
+    eZ += dz;
+    break;
+  }
   }
 }
 
 void PrimitivesDemo::onKeyboardUp(unsigned char key)
 {
-  if(moveID != 0)
+  if (moveID != 0)
   {
     world->removeForceGenerator(moveSphere, moveID);
     moveID = 0;
@@ -278,80 +290,77 @@ void PrimitivesDemo::onKeyboardUp(unsigned char key)
 
 void PrimitivesDemo::onKeyboardDown(unsigned char key)
 {
-  switch( key ) 
+  switch (key)
   {
-    case 'g': case 'G':
-      simulate = true;
-      initTest();
-      break;
-    case ' ':
-      simulate = false;
-      world->update(deltaTime);
-      break;
-    case 'w': case 'W':
+  case 'g':
+  case 'G':
+    simulate = true;
+    initTest();
+    break;
+  case ' ':
+    simulate = false;
+    world->update(deltaTime);
+    break;
+  case 'w':
+  case 'W':
+  {
+    if (wasdMode == WASD_MODE::CAMERA)
+      setCameraPos(key);
+    else if (wasdMode == WASD_MODE::MOVE)
+      setMoveAcc(key);
+    else if (wasdMode == WASD_MODE::VELOCITY)
+      setMoveVelocity(key);
+    break;
+  }
+  case 's':
+  case 'S':
+  {
+    if (wasdMode == WASD_MODE::CAMERA)
+      setCameraPos(key);
+    else if (wasdMode == WASD_MODE::MOVE)
+      setMoveAcc(key);
+    else if (wasdMode == WASD_MODE::VELOCITY)
+      setMoveVelocity(key);
+    break;
+  }
+  case 'a':
+  case 'A':
+  {
+    if (wasdMode == WASD_MODE::CAMERA)
+      setCameraPos(key);
+    else if (wasdMode == WASD_MODE::MOVE)
+      setMoveAcc(key);
+    else if (wasdMode == WASD_MODE::VELOCITY)
+      setMoveVelocity(key);
+    break;
+  }
+  case 'd':
+  case 'D':
+  {
+    if (wasdMode == WASD_MODE::CAMERA)
+      setCameraPos(key);
+    else if (wasdMode == WASD_MODE::MOVE)
+      setMoveAcc(key);
+    else if (wasdMode == WASD_MODE::VELOCITY)
+      setMoveVelocity(key);
+    break;
+  }
+  case 'm':
+  case 'M':
+  {
+    if (wasdMode == WASD_MODE::CAMERA)
     {
-      if(wasdMode == WASD_MODE::CAMERA)
-        setCameraPos(key);
-      else
-      if(wasdMode == WASD_MODE::MOVE)
-        setMoveAcc(key);
-      else
-      if(wasdMode == WASD_MODE::VELOCITY)
-        setMoveVelocity(key);
-      break;
+      wasdMode = WASD_MODE::MOVE;
     }
-    case 's': case 'S':
+    else if (wasdMode == WASD_MODE::MOVE)
     {
-      if(wasdMode == WASD_MODE::CAMERA)
-        setCameraPos(key);
-      else
-      if(wasdMode == WASD_MODE::MOVE)
-        setMoveAcc(key);
-      else
-      if(wasdMode == WASD_MODE::VELOCITY)
-        setMoveVelocity(key);
-      break;
+      wasdMode = WASD_MODE::VELOCITY;
     }
-    case 'a': case 'A':
+    else if (wasdMode == WASD_MODE::VELOCITY)
     {
-      if(wasdMode == WASD_MODE::CAMERA)
-        setCameraPos(key);
-      else
-      if(wasdMode == WASD_MODE::MOVE)
-        setMoveAcc(key);
-      else
-      if(wasdMode == WASD_MODE::VELOCITY)
-        setMoveVelocity(key);
-      break;
+      wasdMode = WASD_MODE::CAMERA;
     }
-    case 'd': case 'D':
-    {
-      if(wasdMode == WASD_MODE::CAMERA)
-        setCameraPos(key);
-      else
-      if(wasdMode == WASD_MODE::MOVE)
-        setMoveAcc(key);
-      else
-      if(wasdMode == WASD_MODE::VELOCITY)
-        setMoveVelocity(key);
-      break;
-    }
-    case 'm': case 'M':
-    {
-      if(wasdMode == WASD_MODE::CAMERA)
-      {
-        wasdMode = WASD_MODE::MOVE;
-      }  
-      else 
-      if(wasdMode == WASD_MODE::MOVE)
-      {
-        wasdMode = WASD_MODE::VELOCITY;
-      }else
-      if(wasdMode == WASD_MODE::VELOCITY)
-      {
-        wasdMode = WASD_MODE::CAMERA;
-      }
-    }
+  }
   }
 
   Application::onKeyboardDown(key);
@@ -359,26 +368,28 @@ void PrimitivesDemo::onKeyboardDown(unsigned char key)
 
 void PrimitivesDemo::render()
 {
+#ifndef DISABLE_RENDER
   world->render();
+#endif
 }
 
 void PrimitivesDemo::onFixedUpdate(double duration)
 {
-  if(simulate)
+  if (simulate)
     world->update(deltaTime);
 }
-GravityForce * PrimitivesDemo::genGravityForce()
+GravityForce *PrimitivesDemo::genGravityForce()
 {
   return new GravityForce(Vector3(ffzero, ffloat(-9.8), ffzero));
 }
 
-Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
+Capsule *PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radius, const ffloat &halfHeight, const ffloat &mass, const Vector3 &angles)
 {
   Capsule *cap = new Capsule(halfHeight, radius);
   cap->body->setConstAccumulator(Vector3::zero);
   cap->initInertiaTensor(mass);
   cap->body->setLinearDamp(ffloat(0.95f));
-	cap->body->setAngularDamp(ffloat(0.8f));
+  cap->body->setAngularDamp(ffloat(0.8f));
   cap->body->setMass(mass);
   cap->body->enableSleep(true);
   cap->body->setAwake();
@@ -396,53 +407,107 @@ Capsule *  PrimitivesDemo::initOneCapsule(const Vector3 &pos, const ffloat &radi
   return cap;
 }
 
-Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
+Polyhedron *PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat &mass, const Vector3 &angles)
 {
   Polyhedron::Points points;
-  points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(0.2))); points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(-0.2)));
-  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-0.2))); points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(-0.4), ffloat(0), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(0.4), ffloat(0), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(0.2), ffloat(-0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(0.2)));
+  points.emplace_back(Vector3(ffloat(-0.2), ffloat(-0.2), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(-0.2)));
+  points.emplace_back(Vector3(ffloat(0), ffloat(0), ffloat(0.2)));
 
   Polyhedron::Indices indices;
-  indices.emplace_back(0); indices.emplace_back(2); indices.emplace_back(1);
-  indices.emplace_back(1); indices.emplace_back(2); indices.emplace_back(3);
-  indices.emplace_back(2); indices.emplace_back(4); indices.emplace_back(3);
-  indices.emplace_back(3); indices.emplace_back(4); indices.emplace_back(5);
-  indices.emplace_back(4); indices.emplace_back(6); indices.emplace_back(5);
-  indices.emplace_back(5); indices.emplace_back(6); indices.emplace_back(7);
-  indices.emplace_back(6); indices.emplace_back(8); indices.emplace_back(7);
-  indices.emplace_back(7); indices.emplace_back(8); indices.emplace_back(9);
-  indices.emplace_back(8); indices.emplace_back(10); indices.emplace_back(9);
-  indices.emplace_back(9); indices.emplace_back(10); indices.emplace_back(11);
-  indices.emplace_back(10); indices.emplace_back(0); indices.emplace_back(11);
-  indices.emplace_back(11); indices.emplace_back(0); indices.emplace_back(1);
+  indices.emplace_back(0);
+  indices.emplace_back(2);
+  indices.emplace_back(1);
+  indices.emplace_back(1);
+  indices.emplace_back(2);
+  indices.emplace_back(3);
+  indices.emplace_back(2);
+  indices.emplace_back(4);
+  indices.emplace_back(3);
+  indices.emplace_back(3);
+  indices.emplace_back(4);
+  indices.emplace_back(5);
+  indices.emplace_back(4);
+  indices.emplace_back(6);
+  indices.emplace_back(5);
+  indices.emplace_back(5);
+  indices.emplace_back(6);
+  indices.emplace_back(7);
+  indices.emplace_back(6);
+  indices.emplace_back(8);
+  indices.emplace_back(7);
+  indices.emplace_back(7);
+  indices.emplace_back(8);
+  indices.emplace_back(9);
+  indices.emplace_back(8);
+  indices.emplace_back(10);
+  indices.emplace_back(9);
+  indices.emplace_back(9);
+  indices.emplace_back(10);
+  indices.emplace_back(11);
+  indices.emplace_back(10);
+  indices.emplace_back(0);
+  indices.emplace_back(11);
+  indices.emplace_back(11);
+  indices.emplace_back(0);
+  indices.emplace_back(1);
 
-  indices.emplace_back(0); indices.emplace_back(13); indices.emplace_back(2);
-  indices.emplace_back(2); indices.emplace_back(13); indices.emplace_back(4);
-  indices.emplace_back(4); indices.emplace_back(13); indices.emplace_back(6);
-  indices.emplace_back(6); indices.emplace_back(13); indices.emplace_back(8);
-  indices.emplace_back(8); indices.emplace_back(13); indices.emplace_back(10);
-  indices.emplace_back(10); indices.emplace_back(13); indices.emplace_back(0);
-  indices.emplace_back(1); indices.emplace_back(3); indices.emplace_back(12);
-  indices.emplace_back(3); indices.emplace_back(5); indices.emplace_back(12);
-  indices.emplace_back(5); indices.emplace_back(7); indices.emplace_back(12);
-  indices.emplace_back(7); indices.emplace_back(9); indices.emplace_back(12);
-  indices.emplace_back(9); indices.emplace_back(11); indices.emplace_back(12);
-  indices.emplace_back(11); indices.emplace_back(1); indices.emplace_back(12);
-
+  indices.emplace_back(0);
+  indices.emplace_back(13);
+  indices.emplace_back(2);
+  indices.emplace_back(2);
+  indices.emplace_back(13);
+  indices.emplace_back(4);
+  indices.emplace_back(4);
+  indices.emplace_back(13);
+  indices.emplace_back(6);
+  indices.emplace_back(6);
+  indices.emplace_back(13);
+  indices.emplace_back(8);
+  indices.emplace_back(8);
+  indices.emplace_back(13);
+  indices.emplace_back(10);
+  indices.emplace_back(10);
+  indices.emplace_back(13);
+  indices.emplace_back(0);
+  indices.emplace_back(1);
+  indices.emplace_back(3);
+  indices.emplace_back(12);
+  indices.emplace_back(3);
+  indices.emplace_back(5);
+  indices.emplace_back(12);
+  indices.emplace_back(5);
+  indices.emplace_back(7);
+  indices.emplace_back(12);
+  indices.emplace_back(7);
+  indices.emplace_back(9);
+  indices.emplace_back(12);
+  indices.emplace_back(9);
+  indices.emplace_back(11);
+  indices.emplace_back(12);
+  indices.emplace_back(11);
+  indices.emplace_back(1);
+  indices.emplace_back(12);
 
   Polyhedron *poly = new Polyhedron();
   poly->setPoints(points, indices);
 
   poly->body->setConstAccumulator(Vector3::zero);
   poly->body->setLinearDamp(ffloat(0.95f));
-	poly->body->setAngularDamp(ffloat(0.8f));
-  
-  poly->initInertiaTensor( mass);
+  poly->body->setAngularDamp(ffloat(0.8f));
+
+  poly->initInertiaTensor(mass);
   poly->body->setMass(mass);
   poly->body->enableSleep(true);
   poly->body->setAwake();
@@ -454,18 +519,18 @@ Polyhedron * PrimitivesDemo::initOnePolyHedron(const Vector3 &pos, const ffloat 
   Quaternion q = Quaternion::fromEulerAngles(Vector3(ffloat(anglex), ffloat(angley), ffloat(anglez)));
   // Quaternion q = Quaternion::fromEulerAngles(angles);
   poly->setOrientation(q);
-  world->addPrimitive( poly );
+  world->addPrimitive(poly);
   world->addForceGenerator(poly, genGravityForce());
   return poly;
 }
 
-Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass)
+Box *PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, const Vector3 &angles, const ffloat &mass)
 {
   Box *box = new Box(extents);
   box->initInertiaTensor(mass);
   box->body->setConstAccumulator(Vector3::zero);
   box->body->setLinearDamp(ffloat(0.95f));
-	box->body->setAngularDamp(ffloat(0.8f));
+  box->body->setAngularDamp(ffloat(0.8f));
   box->body->setMass(mass);
   box->body->enableSleep(true);
   box->body->setAwake();
@@ -473,42 +538,43 @@ Box * PrimitivesDemo::initOneBox(const Vector3 &pos, const Vector3 &extents, con
   box->setPosition(pos);
   Quaternion q = Quaternion::fromEulerAngles(Vector3(angles.x, angles.y, angles.z));
   box->setOrientation(q);
-  world->addPrimitive( box );
+  world->addPrimitive(box);
   world->addForceGenerator(box, genGravityForce());
   return box;
 }
 
-Sphere *  PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass)
+Sphere *PrimitivesDemo::initOneSphere(const ffloat &radius, const Vector3 &pos, const ffloat &mass)
 {
-  Sphere * sphere = new Sphere(radius);
+  Sphere *sphere = new Sphere(radius);
   sphere->body->setConstAccumulator(Vector3::zero);
   sphere->initInertiaTensor(mass);
   sphere->body->setLinearDamp(ffloat(0.95f));
-	sphere->body->setAngularDamp(ffloat(0.8f));
+  sphere->body->setAngularDamp(ffloat(0.8f));
   sphere->body->setMass(mass);
   sphere->body->enableSleep(true);
   sphere->body->setAwake();
 
   sphere->setPosition(pos);
-  world->addPrimitive( sphere );
+  world->addPrimitive(sphere);
   world->addForceGenerator(sphere, genGravityForce());
   return sphere;
 }
 
-Plane * PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset)
+Plane *PrimitivesDemo::initOnePlane(const Vector3 &dir, const Vector3 &extents, const ffloat &offset)
 {
   Plane *plane = new Plane(dir, extents, offset);
-  world->addPrimitive( plane );
+  world->addPrimitive(plane);
   return plane;
 }
 
 void PrimitivesDemo::initTest()
 {
   lastUpdateTime = system_clock::now();
-  if(started) return;
+  if (started)
+    return;
 
   Vector3 e1 = Vector3(ffloat(100), ffloat(0.5), ffloat(100));
-  initOnePlane( Vector3::up, e1, ffzero);
+  initOnePlane(Vector3::up, e1, ffzero);
 
   Vector3 p0 = Vector3(ffzero, ffloat(1), ffzero);
   ffloat r0 = ffloat(0.2);
@@ -568,23 +634,22 @@ void PrimitivesDemo::initTest()
   ffloat h8 = ffloat(0.2);
   initOneCapsule(p8, r8, h8, m8, a8);
 
-  //Test spring 
+  // Test spring
   Vector3 connectPt0 = Vector3(ffzero, ffzero, ffzero);
   Vector3 connectPt1 = Vector3(ffzero, ffloat(0.2), ffzero);
   ffloat springCeof = ffloat(10);
   ffloat maxForce = ffloat(50);
   ffloat springLength = ffloat(0.6);
-  SpringForce *spA = new SpringForce(connectPt0, cap->body, connectPt1, springCeof, springLength, maxForce );
-  SpringForce *spB = new SpringForce(connectPt1, moveSphere->body, connectPt0, springCeof, springLength, maxForce );
+  SpringForce *spA = new SpringForce(connectPt0, cap->body, connectPt1, springCeof, springLength, maxForce);
+  SpringForce *spB = new SpringForce(connectPt1, moveSphere->body, connectPt0, springCeof, springLength, maxForce);
   world->addForceGenerator(moveSphere, spA);
   world->addForceGenerator(cap, spB);
-  
+
   world->prepare();
   started = true;
 }
 
-Application * getApp()
+Application *getApp()
 {
-    return new PrimitivesDemo("PrimitivesDemo", 1136, 640);
+  return new PrimitivesDemo("PrimitivesDemo", 1136, 640);
 }
-

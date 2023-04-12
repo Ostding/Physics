@@ -1,0 +1,23 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+</head>
+
+<body>
+    <script>
+        Module = {};
+        Module.onRuntimeInitialized = function () {
+            //do sth.
+            let x = Module._Func();
+            console.log(x);
+            console.log(typeof (x))
+        }
+    </script>
+    <script src="wrapper.js"></script>
+</body>
+
+</html>

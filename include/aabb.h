@@ -18,16 +18,16 @@ namespace physics
       reset();
     }
 
-    AABB(const Vector3 &min, const Vector3 &max) 
+    AABB(const Vector3 &min, const Vector3 &max)
     {
       this->min = min;
       this->max = max;
     }
 
-    ~AABB(){}
+    ~AABB() {}
 
   public:
-    AABB& operator = (const AABB &other)
+    AABB &operator=(const AABB &other)
     {
       set(other.min, other.max);
       return (*this);
@@ -63,13 +63,19 @@ namespace physics
 
     bool intersect(AABB &other)
     {
-      if (min.x > other.max.x) return false;
-      if (max.x < other.min.x) return false;
-      if (min.y > other.max.y) return false;
-      if (max.y < other.min.y) return false;
-      if (min.z > other.max.z) return false;
-      if (max.z < other.min.z) return false;
-    
+      if (min.x > other.max.x)
+        return false;
+      if (max.x < other.min.x)
+        return false;
+      if (min.y > other.max.y)
+        return false;
+      if (max.y < other.min.y)
+        return false;
+      if (min.z > other.max.z)
+        return false;
+      if (max.z < other.min.z)
+        return false;
+
       return true;
     }
 
@@ -81,6 +87,5 @@ namespace physics
     }
   };
 }
-
 
 #endif

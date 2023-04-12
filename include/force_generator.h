@@ -10,14 +10,13 @@ namespace physics
   {
   public:
     ForceGenerator()
-    :id(0) {}
-    virtual ~ForceGenerator()
-    {};
+        : id(0) {}
+    virtual ~ForceGenerator(){};
 
   public:
     int id;
     /**
-     * Overload this in implementations of the interface to calculate
+     * Overwrite this in implementations of the interface to calculate
      * and update the force applied to the given rigid body.
      */
     virtual void updateForce(RigidBody *body, const ffloat &deltaTime) = 0;

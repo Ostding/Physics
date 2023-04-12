@@ -10,30 +10,29 @@ namespace physics
 {
   class Capsule : public Primitive
   {
-    public:
-      Capsule();
-      Capsule(RigidBody *body);
-      Capsule(const ffloat &halfHeigh, const ffloat &radius);
+  public:
+    Capsule();
+    Capsule(RigidBody *body);
+    Capsule(const ffloat &halfHeigh, const ffloat &radius);
 
-    public:
-      ffloat halfHeight;
-      ffloat radius;
-      
-      Vector3 pointLocalUp;
-      Vector3 pointLocalDown;
-      Vector3 pointWorldUp;
-      Vector3 pointWorldDown;
+  public:
+    ffloat halfHeight;
+    ffloat radius;
 
-    public:
-      virtual void refreshAABB();
-      virtual void render();
-      virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld);
+    Vector3 pointLocalUp;
+    Vector3 pointLocalDown;
+    Vector3 pointWorldUp;
+    Vector3 pointWorldDown;
 
-      void initInertiaTensor(const ffloat &mass);
-      void setPosition(const Vector3 &position);
-      void setOrientation(const Quaternion &direction);
+  public:
+    virtual void refreshAABB();
+    virtual void render();
+    virtual void findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld);
+
+    void initInertiaTensor(const ffloat &mass);
+    void setPosition(const Vector3 &position);
+    void setOrientation(const Quaternion &direction);
   };
 }
-
 
 #endif

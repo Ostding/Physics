@@ -9,30 +9,29 @@ namespace physics
 
   class CollisionData
   {
-    public:
-      unsigned maxContacts;
-      Contact *contactArray;
-      Contact *nextContact;
+  public:
+    unsigned maxContacts;
+    Contact *contactArray;
+    Contact *nextContact;
 
-      int contactsLeft;
-      unsigned contactCount;
+    int contactsLeft;
+    unsigned contactCount;
 
-      ffloat friction;
-      ffloat restitution;
+    ffloat friction;
+    ffloat restitution;
 
-      static ffloat defFriction;
-      static ffloat defRestitution;
+    static ffloat defFriction;
+    static ffloat defRestitution;
 
-    public:
-      CollisionData(unsigned maxContacts);
-      ~CollisionData();
+  public:
+    CollisionData(unsigned maxContacts);
+    ~CollisionData();
 
-      bool hasMoreContacts();
-      void reset();
-      void addContacts(unsigned count);
-      void render();
+    bool hasMoreContacts();
+    void reset();
+    void addContacts(unsigned count);
+    void render();
   };
 }
-
 
 #endif

@@ -3,19 +3,17 @@
 
 namespace physics
 {
-  int OCTreeNode::MAX_LEVEL = 10; 
+	int OCTreeNode::MAX_LEVEL = 10;
 	int OCTreeNode::MAX_OBJECTS = 10;
 
 	OCTreeNode::OCTreeNode(AABB aabb, int level, int index, OCTreeNode *parent)
-		:level(level)
-		,index(index)
-		,parent(parent)
-		,aabb(aabb)
-		,isAllStatic(true)
-	{}
+		: level(level), index(index), parent(parent), aabb(aabb), isAllStatic(true)
+	{
+	}
 
 	OCTreeNode::~OCTreeNode()
-	{}
+	{
+	}
 
 	void OCTreeNode::destroy(OCTreeNode *root)
 	{
@@ -87,7 +85,7 @@ namespace physics
 		return true;
 	}
 
-	void OCTreeNode::getIndex(std::vector<int> &indices, Primitive * cp, bool ckBound, bool ckMore)
+	void OCTreeNode::getIndex(std::vector<int> &indices, Primitive *cp, bool ckBound, bool ckMore)
 	{
 		if (ckBound)
 		{
@@ -115,8 +113,8 @@ namespace physics
 				return;
 			}
 
-			//this is optimize
-			//if intersection more than two, it means that primitive should be hold in parent node
+			// this is optimize
+			// if intersection more than two, it means that primitive should be hold in parent node
 			if (indices.size() > 1)
 			{
 				cp->interCount = indices.size();
@@ -138,7 +136,7 @@ namespace physics
 		}
 	}
 
-	void OCTreeNode::insert(Primitive * cp)
+	void OCTreeNode::insert(Primitive *cp)
 	{
 		if (!children.empty())
 		{
@@ -159,8 +157,9 @@ namespace physics
 		if (primitives.size() > OCTreeNode::MAX_OBJECTS && level < OCTreeNode::MAX_LEVEL)
 		{
 			bool suc = split();
-			//If real split space, should insert all primitives to sub space nodes
-			if (suc) {
+			// If real split space, should insert all primitives to sub space nodes
+			if (suc)
+			{
 				std::vector<int> indices;
 				for (int i = primitives.size() - 1; i >= 0; i--)
 				{
@@ -175,13 +174,13 @@ namespace physics
 						primitives.erase(primitives.begin() + i);
 					}
 				}
-			}//Other wise just insert last one into sub space node
+			} // Other wise just insert last one into sub space node
 			else
 			{
 				Primitive *v = primitives.back();
 				std::vector<int> indices;
 				getIndex(indices, v, false, true);
-				
+
 				if (indices.size() == 1)
 				{
 					primitives.pop_back();
@@ -192,12 +191,12 @@ namespace physics
 		}
 		else
 		{
-			if(!cp->isStatic)
+			if (!cp->isStatic)
 				isAllStatic = false;
 		}
 	}
 
-	OCTreeNode * OCTreeNode::GetParent()
+	OCTreeNode *OCTreeNode::GetParent()
 	{
 		return parent;
 	}
@@ -211,21 +210,23 @@ namespace physics
 
 		VectorPrimitives toInsert;
 		std::vector<int> indices;
-		for (int i = primitives.size()-1; i >= 0; i--)
+		for (int i = primitives.size() - 1; i >= 0; i--)
 		{
-			
+
 			Primitive *p = primitives[i];
-			//plane does not contain a rigidbody
-			if (p->body && !p->body->isAwake) continue;
-			//static primitive which intersect with more than one sub space node 
-			//or this is leaf node
-			if(p->isStatic && (p->interCount > 1 || children.empty())) continue;
+			// plane does not contain a rigidbody
+			if (p->body && !p->body->isAwake)
+				continue;
+			// static primitive which intersect with more than one sub space node
+			// or this is leaf node
+			if (p->isStatic && (p->interCount > 1 || children.empty()))
+				continue;
 
 			if (!p->isStatic)
 			{
 				p->refreshAABB();
 
-				//check is no longer belong to this node
+				// check is no longer belong to this node
 				if (!p->aabb.intersect(aabb))
 				{
 					primitives.erase(primitives.begin() + i);
@@ -240,14 +241,14 @@ namespace physics
 
 			indices.clear();
 			getIndex(indices, p, true, true);
-			
+
 			if (indices.empty())
-			{//if primitive nolonger belongs to this node, we should reinsert it;
+			{ // if primitive nolonger belongs to this node, we should reinsert it;
 				primitives.erase(primitives.begin() + i);
 				toInsert.emplace_back(p);
 			}
 			else if (indices.size() == 1)
-			{//if primitive belongs to this node, and intersects with only one child, then move it to the child
+			{ // if primitive belongs to this node, and intersects with only one child, then move it to the child
 				int index = indices[0];
 				OCTreeNode *node = children[index];
 				if (p->node != node)
@@ -256,20 +257,20 @@ namespace physics
 					node->insert(p);
 				}
 			}
-			else//if primitive intersects with more than one node, we hold it in this node;
+			else // if primitive intersects with more than one node, we hold it in this node;
 			{
 				if (!p->isStatic)
 					isAllStatic = false;
 			}
 		}
 
-		//reinsert
+		// reinsert
 		for (VectorPrimitives::iterator it = toInsert.begin(); it != toInsert.end(); it++)
 		{
 			root->insert(*it);
 		}
 
-		for (VectorNodes::iterator it = children.begin(); it != children.end(); it ++)
+		for (VectorNodes::iterator it = children.begin(); it != children.end(); it++)
 		{
 			(*it)->refresh(root);
 		}
@@ -280,26 +281,26 @@ namespace physics
 		for (int i = 0; i < primitives.size(); i++)
 		{
 			Primitive *a = primitives[i];
-			//check intersection with each other
-			if(!isAllStatic)
+			// check intersection with each other
+			if (!isAllStatic)
 			{
 				for (int j = i + 1; j < primitives.size(); j++)
 				{
 					Primitive *b = primitives[j];
-					//static primitives no need to check intersection
+					// static primitives no need to check intersection
 					if (a->isStatic && b->isStatic)
 						continue;
 
 					unsigned int t = (a->tContact | b->tContact);
 					MapContBool::iterator it = mapIgnore.find(t);
-					if(it == mapIgnore.end() || (it != mapIgnore.end() && !it->second))
+					if (it == mapIgnore.end() || (it != mapIgnore.end() && !it->second))
 					{
 						if (a->aabb.intersect(b->aabb))
 							contacts.emplace_back(std::make_pair(a, b));
 					}
 				}
 			}
-			//check intersection with children's primitives
+			// check intersection with children's primitives
 			for (VectorNodes::iterator it = children.begin(); it != children.end(); it++)
 			{
 				OCTreeNode *p = *it;
@@ -309,7 +310,7 @@ namespace physics
 				}
 			}
 		}
-		//check children
+		// check children
 		for (VectorNodes::iterator it = children.begin(); it != children.end(); it++)
 		{
 			OCTreeNode *p = *it;
@@ -319,8 +320,8 @@ namespace physics
 
 	void OCTreeNode::getPotentialContacts(Primitive *cp, PotentialContacts &contacts, MapContBool &mapIgnore)
 	{
-		//check intersection with local primitives
-		if(!cp->isStatic || !isAllStatic)
+		// check intersection with local primitives
+		if (!cp->isStatic || !isAllStatic)
 		{
 			for (VectorPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
 			{
@@ -337,7 +338,7 @@ namespace physics
 				}
 			}
 		}
-		//check intersection with children's primitives
+		// check intersection with children's primitives
 		for (VectorNodes::iterator it = children.begin(); it != children.end(); it++)
 		{
 			OCTreeNode *p = *it;
@@ -350,6 +351,7 @@ namespace physics
 
 	void OCTreeNode::render()
 	{
+#ifndef DISABLE_RENDER
 		if (children.size() == 0)
 		{
 			Renderer::renderAABB(aabb);
@@ -362,6 +364,7 @@ namespace physics
 				p->render();
 			}
 		}
+#endif
 	}
 
 	OCTreeNode::VectorNodes &OCTreeNode::getChildren()

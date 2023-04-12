@@ -1,24 +1,24 @@
 #include "capsule.h"
+#ifndef DISABLE_RENDER
 #include "renderer.h"
+#endif
 
 namespace physics
 {
   Capsule::Capsule(RigidBody *body)
-  :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
+      : Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
   {
     this->body = body;
   }
-  
+
   Capsule::Capsule()
-  :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
+      : Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
   {
     body = new RigidBody(this);
   }
 
   Capsule::Capsule(const ffloat &halfHeight, const ffloat &radius)
-  :Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE)
-  ,halfHeight(halfHeight)
-  ,radius(radius)
+      : Primitive(PRIMITIVE_TYPE::PRIT_CAPSULE), halfHeight(halfHeight), radius(radius)
   {
     body = new RigidBody(this);
     pointLocalUp = Vector3(ffzero, halfHeight, ffzero);
@@ -32,7 +32,7 @@ namespace physics
 
     ffloat maxX, maxY, maxZ;
     ffloat minX, minY, minZ;
-    if(pointWorldUp.x > pointWorldDown.x)
+    if (pointWorldUp.x > pointWorldDown.x)
     {
       maxX = pointWorldUp.x + radius;
       minX = pointWorldDown.x - radius;
@@ -42,8 +42,8 @@ namespace physics
       maxX = pointWorldDown.x + radius;
       minX = pointWorldUp.x - radius;
     }
-    
-    if(pointWorldUp.y > pointWorldDown.y)
+
+    if (pointWorldUp.y > pointWorldDown.y)
     {
       maxY = pointWorldUp.y + radius;
       minY = pointWorldDown.y - radius;
@@ -54,7 +54,7 @@ namespace physics
       minY = pointWorldUp.y - radius;
     }
 
-    if(pointWorldUp.z > pointWorldDown.z)
+    if (pointWorldUp.z > pointWorldDown.z)
     {
       maxZ = pointWorldUp.z + radius;
       minZ = pointWorldDown.z - radius;
@@ -71,8 +71,8 @@ namespace physics
   void Capsule::initInertiaTensor(const ffloat &mass)
   {
     Matrix3 tensor;
-    const ffloat one_div3  = ffone / ffloat(3);
-    const ffloat one_div8  = ffone / ffloat(8);
+    const ffloat one_div3 = ffone / ffloat(3);
+    const ffloat one_div8 = ffone / ffloat(8);
     const ffloat one_div12 = ffone / ffloat(12);
 
     ffloat height = halfHeight * fftwo;
@@ -83,9 +83,9 @@ namespace physics
     ffloat vc = ffpi * height * r2;
     ffloat vs = fftwo_pi * one_div3 * r2 * radius;
     ffloat va = vc + vs;
-    cm = vc/va * mass;
-    sm = vs/va * mass;
-    
+    cm = vc / va * mass;
+    sm = vs / va * mass;
+
     // from cylinder
     tensor.data[4] = r2 * cm * ffhalf;
     tensor.data[0] = tensor.data[8] = tensor.data[4] * ffhalf + cm * height * height * one_div12;
@@ -104,7 +104,9 @@ namespace physics
 
   void Capsule::render()
   {
+#ifndef DISABLE_RENDER
     Renderer::renderCapsule(this);
+#endif
   }
 
   void Capsule::findFarthestPointInDirection(const Vector3 &direction, Vector3 &pointWorld)
@@ -115,16 +117,16 @@ namespace physics
 
     ffloat sma = pointWorldUp.dot(dir);
     ffloat smb = pointWorldDown.dot(dir);
-    if(sma > smb)
+    if (sma > smb)
       pointWorld = pointWorldUp + offset;
     else
       pointWorld = pointWorldDown + offset;
   }
-  
+
   void Capsule::setPosition(const Vector3 &position)
   {
     body->setPosition(position);
-		body->updateDerivedData();
+    body->updateDerivedData();
 
     refreshAABB();
     updateTransform();

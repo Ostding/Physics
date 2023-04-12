@@ -9,12 +9,11 @@ namespace physics
 {
   class GjkEpa
   {
-    public:
-      static bool epaContactDetection(Simplex & aSimplex, Primitive * cpa, Primitive * cpb, CollisionData * cData);
-      static bool extrapolateContactInformation(PolytopeFace * aClosestFace, Primitive * cpa, Primitive * cpb, CollisionData  * cData);
-      static bool generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
+  public:
+    static bool epaContactDetection(Simplex &aSimplex, Primitive *cpa, Primitive *cpb, CollisionData *cData);
+    static bool extrapolateContactInformation(PolytopeFace *aClosestFace, Primitive *cpa, Primitive *cpb, CollisionData *cData);
+    static bool generateContacts(Primitive *cpa, Primitive *cpb, CollisionData *cData);
   };
-} 
-
+}
 
 #endif

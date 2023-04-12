@@ -1,17 +1,18 @@
 #include "sphere.h"
 #include "body.h"
+#ifndef DISABLE_RENDER
 #include "renderer.h"
+#endif
 
 namespace physics
 {
   Sphere::Sphere()
-  :Primitive(PRIMITIVE_TYPE::PRIT_SPHERE)
-  {}
+      : Primitive(PRIMITIVE_TYPE::PRIT_SPHERE)
+  {
+  }
 
   Sphere::Sphere(const ffloat &radius)
-  :Primitive(PRIMITIVE_TYPE::PRIT_SPHERE)
-  ,radius(radius)
-  ,squareRadius(radius * radius)
+      : Primitive(PRIMITIVE_TYPE::PRIT_SPHERE), radius(radius), squareRadius(radius * radius)
   {
     body = new RigidBody(this);
     refreshAABB();
@@ -27,7 +28,9 @@ namespace physics
 
   void Sphere::render()
   {
+#ifndef DISABLE_RENDER
     Renderer::renderSphere(this);
+#endif
   }
 
   void Sphere::initInertiaTensor(const ffloat &mass)
@@ -44,6 +47,6 @@ namespace physics
     dir.normalise();
     Vector3 offset = dir * radius;
     Vector3 pos = getColumnVector(3);
-    pointWorld =  pos + offset;
+    pointWorld = pos + offset;
   }
 }

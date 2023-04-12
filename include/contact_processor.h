@@ -8,39 +8,40 @@ namespace physics
 {
   class ContactProcessor
   {
-    public:
-      unsigned velocityIterations;
-      unsigned positionIterations;
+  public:
+    unsigned velocityIterations;
+    unsigned positionIterations;
 
-      unsigned velocityIterationsUsed;
-      unsigned positionIterationsUsed;
+    unsigned velocityIterationsUsed;
+    unsigned positionIterationsUsed;
 
-      ffloat velocityEpsilon;
-      ffloat positionEpsilon;
-    
-    public:
-      ContactProcessor( unsigned iterations, 
-                        ffloat velocityEpsilon = ffloat(0.001f),
-                        ffloat positionEpsilon = ffloat(0.001f));
+    ffloat velocityEpsilon;
+    ffloat positionEpsilon;
 
-      ContactProcessor( unsigned velocityIterations, 
-                        unsigned positionIterations, 
-                        ffloat velocityEpsilon = ffloat(0.001f),
-                        ffloat positionEpsilon = ffloat(0.001f));
+  public:
+    ContactProcessor(unsigned iterations,
+                     ffloat velocityEpsilon = ffloat(0.001f),
+                     ffloat positionEpsilon = ffloat(0.001f));
 
-      bool isValid();
+    ContactProcessor(unsigned velocityIterations,
+                     unsigned positionIterations,
+                     ffloat velocityEpsilon = ffloat(0.001f),
+                     ffloat positionEpsilon = ffloat(0.001f));
 
-      void setIterations(unsigned iterations = 4);
-      void setIterations(unsigned velocityIterations = 4, unsigned positionIterations = 4);      
-      void setEpsilon(ffloat velocityEpsilon, ffloat positionEpsilon);
+    bool isValid();
 
-      void processContacts(CollisionData *cData, ffloat deltaTime);
+    void setIterations(unsigned iterations = 4);
+    void setIterations(unsigned velocityIterations = 4, unsigned positionIterations = 4);
+    void setEpsilon(ffloat velocityEpsilon, ffloat positionEpsilon);
 
-      void render();
-    protected:
-      void prepareContacts(Contact *contactArray, unsigned numContacts, ffloat deltaTime);
-      void adjustVelocities(Contact *contactArray, unsigned numContacts, ffloat deltaTime);
-      void adjustPositions(Contact *contacts, unsigned numContacts, ffloat deltaTime);
+    void processContacts(CollisionData *cData, ffloat deltaTime);
+
+    void render();
+
+  protected:
+    void prepareContacts(Contact *contactArray, unsigned numContacts, ffloat deltaTime);
+    void adjustVelocities(Contact *contactArray, unsigned numContacts, ffloat deltaTime);
+    void adjustPositions(Contact *contacts, unsigned numContacts, ffloat deltaTime);
   };
 }
 

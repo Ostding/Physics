@@ -1,5 +1,5 @@
 {
-  "C_Cpp.errorSquiggles": "Enabled",
+  "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
     "__locale": "cpp",
     "algorithm": "cpp",
@@ -55,6 +55,16 @@
     "__string": "cpp",
     "__threading_support": "cpp",
     "sstream": "cpp",
-    "string_view": "cpp"
+    "string_view": "cpp",
+    "force_manager.h": "c",
+    "timer.h": "c",
+    "my_printf.h": "c",
+    "octree.h": "c",
+    "contact.h": "c",
+    "contact_generator.h": "c",
+    "contact_processor.h": "c",
+    "simplex.h": "c",
+    "types.h": "c",
+    "physics.h": "c"
   }
 }

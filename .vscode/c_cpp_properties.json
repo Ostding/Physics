@@ -3,7 +3,8 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1"
             ],
             "defines": [],
             "macFrameworkPath": [
@@ -13,7 +14,8 @@
             "compilerPath": "/usr/bin/clang",
             "cStandard": "c11",
             "intelliSenseMode": "clang-x64",
-            "compileCommands": "${workspaceFolder}/projects/android/app/.externalNativeBuild/cmake/release/armeabi-v7a/compile_commands.json"
+            "compileCommands": "${workspaceFolder}/projects/android/app/.externalNativeBuild/cmake/release/armeabi-v7a/compile_commands.json",
+            "cppStandard": "c++11"
         }
     ],
     "version": 4

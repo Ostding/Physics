@@ -4,14 +4,14 @@ namespace physics
 {
   unsigned int World::__pri_id = 1;
 
-  World::World(const Vector3 &min, const Vector3 &max, unsigned maxContacts, unsigned iterations/* =0 */)
-  :cProcessor(iterations)
-  ,cGenerator(min, max)
-  ,cData(maxContacts)
-  {}
+  World::World(const Vector3 &min, const Vector3 &max, unsigned maxContacts, unsigned iterations /* =0 */)
+      : cProcessor(iterations), cGenerator(min, max), cData(maxContacts)
+  {
+  }
 
   World::~World()
-  {}
+  {
+  }
 
   void World::resetPriIDGen()
   {
@@ -25,7 +25,7 @@ namespace physics
     return ++__pri_id;
   }
 
-  unsigned int World::addPrimitive( Primitive *pri)
+  unsigned int World::addPrimitive(Primitive *pri)
   {
     unsigned int id = genPrimitiveID();
     pri->id = id;
@@ -50,16 +50,16 @@ namespace physics
 
   unsigned int World::addForceGenerator(Primitive *pri, ForceGenerator *fg)
   {
-    RigidBody *rb = pri -> body;
+    RigidBody *rb = pri->body;
     return fManager.add(rb, fg);
   }
 
-  ForceGenerator * World::removeForceGenerator(Primitive *pri, unsigned int id)
+  ForceGenerator *World::removeForceGenerator(Primitive *pri, unsigned int id)
   {
     return fManager.remove(pri->body, id);
   }
 
-  void World::addContactCeofficient(unsigned int a, unsigned int b, ffloat  friction, ffloat restitution)
+  void World::addContactCeofficient(unsigned int a, unsigned int b, ffloat friction, ffloat restitution)
   {
     cGenerator.addContactCeofficient(a, b, friction, restitution);
     cGenerator.addContactCeofficient(b, a, friction, restitution);
@@ -75,7 +75,8 @@ namespace physics
   {
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
     {
-      if (it->second->body == 0) continue;
+      if (it->second->body == 0)
+        continue;
       it->second->body->clearAccumulators();
       it->second->body->updateDerivedData();
       it->second->updateTransform();
@@ -87,11 +88,11 @@ namespace physics
     cData.reset();
     fManager.updateForces(deltaTime);
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
-		{ 
-			if (it->second->body == 0)
-				continue;
-			it->second->body->update(deltaTime);
-		}
+    {
+      if (it->second->body == 0)
+        continue;
+      it->second->body->update(deltaTime);
+    }
 
     cGenerator.update(deltaTime);
     cGenerator.generateContacts(&cData);
@@ -99,21 +100,21 @@ namespace physics
     cProcessor.processContacts(&cData, deltaTime);
 
     for (MapPrimitives::iterator it = primitives.begin(); it != primitives.end(); it++)
-		{
-			if (it->second->body == 0 || 
+    {
+      if (it->second->body == 0 ||
           it->second->isStatic ||
-          !it->second->body->isAwake )
-				continue;
+          !it->second->body->isAwake)
+        continue;
 
-			it->second->body->updateDerivedData();
-			it->second->updateTransform();
-		}
+      it->second->body->updateDerivedData();
+      it->second->updateTransform();
+    }
   }
 
   void World::renderPrimitives()
   {
     MapPrimitives::iterator it = primitives.begin();
-    for(; it != primitives.end(); it ++)
+    for (; it != primitives.end(); it++)
     {
       it->second->render();
     }
@@ -121,11 +122,13 @@ namespace physics
 
   void World::render()
   {
+#ifndef DISABLE_RENDER
     renderPrimitives();
     fManager.render();
     cGenerator.render();
     cProcessor.render();
     cData.render();
+#endif
   }
 
 }

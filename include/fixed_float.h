@@ -7,48 +7,47 @@ using namespace std;
 
 namespace physics
 {
-	typedef long long 	        int64;
-	typedef unsigned long long 	uint64;
+	typedef long long int64;
+	typedef unsigned long long uint64;
 
-	#define enlarge 	1000000LL
-	#define den001 		1000 //0.001
-	#define ficast(v) 	((int64)v * enlarge)
-	#define ffcast(v)		((int64)((double)v * enlarge))
-	#define fdcast(v)	((double)v / enlarge)
+#define enlarge 1000000LL
+#define den001 1000 // 0.001
+#define ficast(v) ((int64)v * enlarge)
+#define ffcast(v) ((int64)((double)v * enlarge))
+#define fdcast(v) ((double)v / enlarge)
 
-  class FixedFloat
-  {
+	class FixedFloat
+	{
 	public:
 		FixedFloat()
 		{
-		 	value = 0; 
+			value = 0;
 		}
 
-		FixedFloat(const FixedFloat &other) 
-		{ 
-			value = other.value; 
+		FixedFloat(const FixedFloat &other)
+		{
+			value = other.value;
 		}
 
-		FixedFloat(const int other) 		
-		{ 
+		FixedFloat(const int other)
+		{
 			value = ficast(other);
 		}
 
-		FixedFloat(const int64 other) 	
-		{ 
+		FixedFloat(const int64 other)
+		{
 			value = other;
 		}
 
-		FixedFloat(const float other) 	
+		FixedFloat(const float other)
 		{
-			value = ffcast(other); 
+			value = ffcast(other);
 		}
 
-		FixedFloat(const double other) 	
+		FixedFloat(const double other)
 		{
-			value = ffcast(other); 
+			value = ffcast(other);
 		}
-
 
 	public:
 		static const FixedFloat max;
@@ -66,22 +65,22 @@ namespace physics
 		static const FixedFloat half_pi;
 		static const FixedFloat quat_pi;
 		static const FixedFloat two_pi;
-		
+
 		static const FixedFloat rad_unit;
 		static const FixedFloat deg_unit;
 		static const FixedFloat e;
 
 	public:
-		int 	 to_i() const 
-		{ 
-			return (int)fdcast(value); 
+		int to_i() const
+		{
+			return (int)fdcast(value);
 		}
-		double to_d() const 
-		{ 
+		double to_d() const
+		{
 			return fdcast(value);
 		}
-		
-		const char * to_s() const
+
+		const char *to_s() const
 		{
 			static char ret[32];
 			memset(ret, 0, 32);
@@ -91,86 +90,90 @@ namespace physics
 		}
 
 	public:
-		FixedFloat & operator = (const FixedFloat & other) 
-		{ 
-			value = other.value; return *this; 
+		FixedFloat &operator=(const FixedFloat &other)
+		{
+			value = other.value;
+			return *this;
 		}
 
-		FixedFloat & operator = (const int other) 	
-		{ 
-			value = ffcast(other); return *this; 
+		FixedFloat &operator=(const int other)
+		{
+			value = ffcast(other);
+			return *this;
 		}
 
-		FixedFloat & operator = (const int64 other) 
-		{ 
-			value = other; return *this; 
+		FixedFloat &operator=(const int64 other)
+		{
+			value = other;
+			return *this;
 		}
 
-		FixedFloat & operator = (const long other) 	
-		{ 
-			value = ffcast(other); return * this; 
+		FixedFloat &operator=(const long other)
+		{
+			value = ffcast(other);
+			return *this;
 		}
 
-		FixedFloat & operator = (const float other) 
-		{ 
-			value = ffcast(other); return * this; 
+		FixedFloat &operator=(const float other)
+		{
+			value = ffcast(other);
+			return *this;
 		}
 
-		FixedFloat & operator = (const double other)
-		{ 
-			value = ffcast(other); return * this; 
+		FixedFloat &operator=(const double other)
+		{
+			value = ffcast(other);
+			return *this;
 		}
 
-
-		bool operator < 	(const FixedFloat & other) const 
-		{ 
-			return value <  other.value; 
+		bool operator<(const FixedFloat &other) const
+		{
+			return value < other.value;
 		}
 
-		bool operator <= 	(const FixedFloat & other) const 
-		{ 
-			return value <= other.value; 
+		bool operator<=(const FixedFloat &other) const
+		{
+			return value <= other.value;
 		}
 
-		bool operator > 	(const FixedFloat & other) const 
-		{ 
-			return value >  other.value; 
+		bool operator>(const FixedFloat &other) const
+		{
+			return value > other.value;
 		}
 
-		bool operator >= 	(const FixedFloat & other) const 
-		{ 
-			return value >= other.value; 
+		bool operator>=(const FixedFloat &other) const
+		{
+			return value >= other.value;
 		}
 
-		bool operator == 	(const FixedFloat & other) const 
-		{ 
-			return value == other.value; 
+		bool operator==(const FixedFloat &other) const
+		{
+			return value == other.value;
 		}
 
-		bool operator != 	(const FixedFloat & other) const 
-		{ 
-			return value != other.value; 
+		bool operator!=(const FixedFloat &other) const
+		{
+			return value != other.value;
 		}
 
-
-		FixedFloat operator + (const FixedFloat & other) const 
-		{ 
-			return value + other.value; 
+		FixedFloat operator+(const FixedFloat &other) const
+		{
+			return value + other.value;
 		}
 
-		FixedFloat operator - (const FixedFloat & other) const 
-		{ 
+		FixedFloat operator-(const FixedFloat &other) const
+		{
 			return value - other.value;
-		} 
+		}
 
-		FixedFloat operator * (const FixedFloat & other) const
+		FixedFloat operator*(const FixedFloat &other) const
 		{
 			double a = to_d();
 			double b = other.to_d();
 			return a * b;
 		}
 
-		FixedFloat operator / (const FixedFloat & other) const
+		FixedFloat operator/(const FixedFloat &other) const
 		{
 			double a = to_d();
 			double b = other.to_d();
@@ -178,20 +181,28 @@ namespace physics
 			return ((int64)(dr * enlarge));
 		}
 
-		FixedFloat & operator += (const FixedFloat & other) { value += other.value; return *this; }
-		FixedFloat & operator -= (const FixedFloat & other) { value -= other.value; return *this; }
-		
-		FixedFloat & operator *= (const FixedFloat & other) 
-		{ 
+		FixedFloat &operator+=(const FixedFloat &other)
+		{
+			value += other.value;
+			return *this;
+		}
+		FixedFloat &operator-=(const FixedFloat &other)
+		{
+			value -= other.value;
+			return *this;
+		}
+
+		FixedFloat &operator*=(const FixedFloat &other)
+		{
 			double a = to_d();
 			double b = other.to_d();
 			value = ffcast(a * b);
 			return *this;
 		}
 
-		FixedFloat & operator /= (const FixedFloat & other) 
-		{ 
-			if(value == 0LL) 
+		FixedFloat &operator/=(const FixedFloat &other)
+		{
+			if (value == 0LL)
 				return *this;
 
 			double a = to_d();
@@ -201,7 +212,7 @@ namespace physics
 			return *this;
 		}
 
-		FixedFloat operator -(void) const { return FixedFloat(-value); }
+		FixedFloat operator-(void) const { return FixedFloat(-value); }
 
 	public:
 		bool positive() const { return value > 0; }
@@ -215,8 +226,9 @@ namespace physics
 			// double f = v.to_d();
 			// return std::sin(f);
 
-			int64 i = std::fmod(v.value/den001, 6283);
-			if(i < 0) i += 6283;
+			int64 i = std::fmod(v.value / den001, 6283);
+			if (i < 0)
+				i += 6283;
 			return sin_table[i];
 		}
 
@@ -226,8 +238,9 @@ namespace physics
 			// double f = v.to_d();
 			// return std::cos(f);
 
-			int64 i = std::fmod(v.value/den001, 6283);
-			if(i < 0) i += 6283;
+			int64 i = std::fmod(v.value / den001, 6283);
+			if (i < 0)
+				i += 6283;
 			return cos_table[i];
 		}
 
@@ -251,11 +264,11 @@ namespace physics
 			// double d = v.to_d();
 			// return std::acos(d);
 
-			if(v > FixedFloat::one || v < -FixedFloat::one)
+			if (v > FixedFloat::one || v < -FixedFloat::one)
 				return 0;
-			
-			int64 i = std::fmod(v.value/den001, 2001);
-			return acos_table[i+1000];
+
+			int64 i = std::fmod(v.value / den001, 2001);
+			return acos_table[i + 1000];
 		}
 
 		static FixedFloat atan(const FixedFloat &v) { return atan2(v, enlarge); }
@@ -268,13 +281,13 @@ namespace physics
 			return r;
 		}
 
-		static FixedFloat abs(const FixedFloat &v) 
-		{ 
-			return std::abs(v.value); 
+		static FixedFloat abs(const FixedFloat &v)
+		{
+			return std::abs(v.value);
 		}
 
-		static FixedFloat pow(const FixedFloat &n, const FixedFloat &e) 
-		{ 
+		static FixedFloat pow(const FixedFloat &n, const FixedFloat &e)
+		{
 			double fn = n.to_d();
 			double fe = e.to_d();
 			double r = std::pow(fn, fe);
@@ -317,20 +330,19 @@ namespace physics
 			return r;
 		}
 
-		static FixedFloat to_rad(const FixedFloat &v) 
-		{ 	
-			return v * rad_unit; 
+		static FixedFloat to_rad(const FixedFloat &v)
+		{
+			return v * rad_unit;
 		}
 
-		static FixedFloat to_deg(const FixedFloat &v) 
-		{ 
-			return v * deg_unit; 
+		static FixedFloat to_deg(const FixedFloat &v)
+		{
+			return v * deg_unit;
 		}
 
-  public:
-    int64 value;
-
-  };
+	public:
+		int64 value;
+	};
 }
 
 #endif
