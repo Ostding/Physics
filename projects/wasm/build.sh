@@ -1,0 +1,1 @@
+em++ src/wrapper.c --js-library src/jslib.js  -o test/wrapper.js -O0 -s WASM_BIGINT -s "EXPORTED_RUNTIME_METHODS=['ccall', 'cwrap']"

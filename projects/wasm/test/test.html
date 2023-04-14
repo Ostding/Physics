@@ -12,7 +12,9 @@
         Module = {};
         Module.onRuntimeInitialized = function () {
             //do sth.
-            let x = Module._Func();
+            let a = BigInt(123);
+            let b = BigInt(456);
+            let x = Module.ccall("Func", [a, b], 2);
             console.log(x);
             console.log(typeof (x))
         }

@@ -30,8 +30,14 @@ EM_PORT_API(void)
 js_console_log_int(int64 param);
 
 EM_PORT_API(int64)
-Func(int param)
+Func(int64 param[], int len)
 {
+    js_console_log_int(len);
+    for (int i = 0; i < len; i++)
+    {
+        int64 arg = param[i];
+        js_console_log_int(arg);
+    }
     js_console_log_int(9876543219999);
     FixedFloat a = FixedFloat(123456);
     return a.value;
