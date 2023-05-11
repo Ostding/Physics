@@ -69,6 +69,9 @@
     "__node_handle": "c",
     "__memory": "c",
     "optional": "c",
-    "complex": "c"
+    "complex": "c",
+    "__availability": "cpp",
+    "__hash_table": "cpp",
+    "stdio.h": "c"
   }
 }
