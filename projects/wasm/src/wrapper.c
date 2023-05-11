@@ -51,7 +51,7 @@ Func(unsigned char *u8data, int dataLength)
 }
 
 EM_PORT_API(void)
-Func1(int64 param)
+Func1(int64 param, const char *pszStr)
 {
-    js_console_log_int64("Func1 recv arg int64:", param);
+    js_console_log_int64(pszStr, param);
 }

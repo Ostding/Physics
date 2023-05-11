@@ -18,7 +18,7 @@
             // let x = Module._Func(a, b);
             console.log("return:", x, typeof (x));
 
-            Module.ccall("Func1", "null", ['number'], [a]);
+            Module.ccall("Func1", "null", ['number', 'string'], [a, "I'm test string!"]);
         }
     </script>
     <script src="wrapper.js"></script>
