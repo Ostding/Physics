@@ -65,6 +65,10 @@
     "contact_processor.h": "c",
     "simplex.h": "c",
     "types.h": "c",
-    "physics.h": "c"
+    "physics.h": "c",
+    "__node_handle": "c",
+    "__memory": "c",
+    "optional": "c",
+    "complex": "c"
   }
 }

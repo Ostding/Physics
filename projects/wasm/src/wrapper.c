@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #define DISABLE_RENDER
 #include "./../../../include/physics.h"
 using namespace physics;
@@ -27,18 +28,30 @@ using namespace physics;
 // }
 
 EM_PORT_API(void)
-js_console_log_int(int64 param);
+js_console_log_int64(const char *psz, int64 param);
+
+EM_PORT_API(void)
+js_console_log_int(const char *psz, int param);
 
 EM_PORT_API(int64)
-Func(int64 param[], int len)
+Func(unsigned char *u8data, int dataLength)
 {
-    js_console_log_int(len);
+    int len = dataLength / sizeof(int64);
+    js_console_log_int("Func recv arg int64 count:", len);
+
+    int byteLen = (sizeof(int64) / sizeof(unsigned char));
     for (int i = 0; i < len; i++)
     {
-        int64 arg = param[i];
-        js_console_log_int(arg);
+        int64 arg = *((int64 *)(u8data + i * byteLen));
+        js_console_log_int64("num:", arg);
     }
-    js_console_log_int(9876543219999);
+    js_console_log_int64("Log int64:", 9876543219999);
     FixedFloat a = FixedFloat(123456);
     return a.value;
+}
+
+EM_PORT_API(void)
+Func1(int64 param)
+{
+    js_console_log_int64("Func1 recv arg int64:", param);
 }

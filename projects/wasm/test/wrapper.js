@@ -1322,9 +1322,12 @@ var ASM_CONSTS = {
       HEAP8.set(array, buffer);
     }
 
-  function _js_console_log_int(param) {
-          console.log(param);
-          console.log(typeof (param));
+  function _js_console_log_int(str, param) {
+          console.log("call js:", UTF8ToString(str), param, typeof (param));
+      }
+
+  function _js_console_log_int64(str, param) {
+          console.log("call js:", UTF8ToString(str), param, typeof (param));
       }
 
   function getCFunc(ident) {
@@ -1410,7 +1413,8 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var asmLibraryArg = {
-  "js_console_log_int": _js_console_log_int
+  "js_console_log_int": _js_console_log_int,
+  "js_console_log_int64": _js_console_log_int64
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
@@ -1418,6 +1422,9 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__w
 
 /** @type {function(...*):?} */
 var _Func = Module["_Func"] = createExportWrapper("Func");
+
+/** @type {function(...*):?} */
+var _Func1 = Module["_Func1"] = createExportWrapper("Func1");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");

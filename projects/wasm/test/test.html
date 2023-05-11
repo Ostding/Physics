@@ -11,12 +11,14 @@
     <script>
         Module = {};
         Module.onRuntimeInitialized = function () {
-            //do sth.
             let a = BigInt(123);
             let b = BigInt(456);
-            let x = Module.ccall("Func", [a, b], 2);
-            console.log(x);
-            console.log(typeof (x))
+            let arr = new Uint8Array(new BigUint64Array([a, b]).buffer);
+            let x = Module.ccall("Func", "number", ['array', 'number'], [arr, arr.length]);
+            // let x = Module._Func(a, b);
+            console.log("return:", x, typeof (x));
+
+            Module.ccall("Func1", "null", ['number'], [a]);
         }
     </script>
     <script src="wrapper.js"></script>
