@@ -18,3 +18,5 @@ devices [to check the result, plz move to benchmark.txt]
 .Exam the physic library's precision and synchornization between android and osx devices    
 
 
+# Reference:
+https://github.com/idmillington/cyclone-physics/tree/master
