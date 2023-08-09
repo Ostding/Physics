@@ -13,11 +13,11 @@ namespace physics
 
   enum PRIMITIVE_TYPE
   {
-    PRIT_PLANE        = 1,
-    PRIT_SPHERE       = 2,
-    PRIT_BOX          = 4,
-    PRIT_CAPSULE      = 8,
-    PRIT_POLYHEDRON   = 16,
+    PRIT_PLANE = 1,
+    PRIT_SPHERE = 2,
+    PRIT_BOX = 4,
+    PRIT_CAPSULE = 8,
+    PRIT_POLYHEDRON = 16,
   };
 
   class Primitive
@@ -32,8 +32,8 @@ namespace physics
     AABB aabb;
     RigidBody *body;
     Matrix4 transform;
-    
-    Primitive * parent;
+
+    Primitive *parent;
     OCTreeNode *node;
 
     bool isStatic;
@@ -53,7 +53,7 @@ namespace physics
     virtual void findFarthestPointInDirection(const Vector3 &dir, Vector3 &pointWorld);
     virtual Vector3 getPointInWorldSpace(const Vector3 &point);
     virtual Vector3 getPointInBodySpace(const Vector3 &point);
-    
+
     Vector3 getTransformPos() const;
     Vector3 getColumnVector(unsigned index) const;
 
@@ -64,6 +64,5 @@ namespace physics
     Quaternion getOrientation();
   };
 }
-
 
 #endif

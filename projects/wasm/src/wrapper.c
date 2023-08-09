@@ -43,7 +43,7 @@ Func(unsigned char *u8data, int dataLength)
     for (int i = 0; i < len; i++)
     {
         int64 arg = *((int64 *)(u8data + i * byteLen));
-        js_console_log_int64("num:", arg);
+        js_console_log_int64("      args:", arg);
     }
     js_console_log_int64("Log int64:", 9876543219999);
     FixedFloat a = FixedFloat(123456);
