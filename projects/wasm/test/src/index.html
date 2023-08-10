@@ -8,20 +8,22 @@
 </head>
 
 <body>
-    <script>
-        Module = {};
+    <!-- <script src="physic.js"></script> -->
+    <!-- <script>
+         Module = {};
+        console.log(Module['onRuntimeInitialized'])
         Module.onRuntimeInitialized = function () {
             let a = BigInt(123);
             let b = BigInt(456);
             let arr = new Uint8Array(new BigUint64Array([a, b]).buffer);
             let x = Module.ccall("Func", "number", ['array', 'number'], [arr, arr.length]);
-            // let x = Module._Func(a, b);
-            console.log("return:", x, typeof (x));
-
+            console.log("Func return:", x, typeof (x));
             Module.ccall("Func1", "null", ['number', 'string'], [a, "I'm test string!"]);
+            let sum = Module._FuncAdd(a, b);
+            console.log("Func2 return:", sum, typeof (sum));
         }
-    </script>
-    <script src="wrapper.js"></script>
+    </script> -->
+    <!-- <script src="physic_wrapper.js"></script> -->
 </body>
 
 </html>

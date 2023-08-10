@@ -50,6 +50,12 @@ Func(unsigned char *u8data, int dataLength)
     return a.value;
 }
 
+EM_PORT_API(int64)
+FuncAdd(int64 a, int64 b)
+{
+    return a + b;
+}
+
 EM_PORT_API(void)
 Func1(int64 param, const char *pszStr)
 {
