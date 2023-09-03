@@ -1,0 +1,10 @@
+{
+  "name": "cocos",
+  "uuid": "65f4af2b-8d60-4d32-8ab1-fa343ab21c1e",
+  "creator": {
+    "version": "3.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.9"
+  }
+}

@@ -3,3 +3,8 @@
 bin
 build
 proj.osx
+node_module
+library
+local
+temp
+profiles
