@@ -1,3 +1,4 @@
+#build to cocos
 em++ src/physic_wrapper.c   \
     -O0    \
     --no-entry  \
@@ -13,7 +14,10 @@ em++ src/physic_wrapper.c   \
     -s MODULARIZE=1 \
     -s STRICT=1   
 
+mv cocos/assets/wasm/physic_wrapper.wasm cocos/assets/wasm/physic_wrapper.bin
 
+
+#build to web
     # em++ src/physic_wrapper.c   \
     # -O0    \
     # --no-entry  \

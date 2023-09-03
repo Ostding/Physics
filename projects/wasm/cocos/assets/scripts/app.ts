@@ -21,15 +21,6 @@ export class entry extends Component {
     }
 
     loadWasm() {
-        // const wasmBinary = await new Promise<Uint8Array>((resolve, reject) => {
-        //     assetManager.loadAny<BufferAsset>('3efefd55-4622-413c-95a4-e06438521476', (error, asset) => {
-        //         if (error) {
-        //             reject(error);
-        //         } else {
-        //             resolve(new Uint8Array(asset.buffer()!));
-        //         }
-        //     });
-
         let wasmBinary = new Uint8Array(this.wasmBuffer.buffer());
         factory({
             wasmBinary
